@@ -44,7 +44,7 @@ class Scheduler:
         '''           task     loopdelay   initdelay 
         self.s.AddTask(self.__popup, 30.0,      0     )
         '''
-          task = Task( action, loopdelay, initdelay )
+        task = Task( action, loopdelay, initdelay )
         self._tasks.append( task )
     
     def StartAllTasks( self ):
