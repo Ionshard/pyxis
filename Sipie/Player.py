@@ -4,7 +4,7 @@
 # Licensed under GPLv2 See: http://www.gnu.org/licenses/gpl.txt
 
 
-from Factory import Factory
+from Factory import Factory, LoginError, AuthError, InvalidStream
 
 
 class Player(Factory):

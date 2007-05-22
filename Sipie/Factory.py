@@ -83,8 +83,6 @@ class Factory:
         self.asxURL = None
         self.allstreams = []
         self.playing = None
-        self.cookiefile = os.path.join(options['configpath'],'cookies.txt')
-        self.playlist = os.path.join(options['configpath'],'playlist')
         self.__captchaCallback = None  
 
         for (option, value) in options.items():
@@ -99,6 +97,8 @@ class Factory:
             self.canada = True
         else:
             self.canada = False
+        self.cookiefile = os.path.join(options['configpath'],'cookies.txt')
+        self.playlist = os.path.join(options['configpath'],'playlist')
         self.__setupOpener()
 
     def __setupOpener(self):
