@@ -14,6 +14,16 @@ def gtkPlayer():
 
     glade_base = os.path.split(__file__)[0]
     GLADE_DIR = os.path.join(glade_base, 'glade')
+    GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
+    if not os.path.isfile(GLADE_FILE):
+        GLADE_DIR = '/usr/share/sipie'
+        GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
+    if not os.path.isfile(GLADE_FILE):
+        print "I Can't find my glade file gtkSipie.glade"
+        print "I looked in %s"%os.path.join(glade_base,'glade')
+        print "And %s"%GLADE_DIR
+        sys.exit(1)
+    
 
     # From Sipie
     from Config import Config
@@ -45,7 +55,7 @@ def gtkPlayer():
     class GladeHandlers:
 
         def on_Exit_clicked(widget):
-            gtk.main_quit(glade_base)
+            gtk.main_quit()
 
         def on_Play_clicked(widget):
             global stream
@@ -66,7 +76,7 @@ def gtkPlayer():
             gtk.main_quit()
 
 
-    xml = gtk.glade.XML(os.path.join(GLADE_DIR, 'gtkSipie.glade'))
+    xml = gtk.glade.XML(GLADE_FILE)
     streamWidget = xml.get_widget('StreamList')
     #streamWidget.insert_text(0,'First')
 
