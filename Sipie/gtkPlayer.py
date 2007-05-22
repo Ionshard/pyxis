@@ -8,7 +8,9 @@ def gtkPlayer():
     import gtk
     import atexit
     import gtk.glade
-    from Popup import PlaylistPopup
+    tryPopups = False
+    if tryPopups:
+        from Popup import PlaylistPopup
 
     glade_base = os.path.split(__file__)[0]
     GLADE_DIR = os.path.join(glade_base, 'glade')
@@ -74,14 +76,15 @@ def gtkPlayer():
 
     xml.signal_autoconnect(GladeHandlers.__dict__)
 
-    popups = PlaylistPopup(sipie)
-    try:
+    if tryPopups:
         popups = PlaylistPopup(sipie)
-    except:
-        print 'popups failed to load'  #DEBUG
-        pass
-    else:
-        popups.start()
+        try:
+            popups = PlaylistPopup(sipie)
+        except:
+            #print 'popups failed to load'  #DEBUG
+            pass
+        else:
+            popups.start()
 
     gtk.main()
 
