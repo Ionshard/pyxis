@@ -14,8 +14,6 @@ def gtkPlayer():
     if tryPopups:
         from Popup import PlaylistPopup
 
-    GLADE_FILE = resource_filename(
-                    Requirement.parse("Sipie"),"data/gtkSipie.glade")
     #glade_base = os.path.split(__file__)[0]
     #GLADE_DIR = os.path.join(glade_base, 'glade')
     #GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
@@ -28,6 +26,9 @@ def gtkPlayer():
     #    print "And %s"%GLADE_DIR
     #    sys.exit(1)
     
+    # get the glade file from the egg
+    GLADE_FILE = resource_filename(
+                    Requirement.parse("Sipie"),"Sipie/data/gtkSipie.glade")
 
     # From Sipie
     from Config import Config
