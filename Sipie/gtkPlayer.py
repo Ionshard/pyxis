@@ -8,21 +8,25 @@ def gtkPlayer():
     import gtk
     import atexit
     import gtk.glade
+
+    from pkg_resources import Requirement, resource_filename
     tryPopups = False
     if tryPopups:
         from Popup import PlaylistPopup
 
-    glade_base = os.path.split(__file__)[0]
-    GLADE_DIR = os.path.join(glade_base, 'glade')
-    GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
-    if not os.path.isfile(GLADE_FILE):
-        GLADE_DIR = '/usr/share/sipie'
-        GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
-    if not os.path.isfile(GLADE_FILE):
-        print "I Can't find my glade file gtkSipie.glade"
-        print "I looked in %s"%os.path.join(glade_base,'glade')
-        print "And %s"%GLADE_DIR
-        sys.exit(1)
+    GLADE_FILE = resource_filename(
+                    Requirement.parse("Sipie"),"data/gtkSipie.glade")
+    #glade_base = os.path.split(__file__)[0]
+    #GLADE_DIR = os.path.join(glade_base, 'glade')
+    #GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
+    #if not os.path.isfile(GLADE_FILE):
+    #    GLADE_DIR = '/usr/share/sipie'
+    #    GLADE_FILE = os.path.join(GLADE_DIR, 'gtkSipie.glade')
+    #if not os.path.isfile(GLADE_FILE):
+    #    print "I Can't find my glade file gtkSipie.glade"
+    #    print "I looked in %s"%os.path.join(glade_base,'glade')
+    #    print "And %s"%GLADE_DIR
+    #    sys.exit(1)
     
 
     # From Sipie
