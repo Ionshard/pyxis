@@ -62,11 +62,15 @@ class PlaylistPopup:
         self.s = Scheduler()
         self.sipie = sipie
         pynotify.init("Sipie")
+        #print "Playlist Popups __inti__" #DEBUG
 
     def __popup(self):
+        #print "__popup %s"%self.sipie.getStream() #DEBUG
+        if self.sipie.getStream() is None:
+            return None
         playing = self.sipie.nowPlaying()
-        #if playing['new'] :
-        if True:
+        if playing['new'] :
+        #if True:
             self.notify = pynotify.Notification(playing['stream'],
                                                     playing['playing'])
             print playing['logfmt']

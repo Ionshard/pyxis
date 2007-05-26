@@ -92,7 +92,6 @@ def gtkPlayer():
     xml.signal_autoconnect(GladeHandlers.__dict__)
 
     if tryPopups:
-        popups = PlaylistPopup(sipie)
         try:
             popups = PlaylistPopup(sipie)
         except:

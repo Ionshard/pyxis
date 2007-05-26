@@ -43,6 +43,7 @@ setup(
             [ 'cliSipie = Sipie:cliPlayer' ],
         'gui_scripts': 
             #[ 'gtkSipie = Sipie:gtkPlayer [PyGTK]' ]
-            [ 'gtkSipie = Sipie:gtkPlayer' ]
+            [ 'gtkSipie = Sipie:gtkPlayer',
+               'wxSipie = Sipie:wxPlayer' ]
       }
 )
