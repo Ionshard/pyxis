@@ -13,10 +13,6 @@ import md5
 import ConfigParser
 import getpass
 
-__version__ = '1178140820'
-
-
-
 class Config:
 
     """ SipieConf creates and reads the config file and can return 

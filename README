@@ -1,0 +1,21 @@
+
+to install
+in ubuntu
+
+Make sure mutliverse is enabled, if not enable it
+    grep multiverse /etc/apt/sources.list
+
+if nothing returns go to System -> Administration -> Synaptic Package Manager
+        Settings
+        -> Repositories
+        -> Ubuntu Software
+        -> Software restricted by copyright or legal issues (multiverse) 
+            CHECK THAT
+
+then 
+    # python-wxgtk2.6 is option but it currently works better then the pure
+    # gtk interface
+    apt-get install mplayer python-setuptools python-wxgtk2.6
+
+    # easy install sipie
+    easy_install sipie

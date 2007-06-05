@@ -15,7 +15,6 @@ import re
 import time
 
 #time.time()
-__version__ = '1178140820'
 __author__ = 'Eli Criffield pyeli AT zendo Dot NET'
 
 # Thanks! for the Pretty Gumbo
