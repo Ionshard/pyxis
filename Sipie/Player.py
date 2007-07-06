@@ -13,7 +13,10 @@ class Player(Factory):
         self.streamHandler = streamHandler
     
     def play(self):
-        self.close()
+        try:
+            self.close()
+        except:
+            pass
         self.streamHandler.setURL(self.asxURL)
         self.streamHandler.play()
 

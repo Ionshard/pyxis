@@ -14,7 +14,10 @@ def wxPlayer():
 
     tryPopups = True
     if tryPopups:
-        from Popup import PlaylistPopup
+        try:
+            from Popup import PlaylistPopup
+        except:
+            tryPopups = False
 
     def onExit(histfile,sipie):
         fd = open(histfile, 'a')

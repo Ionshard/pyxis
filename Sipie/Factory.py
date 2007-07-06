@@ -15,7 +15,6 @@ import re
 import time
 
 #time.time()
-__author__ = 'Eli Criffield pyeli AT zendo Dot NET'
 
 # Thanks! for the Pretty Gumbo
 # Elixir and Tonic
@@ -60,7 +59,6 @@ class InvalidStream(Exception):
     pass
 
 
-CopyRights()
 
 
 class Factory:

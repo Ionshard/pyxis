@@ -23,7 +23,7 @@ doclines = __doc__.split("\n")
 
 setup(
     name='Sipie',
-    version='0.1181072404',
+    version='0.1182788065',
     description='Library and Player for Sirius Online Streaming',
     author='Eli Criffield',
     author_email='python@zendo.net',
@@ -34,7 +34,7 @@ setup(
     classifiers = filter(None, classifiers.split("\n")),
     packages= find_packages(),
     zip_safe = True,
-    scripts=[ 'sipie' ],
+    scripts=[ 'sipie.py' ],
     include_package_data = True,
     install_requires = { 'BeautifulSoup':  ["BeautifulSoup>=3.0"] },
     extras_require = { 'PyGTK': ["PyGTK>=2.0"], 'wxPython': ['wxPython>=2.6'] },

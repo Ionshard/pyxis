@@ -266,6 +266,7 @@ class wmpHandler:
     def __init__(self, location):
         self.location = location
         self.__url = None
+        self.handle = 0
 
     def setURL(self, url):
         self.__url = url
@@ -276,6 +277,10 @@ class wmpHandler:
         mpc = self.location + " " + self.__url 
         if sys.platform == 'win32':
             si = win32process.STARTUPINFO()
+            si.dwX=0
+            si.dwY=0
+            si.dwXSize=640
+            si.dwYSize=480
             si.dwFlags = win32process.STARTF_USESTDHANDLES
             si.hStdInput = win32api.GetStdHandle(win32api.STD_INPUT_HANDLE)
             si.hStdOutput = win32api.GetStdHandle(win32api.STD_OUTPUT_HANDLE)

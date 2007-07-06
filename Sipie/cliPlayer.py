@@ -49,7 +49,10 @@ def cliPlayer():
            readline.write_history_file(histfile)
        except:
            pass
-       sipie.close()
+       try:
+           sipie.close()
+       except:
+           pass
 
     if sys.platform == 'win32':
         win = True
