@@ -23,14 +23,13 @@ doclines = __doc__.split("\n")
 
 setup(
     name='Sipie',
-    version='0.1182788065',
+    version='0.1184989269',
     description='Library and Player for Sirius Online Streaming',
     author='Eli Criffield',
     author_email='python@zendo.net',
     url='http://sipie.sourceforge.net/',
     license='http://www.gnu.org/licenses/gpl.txt',
     platforms=['any'],
-    description = doclines[0],
     classifiers = filter(None, classifiers.split("\n")),
     packages= find_packages(),
     zip_safe = True,
