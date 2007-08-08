@@ -234,6 +234,11 @@ def wxPlayer():
 
     global sipie
     sipie = Player(config.items())
+    sipie._Factory__captchaCallback = guiCaptcha
+    #from IPython.Shell import IPShellEmbed
+    #ipshell = IPShellEmbed()
+    #ipshell()
+
     sipie.setPlayer(streamHandler)
     atexit.register(onExit,histfile,sipie)
 

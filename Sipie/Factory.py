@@ -215,11 +215,12 @@ class Factory:
         if os.path.isfile(capcache):
             os.unlink(capcache)
         self.__grabURL('http://%s%s' % (self.host, urlofcaptcha), capcache)
-      #print "http://%s%s  %s"%(self.host,urlofcaptcha,capcache) #DEBUG
+        #print "http://%s%s  %s"%(self.host,urlofcaptcha,capcache) #DEBUG
       #self.printcookies() #DEBUG
       # Get a hUMan to read the captcha to us
         if self.__captchaCallback is None:
             self.__captchaCallback = self.__dCaX
+            self.__captchaCallback = self.terminalCaptcha
         captcha = self.__captchaCallback(capcache)
         #print "captcha='%s' filename=%s"%(captcha,capcache)#DEBUG
         if os.path.isfile(capcache):
@@ -396,8 +397,13 @@ class Factory:
         k1 = -(6*caxid)
         k2 = -((6*caxid)-6)
         if k2 == 0 : k2=len(key)
-        #print "cax=%s id=%s %s:%s"%(key[k1:k2],caxid,k1,k2) # DEBUG
+        print "ca=%s cax=%s id=%s %s:%s"%(caxfile, key[k1:k2],caxid,k1,k2) # DEBUG
         return key[k1:k2]
+
+    def terminalCaptcha(self,captchaFile):
+        print "There is a captcha file, Please open the file %s"captchaFile
+        print "And input the leters below"
+        return raw_input(": ")
 
 
     def nowPlaying(self):
