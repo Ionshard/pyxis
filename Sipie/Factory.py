@@ -401,7 +401,7 @@ class Factory:
         return key[k1:k2]
 
     def terminalCaptcha(self,captchaFile):
-        print "There is a captcha file, Please open the file %s"captchaFile
+        print "There is a captcha file, Please open the file %s"%captchaFile
         print "And input the leters below"
         return raw_input(": ")
 
