@@ -23,7 +23,7 @@ doclines = __doc__.split("\n")
 
 setup(
     name='Sipie',
-    version='0.1184989269',
+    version='0.1196144357',
     description='Library and Player for Sirius Online Streaming',
     author='Eli Criffield',
     author_email='python@zendo.net',

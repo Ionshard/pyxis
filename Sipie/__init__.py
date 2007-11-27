@@ -1,6 +1,6 @@
 
 __author__ = 'Eli Criffield pyeli AT zendo Dot NET'
-__version__ = '''0.1184989269'''
+__version__ = '''0.1196144357'''
 __copyright__ =  '''(c)Eli Criffield <pyeliATzendoDOTnet>
 http://eli.criffield.net/sipie/
 Licensed under GPLv2

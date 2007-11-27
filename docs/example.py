@@ -5,11 +5,13 @@
 # Very simple example
 
 import Sipie
+import sys
+import os
 
 # Setup a config object to get the user name password 
 # canada or not, shit like that
 
-config = Sipie.Config('/home/ecriffield/.sipie/')
+config = Sipie.Config( os.path.expanduser('~/.sipie/') )
 
 # when calling .items() it will try to create the config
 # if it doesn't exist
@@ -31,7 +33,7 @@ sipie.setStream('faction')
 # Then you can get the url for the your asx
 print sipie.asxURL
 print ''
-
+sys.exit(1)
 # if you wanted to know all avalibe streams there 
 
 allStreams = sipie.getStreams()

@@ -14,6 +14,13 @@ import sys
 import re
 import time
 
+
+try:
+    from IPython.Shell import IPShellEmbed
+    ipshell = IPShellEmbed()
+except:
+    pass
+
 #time.time()
 
 # Thanks! for the Pretty Gumbo
@@ -110,9 +117,9 @@ class Factory:
         http_proxy = os.environ.get('http_proxy')
         if http_proxy is not None:
             proxy_handler = urllib2.ProxyHandler({'http': http_proxy})
+            opener = urllib2.build_opener(cookie_handler, proxy_handler)
         else:
-            proxy_handler = None
-        opener = urllib2.build_opener(cookie_handler, proxy_handler)
+            opener = urllib2.build_opener(cookie_handler)
         urllib2.install_opener(opener)
 
     def __dbfd(self, file, data):
@@ -341,7 +348,7 @@ class Factory:
          #self.__dbfd("getasuxurl-ERROR.html",data) #DEBUG
          #print "\nAuth Error:, see getasuxurl-ERROR.html\n" #DEBUG
             raise AuthError
-        if not asxURL.startswith('http://%s' % (self.host, )):
+        if not asxURL.startswith('http://'):
             asxURL = 'http://%s%s' % (self.host, asxURL)
         self.asxURL = asxURL
         return asxURL

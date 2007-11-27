@@ -26,9 +26,11 @@ class mplayerHandler:
     #
     def __init__(self, location):
         self.__url = None
-        mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao esd,alsa,oss -prefer-ipv4 -cache 32 -playlist '
+        #mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao esd,alsa,oss -prefer-ipv4 -cache 32 -playlist '
+        mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao esd,alsa,oss -prefer-ipv4 -cache 32 '
         if sys.platform == 'win32':
-            mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache 32 -playlist '
+            #mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache 32 -playlist '
+            mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache 32 '
         self.command = "%s %s "%(location,mplayerOptions)
 
     def setURL(self, url):
