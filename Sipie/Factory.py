@@ -203,6 +203,7 @@ class Factory:
       #self.__dbfd("MediaPlayer.html",data) #DEBUG
         if data.find('bg-now-playing-mac-large') > 0:  #already authed
             return True
+        data = self.sanitize(data)
         soup = BeautifulSoup(data)
         try:
             self.token = soup.find('input', {'name': 'token'})['value']
@@ -295,6 +296,7 @@ class Factory:
             raise LoginError
         #self.__dbfd("miniplayer.html",data) #DEBUG XXX
       #data = open('small_playing_100.html').read() # DEBUG
+        data = self.sanitize(data)
         soup = BeautifulSoup(data)
         for catstrm in soup.findAll('option'):
             if catstrm['value'].find('|') <> -1:  # IF FOUND
@@ -341,6 +343,7 @@ class Factory:
             raise LoginError
       #self.printcookies() #DEBUG
       #self.__dbfd ("streamselect.html",data) #DEBUG
+        data = self.sanitize(data)
         soup = BeautifulSoup(data)
         try:
             asxURL = soup.find('param', {'name': 'FileName'})['value']
@@ -470,3 +473,11 @@ class Factory:
         else:
             nowplaying['new'] = False
         return nowplaying
+
+    def sanitize(self, data):
+        import re
+        data = re.sub(r'\{height:21px;\}', r'"{height:21px;}"', data)
+        data = re.sub(r'width=650"', r'width="650"', data)
+        #print data
+        return data
+
