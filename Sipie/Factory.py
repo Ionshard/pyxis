@@ -249,6 +249,7 @@ class Factory:
                     self.login_type)
         fd = self.__getURL(url, values)
         data = fd.read()
+        print data #DEBUG
         fd.close()
       #self.printcookies() #DEBUG
       #self.__dbfd("login.html",data) #DEBUG
@@ -263,6 +264,9 @@ class Factory:
         elif data.find('Unsuccessful Login') <> -1: #IF FOUND
             #self.__dbfd("debug-ERROR.html",data) #DEBUG
             print "Unsuccessful Login. Please check username and password."  #DEBUG 0
+            raise LoginError
+        elif data.find('Too Many Login Attempts') <> -1: #IF FOUND
+            print "Too Many Login Attempts, try again later."
             raise LoginError
         return True
 
@@ -480,6 +484,6 @@ class Factory:
         import re
         data = re.sub(r'style=["\']?(\{.*\})[^"\']?', r'style="\1" ', data)
         data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
-        print data #DEBUG
+        #print data #DEBUG
         return data
 
