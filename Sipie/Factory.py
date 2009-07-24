@@ -475,9 +475,11 @@ class Factory:
         return nowplaying
 
     def sanitize(self, data):
+        """ Sanitizes Data against specific errors in the Sirus HTML that
+        Beautiful soup can not handle."""
         import re
-        data = re.sub(r'\{height:21px;\}', r'"{height:21px;}"', data)
-        data = re.sub(r'width=650"', r'width="650"', data)
-        #print data
+        data = re.sub(r'style=["\']?(\{.*\})[^"\']?', r'style="\1" ', data)
+        data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
+        print data #DEBUG
         return data
 
