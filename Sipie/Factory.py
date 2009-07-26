@@ -249,7 +249,6 @@ class Factory:
                     self.login_type)
         fd = self.__getURL(url, values)
         data = fd.read()
-        print data #DEBUG
         fd.close()
       #self.printcookies() #DEBUG
       #self.__dbfd("login.html",data) #DEBUG
@@ -482,8 +481,12 @@ class Factory:
         """ Sanitizes Data against specific errors in the Sirus HTML that
         Beautiful soup can not handle."""
         import re
-        data = re.sub(r'style=["\']?(\{.*\})[^"\']?', r'style="\1" ', data)
+        data = re.sub(r'style=["\']?(\{.*\})["\']?', r'style="\1" ', data)
         data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
+        #data = re.sub(r'width=["\']?(\d+i)[^\d]*%["\']?', r'width="\1%"', data)
+        data = re.sub(r'width="100"%"', r'width="100%"', data)
+        data = re.sub(r'onclick=["\']?([^\s<>]*)["\']?', r'onclick=""', data)
+
         #print data #DEBUG
         return data
 
