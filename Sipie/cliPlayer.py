@@ -38,7 +38,8 @@ def cliPlayer():
     def ask4Stream():
         try:
             stream = raw_input("Enter stream: ")
-            stream.strip()
+            stream = stream.strip()
+            #print "|" + stream + "|" #Debug
         except (EOFError, KeyboardInterrupt):
             print "Thanks for playing"
             sys.exit(0)
