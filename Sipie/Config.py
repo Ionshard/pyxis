@@ -91,6 +91,8 @@ class Config:
         print 'Login Type, type guest or subscriber'
         sys.stdout.write('Enter login type: ')
         login_type = sys.stdin.readline().rstrip()
+        sys.stdout.write('Enter bitrate (low or high): ')
+        bitrate = sys.stdin.readline().rstrip()
         while login_type not in ['subscriber', 'guest']:
             sys.stdout.write('Invalid: Enter login type: ')
             login_type = sys.stdin.readline().rstrip()
@@ -108,7 +110,7 @@ class Config:
         self.set('username', username)
         self.set('cryptpass', cryptpass)
         self.set('login_type', login_type)
-        self.set('bitrate', 'low')
+        self.set('bitrate', bitrate)
         self.set('canada', canada)
         self.write()
         return self.items()
