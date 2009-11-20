@@ -129,6 +129,26 @@ class Factory:
         dbfd.write(data)
         dbfd.close()
 
+
+    def sanitize(self, data):
+        """ Sanitizes Data against specific errors in the Sirus HTML that
+        Beautiful soup can not handle.
+        ( There is also some fix about reverting some python library that 
+         python 2.6 upgraded downgraded?? )
+        Thanks to:
+         Corey Ling kasuko@gmail.com
+         http://kasuko.com 
+        """
+        import re
+        data = re.sub(r'style=["\']?(\{.*\})["\']?', r'style="\1" ', data)
+        data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
+        #data = re.sub(r'width=["\']?(\d+i)[^\d]*%["\']?', r'width="\1%"', data)
+        data = re.sub(r'width="100"%"', r'width="100%"', data)
+        data = re.sub(r'onclick=["\']?([^\s<>]*)["\']?', r'onclick=""', data)
+ 
+        #print data #DEBUG
+        return data
+
     def findSessionID(self):
         """ finds the session ID cookie and returns the value """
         for (index, cookie) in enumerate(self.__cookie_jar):
@@ -259,6 +279,7 @@ class Factory:
             raise LoginError
         #self.__dbfd("miniplayer.html",data) #DEBUG XXX
       #data = open('small_playing_100.html').read() # DEBUG
+        data = self.sanitize(data)
         soup = BeautifulSoup(data)
         for catstrm in soup.findAll('option'):
             if catstrm['value'].find('|') <> -1:  # IF FOUND
@@ -300,6 +321,7 @@ class Factory:
             'http://www.sirius.com/player/listen/play.action',
             postdict).read()
 
+        data = self.sanitize(data)
         soup = BeautifulSoup(data)
         try:
             firstURL = soup.find('param', {'name': 'FileName'})['value']

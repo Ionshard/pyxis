@@ -89,17 +89,17 @@ def cliPlayer():
             stream = os.path.basename(sys.argv[0])
             sipie.setStreamByChannel(stream)
         else:
-            stream = ask4Stream()
-        if stream == 'list':
-          for str in [x['longName'] for x in sipie.getStreams()]:
-                print str
-                break
-        try:
-            sipie.setStreamByLongName(stream)
-        except : #FIXME
-            FirstLoop = False
-            print "Invalid Stream"
+          stream = ask4Stream()
+          if stream == 'list':
+            for str in [x['longName'] for x in sipie.getStreams()]:
+              print str
             continue
+          try:
+              sipie.setStreamByLongName(stream)
+          except : #FIXME
+              FirstLoop = False
+              print "Invalid Stream"
+              continue
         #print sipie.asxURL
         sipie.play()
 
