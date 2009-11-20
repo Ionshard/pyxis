@@ -41,6 +41,7 @@ def cliPlayer():
         except (EOFError, KeyboardInterrupt):
             print "Thanks for playing"
             sys.exit(0)
+        #print 'ask4Stream "%s"'%stream #DEBUG
         return stream
 
     def onExit():
@@ -71,7 +72,7 @@ def cliPlayer():
     atexit.register(onExit)
 
     if haveReadline:
-        completer = Completer(sipie.getStreams())
+        completer = Completer([x['longName'] for x in sipie.getStreams()])
         readline.parse_and_bind("tab: complete")
         readline.set_completer(completer.complete)
         try:
@@ -86,14 +87,15 @@ def cliPlayer():
             stream = sys.argv[1].lower()
         elif sys.argv[0].lower().find("sipie") == -1 and FirstLoop:
             stream = os.path.basename(sys.argv[0])
+            sipie.setStreamByChannel(stream)
         else:
             stream = ask4Stream()
         if stream == 'list':
-            for str in sipie.getStream():
+          for str in [x['longName'] for x in sipie.getStreams()]:
                 print str
                 break
         try:
-            sipie.setStream(stream)
+            sipie.setStreamByLongName(stream)
         except : #FIXME
             FirstLoop = False
             print "Invalid Stream"
@@ -105,6 +107,7 @@ def cliPlayer():
             playing = sipie.nowPlaying()
             if playing['new'] :
                 print playing['logfmt']
+            pass
             try:
                 time.sleep(30)
             except KeyboardInterrupt:

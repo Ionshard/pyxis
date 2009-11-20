@@ -1,4 +1,12 @@
 
+As of somewhere around 11/17/2009 Sirius changed things I rewrote 
+some of sipie to fix it. Remove your ~/.sipie/ directory and 
+rerun and it will ask your username and password again and should work.
+
+
+Eli
+
+
 to install
 in ubuntu
 

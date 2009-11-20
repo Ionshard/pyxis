@@ -82,7 +82,7 @@ class Factory:
         self.bitrate = 'low'
         self.login_type = 'subscriber'
         self.username = 'WhoAmI'
-        self.cryptpass = None
+        self.password = None
         self.__stream = None
         self.asxURL = None
         self.allstreams = []
@@ -129,6 +129,13 @@ class Factory:
         dbfd.write(data)
         dbfd.close()
 
+    def findSessionID(self):
+        """ finds the session ID cookie and returns the value """
+        for (index, cookie) in enumerate(self.__cookie_jar):
+          if 'JSESSIONID' in cookie.name:
+            return cookie.value
+        return False
+
     def printCookies(self):
         """ print the current cookies for this instance  """
 
@@ -138,7 +145,7 @@ class Factory:
         print 'Enter to continue:', 
         sys.stdin.readline()
 
-    def __getURL(self, url, postdict=None):
+    def __getURL(self, url, postdict=None, poststring=None):
         """ get a url, the second arg could be dictionary of 
          options for a post 
          If there is no second option use get
@@ -150,15 +157,17 @@ class Factory:
         if postdict:
             postdata = urllib.urlencode(postdict)
         else:
-         #print "POST=",postdata #DEBUG
+        #print "POST=",postdata #DEBUG
             postdata = None
-      #print "url=",url #DEBUG
+        if poststring:
+            postdata = poststring
+        #print "url=",url #DEBUG
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
         return handle
 
-    def __grabURL(self, url, file, postdict=None):
+    def __grabURL(self, url, file, postdict=None, poststring=None):
         """ same as __getURL, but the second arg is a file to write 
          the contents 
          two and the optional 3rd arg is a dictionary of values 
@@ -170,6 +179,8 @@ class Factory:
         else:
          #print "POST=",postdata #DEBUG
             postdata = None
+        if poststring:
+            postdata = poststring
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
         outfd = open(file, 'w')
@@ -189,81 +200,36 @@ class Factory:
 
           if no function is passed it will Guess (and fail?)
 
-      """
+        """
+        #Am i authed, should be its own function really
+        data = self.__getURL(
+          'http://www.sirius.com/player/listen/play.action').read()
+        if 'NOW PLAYING TITLE:START' in data:
+          return True
 
-        url = 'http://%s/sirius/servlet/MediaPlayer' % self.host
-        if self.canada:
-            url = 'http://%s/sirius/ca/servlet/MediaPlayer' % self.host
-      # cooke_jar.clear() makes you reauth with every startup
-      #self.__cookie_jar.clear()
-        handle = self.__getURL(url)
-      #self.printcookies() #DEBUG
-        data = handle.read()
-        handle.close()
-      #self.__dbfd("MediaPlayer.html",data) #DEBUG
-        if data.find('bg-now-playing-mac-large') > 0:  #already authed
-            return True
-        soup = BeautifulSoup(data)
-        try:
-            self.token = soup.find('input', {'name': 'token'})['value']
-        except (NameError, TypeError):
-            self.__dbfd('Login-ERROR.html', data)  #DEBUG 0
-            print "Login Error token not found:, see Auth-ERROR.html"
-            raise LoginError
-        try:
-            captchaID = soup.find('input', {'name': 'captchaID'})['value']
-        except (NameError, TypeError):
-            self.__dbfd('Login-ERROR.html', data)  #DEBUG 0
-            print "Login Error captchaID not found:, see Auth-ERROR.html"
-            raise LoginError
-        urlofcaptcha = soup.find('img', {'src': 
-                                re.compile('img_\\d{2,4}\\.jpg')})['src']
-        capcache = urlofcaptcha.split('/')[-1]
-        if os.path.isfile(capcache):
-            os.unlink(capcache)
-        self.__grabURL('http://%s%s' % (self.host, urlofcaptcha), capcache)
-        #print "http://%s%s  %s"%(self.host,urlofcaptcha,capcache) #DEBUG
-      #self.printcookies() #DEBUG
-      # Get a hUMan to read the captcha to us
-        if self.__captchaCallback is None:
-            self.__captchaCallback = self.__dCaX
-            self.__captchaCallback = self.terminalCaptcha
-        captcha = self.__captchaCallback(capcache)
-        #print "captcha='%s' filename=%s"%(captcha,capcache)#DEBUG
-        if os.path.isfile(capcache):
-            os.unlink(capcache)
+        session = self.findSessionID()
+        if not session:
+          self.__getURL(
+            'http://www.sirius.com/player/home/siriushome.action').read()
+          session = self.findSessionID()
+        if not session:
+          raise LoginError
 
-        if self.login_type == 'subscriber':
-            passwdfield = 'password'
-        elif self.login_type == 'guest':
-            passwdfield = 'encryptedPassword'
-        values = {'activity': 'login', 'type': self.login_type, 'token': self.token, 
-                  'username': self.username, passwdfield: self.cryptpass, 
-                  'captchaID': captchaID, 'captcha_response': captcha, 
-                  'loginForm': self.login_type}
-        url = 'http://%s/sirius/servlet/MediaPlayerLogin/%s' % (self.host, 
-                self.login_type)
-        if self.canada:
-            url = 'http://%s/sirius/ca/servlet/MediaPlayerLogin/%s' % (self.host, 
-                    self.login_type)
-        fd = self.__getURL(url, values)
-        data = fd.read()
-        fd.close()
-      #self.printcookies() #DEBUG
-      #self.__dbfd("login.html",data) #DEBUG
-        if data.find('text does not match the image') <> -1:  #IF FOUND
-            #self.__dbfd("captcha_mismatch.html",data) #DEBUG
-            print ''' ERROR: Captcha Mismatch '''  #DEBUG 0
-            raise LoginError
-        elif data.find('an error has occurred') <> -1: #IF FOUND
-            #self.__dbfd("debug-ERROR.html",data) #DEBUG
-            print "Unkown Login Error, see debug-ERROR.html"  #DEBUG 0
-            raise LoginError
-        elif data.find('Unsuccessful Login') <> -1: #IF FOUND
-            #self.__dbfd("debug-ERROR.html",data) #DEBUG
-            print "Unsuccessful Login. Please check username and password."  #DEBUG 0
-            raise LoginError
-        return True
+        authurl = 'http://www.sirius.com/player/login/siriuslogin.action;jsessionid=%s' % session
+
+        postdict = { 'userName': self.username,
+                     '__checkbox_remember': 'true',
+                     'password': self.password,
+                     'captchaEnabled': 'true',
+                     'timeNow': 'null',
+                     'captcha_response': '7ekW',
+                   }
+        post = urllib.urlencode(postdict) + '&captchaID=%3E%3A0%08geg'
+        data = self.__getURL(authurl, poststring=post).read()
+        if '<title>SIRIUS Player' in data:
+          return True
+        else:
+          raise LoginError
 
     def tryGetStreams(self):
         """ Returns a list of streams avalible, if it 
@@ -273,9 +239,7 @@ class Factory:
       """
 
         allstreams = []
-        url = 'http://%s/sirius/servlet/MediaPlayer' % self.host
-        if self.canada:
-            url = 'http://%s/sirius/ca/servlet/MediaPlayer' % self.host
+        url = 'http://www.sirius.com/player/listen/play.action?resizeActivity=minimize'
         hd = self.__getURL(url)
         data = hd.read()
         hd.close()
@@ -298,7 +262,13 @@ class Factory:
         soup = BeautifulSoup(data)
         for catstrm in soup.findAll('option'):
             if catstrm['value'].find('|') <> -1:  # IF FOUND
-                stream = catstrm['value'].split('|')[2]
+                stream = {
+                    'channelKey': catstrm['value'].split('|')[2],
+                    'genreKey':  catstrm['value'].split('|')[1],
+                    'categoryKey': catstrm['value'].split('|')[0],
+                    'selectedStream': catstrm['value'],
+                    'longName': catstrm.contents[0].split(';')[-1] 
+                    }
             #print "adding stream",stream #DEBUG
                 allstreams.append(stream)
         if len(allstreams) < 5:
@@ -320,36 +290,26 @@ class Factory:
 
         self.validateStream()
 
-      # Get hashkey , and the url for the asx
-        post = {'activity': 'selectStream', 'stream': self.__stream, 'token': self.token}
-        if self.bitrate == 'high':
-         #print 'high bitrate selected' #DEBUG
-            post = {'activity': 'selectBitrate', 'stream': self.__stream, 
-                    'bitrate': 'high', 'token': self.token}
+        postdict = { 'channelKey': self.__stream['channelKey'],
+                     'genreKey': self.__stream['genreKey'],
+                     'categoryKey': self.__stream['categoryKey'],
+                     'selectedStream': self.__stream['selectedStream'],
+                     'stopped': 'no',
+                   }
+        data = self.__getURL(
+            'http://www.sirius.com/player/listen/play.action',
+            postdict).read()
 
-        url = 'http://%s/sirius/servlet/MediaPlayer' % self.host
-        if self.canada:
-            url = 'http://%s/sirius/ca/servlet/MediaPlayer' % self.host
-        hd = self.__getURL(url, post)
-        data = hd.read()
-        hd.close()
-        if data.find('Sorry_Pg3.gif') > 0:  #IF FOUND
-         #DEBUG 0
-            print "Login Error: to many logins today?"
-            print "     see getasxurl-DEBUG.html"
-            self.__dbfd('getasxurl-DEBUG.html', data)  #DEBUG 0
-            raise LoginError
-      #self.printcookies() #DEBUG
-      #self.__dbfd ("streamselect.html",data) #DEBUG
         soup = BeautifulSoup(data)
         try:
-            asxURL = soup.find('param', {'name': 'FileName'})['value']
+            firstURL = soup.find('param', {'name': 'FileName'})['value']
         except TypeError:
          #self.__dbfd("getasuxurl-ERROR.html",data) #DEBUG
          #print "\nAuth Error:, see getasuxurl-ERROR.html\n" #DEBUG
             raise AuthError
-        if not asxURL.startswith('http://'):
-            asxURL = 'http://%s%s' % (self.host, asxURL)
+        if not firstURL.startswith('http://'):
+            firstURL = 'http://%s%s' % (self.host, firstURL)
+        asxURL = self.__getURL(firstURL).read()
         self.asxURL = asxURL
         return asxURL
 
@@ -389,6 +349,29 @@ class Factory:
         if stream not in self.allstreams:
             raise InvalidStream
 
+    def setStreamByChannel(self, channel):
+        if len(self.allstreams) < 5:
+            self.getStreams()
+        for stream in self.allstreams:
+          if stream['channelKey'] == channel:
+            self.__stream = stream
+            #print 'setStreamByChannel, stream:',stream #DEBUG
+            self.getAsxURL()
+            return
+        raise InvalidStream
+
+    def setStreamByLongName(self, longName):
+        #print 'setStreamByLongName:',longName #DEBUG
+        if len(self.allstreams) < 5:
+            self.getStreams()
+        for stream in self.allstreams:
+          if stream['longName'] == longName:
+            #print 'setStreamByLongName, stream:',stream #DEBUG
+            self.__stream = stream
+            self.getAsxURL()
+            return
+        raise InvalidStream
+
     def setStream(self, stream):
         self.validateStream(stream)
         self.__stream = stream
@@ -425,19 +408,19 @@ class Factory:
         one
         '''
         nullplaying = {}
-        nullplaying['stream'] = self.__stream
+        nullplaying['stream'] = ''
         nullplaying['playing'] = ''
         nullplaying['time'] = ''
         nullplaying['logfmt'] = ''
         nullplaying['new'] = False
         nowplaying = {}
-         
-        url='http://sirius.criffield.net/%s/artistTrack'%self.__stream
+        
+        url='http://sirius.criffield.net/%s/artistTrack'%self.__stream['channelKey']
         try:
             fd = self.__getURL(url)
         except :
             url='http://sirius.criffield.net/%s/artistTrack' \
-                             %self.__stream.lstrip('sirius')
+                             %self.__stream['channelKey'].lstrip('sirius')
             playing = None
             try:
                 fd = self.__getURL(url)
@@ -456,11 +439,11 @@ class Factory:
             self.playing = ''
             return nowplaying
 
-        nowplaying['stream'] = self.__stream
+        nowplaying['stream'] = self.__stream['channelKey']
         nowplaying['playing'] = playing
         nowplaying['time'] = time.strftime('%y %m|%d %H:%M')
         nowplaying['logfmt'] = '%s %s: %s'%(nowplaying['time'],
-                                          self.__stream,playing)
+                                          self.__stream['channelKey'],playing)
         if playing != self.playing:
             nowplaying['new'] = True
             self.playing = playing

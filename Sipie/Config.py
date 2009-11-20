@@ -25,13 +25,25 @@ class Config:
            something like $HOME/.sipierc won't work (if thats a file)
            """
 
-        self.execpted = ['username', 'cryptpass', 'login_type', 
+        self.execpted = ['username', 'password', 'login_type', 
                          'bitrate', 'canada']
         self.conffile = os.path.join(confpath,'config')
         #print 
         self.confpath = confpath
         self.config = ConfigParser.SafeConfigParser()
-        pass
+
+    def __makeMeSomeCookies(self):
+        cookiepuss = """    # Netscape HTTP Cookie File
+    # http://www.netscape.com/newsref/std/cookie_spec.html
+    # This is a generated file!  Do not edit.
+
+www.sirius.com	FALSE	/	FALSE		sirius_consumer_type	sirius_online_subscriber
+www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
+"""
+        fd = open(os.path.join(self.confpath,'cookies.txt'), 'w')
+        fd.write(cookiepuss)
+        fd.close()
+ 
 
     def __cryptPassword(self, password):
         """ used to convert the password to the type sirius wants
@@ -76,17 +88,17 @@ class Config:
       would """
 
         print ''
-        print 'username and a crypted password will be stored in %s/config'%self.confpath
-        print 'no plain text passwords are stored'
+        print 'username and a *unencrypted* password will be stored in %s/config'%self.confpath
+        print 'PLAIN TEXT PASSWORDS ARE STORED ON DISK'
         print 'if you want to change your password remove %s/config'%self.confpath
         print "then run sipie and it'll ask you for username and password again"
         print ''
         if not os.path.isdir(self.confpath):
             os.mkdir(self.confpath)
+        self.__makeMeSomeCookies()
         sys.stdout.write('Enter username: ')
         username = sys.stdin.readline().rstrip()
         password = getpass.getpass('Enter password: ')
-        cryptpass = self.__cryptPassword(password)
         print ''
         print 'Login Type, type guest or subscriber'
         sys.stdout.write('Enter login type: ')
@@ -106,11 +118,9 @@ class Config:
             pass
 
         self.set('username', username)
-        self.set('cryptpass', cryptpass)
+        self.set('password', password)
         self.set('login_type', login_type)
         self.set('bitrate', 'low')
         self.set('canada', canada)
         self.write()
         return self.items()
-
-
