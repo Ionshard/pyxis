@@ -9,7 +9,7 @@
 
 import os
 import sys
-import md5
+import hashlib
 import ConfigParser
 import getpass
 
@@ -49,7 +49,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         """ used to convert the password to the type sirius wants
          and we don't have to store a plain password on disk """
 
-        digest = md5.new()
+        digest = hashlib.md5()
         digest.update(password)
         secret = digest.hexdigest()
         return secret
