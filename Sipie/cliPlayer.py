@@ -11,6 +11,7 @@ def cliPlayer():
     import os 
     import time
     import atexit
+    import pynotify
 
     global histfile, readline, sipie
 
@@ -108,6 +109,9 @@ def cliPlayer():
             playing = sipie.nowPlaying()
             if playing['new'] :
                 print playing['logfmt']
+                if pynotify.init("Sipie"):
+                    n = pynotify.Notification("Sirius", playing['logfmt'], sys.path[0] + "/Sipie/data/notify.png")
+                    n.show()
             pass
             try:
                 time.sleep(30)
