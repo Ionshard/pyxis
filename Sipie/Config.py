@@ -9,7 +9,6 @@
 
 import os
 import sys
-import md5
 import ConfigParser
 import getpass
 
@@ -44,16 +43,6 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         fd.write(cookiepuss)
         fd.close()
  
-
-    def __cryptPassword(self, password):
-        """ used to convert the password to the type sirius wants
-         and we don't have to store a plain password on disk """
-
-        digest = md5.new()
-        digest.update(password)
-        secret = digest.hexdigest()
-        return secret
-
     def items(self):
         """ return a dictionary of items from the config
          use this to pass to the Sipie class

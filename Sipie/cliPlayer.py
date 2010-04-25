@@ -85,6 +85,7 @@ def cliPlayer():
     while True:
         if len(sys.argv) == 2 and FirstLoop:
             stream = sys.argv[1].lower()
+            sipie.setStreamByChannel(stream)
         elif sys.argv[0].lower().find("sipie") == -1 and FirstLoop:
             stream = os.path.basename(sys.argv[0])
             sipie.setStreamByChannel(stream)
