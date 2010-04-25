@@ -110,7 +110,7 @@ def cliPlayer():
             if playing['new'] :
                 print playing['logfmt']
                 if pynotify.init("Sipie"):
-                    n = pynotify.Notification("Sirius", playing['logfmt'], sys.path[0] + "/Sipie/data/notify.png")
+                    n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/notify.png")
                     n.show()
             pass
             try:
