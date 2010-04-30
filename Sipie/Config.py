@@ -25,7 +25,7 @@ class Config:
            """
 
         self.execpted = ['username', 'password', 'login_type', 
-                         'bitrate', 'canada']
+                         'bitrate', 'canada','bitrate']
         self.conffile = os.path.join(confpath,'config')
         #print 
         self.confpath = confpath
@@ -100,6 +100,12 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         canada = sys.stdin.readline().rstrip().lower().capitalize()
         while canada not in ['True', 'False']:
             sys.stdout.write('Invalid: Enter True or False for canada: ')
+            canada = sys.stdin.readline().rstrip().lower().capitalize()
+        sys.stdout.write('Select bitrate')
+        sys.stdout.write(' (High or Low): ')
+        bitrate = sys.stdin.readline().rstrip().lower().capitalize()
+        while bitrate not in ['High', 'Low']:
+            sys.stdout.write('Invalid: Enter High or Low for bitrate: ')
             canada = sys.stdin.readline().rstrip().lower().capitalize()
         try:
             self.config.add_section('sipie')
