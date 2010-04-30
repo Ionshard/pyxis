@@ -5,6 +5,8 @@ import os
 import sys
 import Sipie
 
+os.system("clear")
+
 player = Sipie.cliPlayer
 try:
     os.environ['DISPLAY']
