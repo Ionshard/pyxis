@@ -109,7 +109,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('username', username)
         self.set('password', password)
         self.set('login_type', login_type)
-        self.set('bitrate', 'low')
+        self.set('bitrate', bitrate)
         self.set('canada', canada)
         self.write()
         return self.items()
