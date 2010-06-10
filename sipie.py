@@ -5,7 +5,7 @@ import os
 import sys
 import Sipie
 
-player = Sipie.wxPlayer
+player = Sipie.gtkPlayer
 try:
     os.environ['DISPLAY']
 except:
