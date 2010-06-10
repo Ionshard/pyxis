@@ -11,6 +11,7 @@ def cliPlayer():
     import os 
     import time
     import atexit
+    import pynotify
 
     global histfile, readline, sipie
 
@@ -85,6 +86,7 @@ def cliPlayer():
     while True:
         if len(sys.argv) == 2 and FirstLoop:
             stream = sys.argv[1].lower()
+            sipie.setStreamByChannel(stream)
         elif sys.argv[0].lower().find("sipie") == -1 and FirstLoop:
             stream = os.path.basename(sys.argv[0])
             sipie.setStreamByChannel(stream)
@@ -100,13 +102,16 @@ def cliPlayer():
               FirstLoop = False
               print "Invalid Stream"
               continue
-        #print sipie.asxURL
+        print sipie.asxURL
         sipie.play()
 
         while True:
             playing = sipie.nowPlaying()
             if playing['new'] :
                 print playing['logfmt']
+                if pynotify.init("Sipie"):
+                    n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/notify.png")
+                    n.show()
             pass
             try:
                 time.sleep(30)

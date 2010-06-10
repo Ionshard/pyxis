@@ -9,7 +9,6 @@
 
 import os
 import sys
-import hashlib
 import ConfigParser
 import getpass
 
@@ -26,7 +25,7 @@ class Config:
            """
 
         self.execpted = ['username', 'password', 'login_type', 
-                         'bitrate', 'canada']
+                         'bitrate', 'canada','bitrate']
         self.conffile = os.path.join(confpath,'config')
         #print 
         self.confpath = confpath
@@ -44,16 +43,6 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         fd.write(cookiepuss)
         fd.close()
  
-
-    def __cryptPassword(self, password):
-        """ used to convert the password to the type sirius wants
-         and we don't have to store a plain password on disk """
-
-        digest = hashlib.md5()
-        digest.update(password)
-        secret = digest.hexdigest()
-        return secret
-
     def items(self):
         """ return a dictionary of items from the config
          use this to pass to the Sipie class
@@ -112,6 +101,12 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         while canada not in ['True', 'False']:
             sys.stdout.write('Invalid: Enter True or False for canada: ')
             canada = sys.stdin.readline().rstrip().lower().capitalize()
+        sys.stdout.write('Select bitrate')
+        sys.stdout.write(' (High or Low): ')
+        bitrate = sys.stdin.readline().rstrip().lower().capitalize()
+        while bitrate not in ['High', 'Low']:
+            sys.stdout.write('Invalid: Enter High or Low for bitrate: ')
+            canada = sys.stdin.readline().rstrip().lower().capitalize()
         try:
             self.config.add_section('sipie')
         except ConfigParser.DuplicateSectionError:
@@ -120,7 +115,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('username', username)
         self.set('password', password)
         self.set('login_type', login_type)
-        self.set('bitrate', 'low')
+        self.set('bitrate', bitrate)
         self.set('canada', canada)
         self.write()
         return self.items()

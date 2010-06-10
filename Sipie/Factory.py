@@ -9,6 +9,7 @@
 import cookielib
 import urllib2
 import urllib
+import hashlib
 import os
 import sys
 import re
@@ -211,6 +212,18 @@ class Factory:
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
         return data
 
+
+    def cryptPassword(self, password):
+        """ used to convert the password to the type sirius wants
+         and we don't have to store a plain password on disk """
+
+        digest = haslib.md5()
+        digest.update(password)
+        secret = digest.hexdigest()
+        sys.stdout.write("in cryptPassword, secret: " + secret + "\n")
+        return secret
+
+
     def auth(self):
         """run auth to setup all the cookies you need to get the stream
           self.__captchaCallback should be set to 
@@ -236,17 +249,20 @@ class Factory:
           raise LoginError
 
         authurl = 'http://www.sirius.com/player/login/siriuslogin.action;jsessionid=%s' % session
+        cryptpass = self.cryptPassword(self.password)
 
         postdict = { 'userName': self.username,
                      '__checkbox_remember': 'true',
-                     'password': self.password,
+                     'password': cryptpass,
                      'captchaEnabled': 'true',
                      'timeNow': 'null',
-                     'captcha_response': '7ekW',
+                     'captcha_response': 'rc3k',
                    }
-        post = urllib.urlencode(postdict) + '&captchaID=%3E%3A0%08geg'
+
+        post = urllib.urlencode(postdict) + '&captchaID=%3E%3A0%08g%60n'
         data = self.__getURL(authurl, poststring=post).read()
         if '<title>SIRIUS Player' in data:
+          sys.stdout.write("got valid page at: " + authurl + "\n")
           return True
         else:
           raise LoginError
@@ -283,10 +299,11 @@ class Factory:
         soup = BeautifulSoup(data)
         for catstrm in soup.findAll('option'):
             if catstrm['value'].find('|') <> -1:  # IF FOUND
+                chunks = catstrm['value'].split('|')
                 stream = {
-                    'channelKey': catstrm['value'].split('|')[2],
-                    'genreKey':  catstrm['value'].split('|')[1],
-                    'categoryKey': catstrm['value'].split('|')[0],
+                    'channelKey': chunks[2],
+                    'genreKey':  chunks[1],
+                    'categoryKey': chunks[0],
                     'selectedStream': catstrm['value'],
                     'longName': catstrm.contents[0].split(';')[-1] 
                     }
