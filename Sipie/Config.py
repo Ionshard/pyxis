@@ -106,7 +106,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         bitrate = sys.stdin.readline().rstrip().lower().capitalize()
         while bitrate not in ['High', 'Low']:
             sys.stdout.write('Invalid: Enter High or Low for bitrate: ')
-            canada = sys.stdin.readline().rstrip().lower().capitalize()
+            bitrate = sys.stdin.readline().rstrip().lower().capitalize()
         try:
             self.config.add_section('sipie')
         except ConfigParser.DuplicateSectionError:
