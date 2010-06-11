@@ -147,7 +147,9 @@ class Factory:
         data = re.sub(r'width="100"%"', r'width="100%"', data)
         data = re.sub(r'onclick=["\']?([^\s<>]*)["\']?', r'onclick=""', data)
  
-        #print data #DEBUG
+        if self.debug:
+            print data #DEBUG
+
         return data
 
     def findSessionID(self):
@@ -178,11 +180,14 @@ class Factory:
         if postdict:
             postdata = urllib.urlencode(postdict)
         else:
-        #print "POST=",postdata #DEBUG
             postdata = None
         if poststring:
             postdata = poststring
-        #print "url=",url #DEBUG
+
+        if self.debug:
+            print "POST=",postdata #DEBUG
+            print "url=",url #DEBUG
+
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
@@ -198,10 +203,14 @@ class Factory:
         if postdict:
             postdata = urllib.urlencode(postdict)
         else:
-         #print "POST=",postdata #DEBUG
             postdata = None
         if poststring:
             postdata = poststring
+
+        if self.debug:
+            print "POST=",postdata #DEBUG
+            print "url=",url #DEBUG
+
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
         outfd = open(file, 'w')
