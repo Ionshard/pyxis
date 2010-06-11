@@ -191,7 +191,7 @@ class Factory:
     def __grabURL(self, url, file, postdict=None, poststring=None):
         """ same as __getURL, but the second arg is a file to write 
          the contents 
-         two and the optional 3rd arg is a dictionary of values 
+         to and the optional 3rd arg is a dictionary of values 
          for a post
       """
 
