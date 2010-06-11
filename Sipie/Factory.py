@@ -232,7 +232,8 @@ class Factory:
         digest = hashlib.md5()
         digest.update(password)
         secret = digest.hexdigest()
-        sys.stdout.write("in cryptPassword, secret: " + secret + "\n")
+        if self.debug:
+            sys.stdout.write("in cryptPassword, secret: " + secret + "\n")
         return secret
 
 
@@ -274,7 +275,8 @@ class Factory:
         post = urllib.urlencode(postdict) + '&captchaID=%3E%3A0%08g%60n'
         data = self.__getURL(authurl, poststring=post).read()
         if '<title>SIRIUS Player' in data:
-          sys.stdout.write("got valid page at: " + authurl + "\n")
+          if self.debug:
+            sys.stdout.write("got valid page at: " + authurl + "\n")
           return True
         else:
           raise LoginError
