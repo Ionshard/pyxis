@@ -117,6 +117,6 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('login_type', login_type)
         self.set('bitrate', bitrate)
         self.set('canada', canada)
-        self.set('debug', False)
+        self.set('debug', 'False')
         self.write()
         return self.items()

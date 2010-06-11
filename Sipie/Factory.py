@@ -67,7 +67,9 @@ class InvalidStream(Exception):
     pass
 
 
-
+#Function for reading booleans from config
+def toBool(string):
+    return string.startswith('t') or string.startswith('y') or string == '1'
 
 class Factory:
 
@@ -97,11 +99,12 @@ class Factory:
             print 'invalid login_type in config file'
             sys.exit(420)
         txt = options['canada'].lower()
-        if txt.startswith('t') or txt.startswith('y') or txt == '1':
+        if toBool(txt):
             self.host = 'mp.siriuscanada.ca'
             self.canada = True
         else:
             self.canada = False
+        self.debug = toBool(options['debug'].lower())
         self.cookiefile = os.path.join(options['configpath'],'cookies.txt')
         self.playlist = os.path.join(options['configpath'],'playlist')
         self.__setupOpener()
