@@ -26,7 +26,7 @@ class Config:
 
         self.execpted = ['username', 'password', 'login_type', 
                          'bitrate', 'canada','bitrate']
-        self.conffile = os.path.join(confpath,'config')
+        self.conffile = os.path.join(confpath, 'config')
         #print 
         self.confpath = confpath
         self.config = ConfigParser.SafeConfigParser()

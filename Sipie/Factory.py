@@ -217,7 +217,7 @@ class Factory:
         """ used to convert the password to the type sirius wants
          and we don't have to store a plain password on disk """
 
-        digest = haslib.md5()
+        digest = hashlib.md5()
         digest.update(password)
         secret = digest.hexdigest()
         sys.stdout.write("in cryptPassword, secret: " + secret + "\n")
