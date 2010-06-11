@@ -25,7 +25,7 @@ class Config:
            """
 
         self.execpted = ['username', 'password', 'login_type', 
-                         'bitrate', 'canada','bitrate']
+                         'bitrate', 'canada', 'debug']
         self.conffile = os.path.join(confpath, 'config')
         #print 
         self.confpath = confpath
@@ -117,5 +117,6 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('login_type', login_type)
         self.set('bitrate', bitrate)
         self.set('canada', canada)
+        self.set('debug', False)
         self.write()
         return self.items()
