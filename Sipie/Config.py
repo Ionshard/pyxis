@@ -26,9 +26,8 @@ class Config:
 
         self.execpted = ['username', 'password', 'login_type', 
                          'bitrate', 'canada', 'debug']
-        self.conffile = os.path.join(confpath, 'config')
-        #print 
         self.confpath = confpath
+        self.conffile = os.path.join(confpath, 'config')
         self.config = ConfigParser.SafeConfigParser()
 
     def __makeMeSomeCookies(self):
@@ -57,7 +56,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
             litems = self.config.items('sipie')
         for (x, y) in litems:
             items[x] = y
-	items['configpath'] = self.confpath
+        items['configpath'] = self.confpath
         return items
 
     def write(self):
@@ -72,7 +71,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.config.set('sipie', option, value)
 
     def cliCreate(self):
-        """ if you don't have a config file this will ask the write questions 
+        """ if you don't have a config file this will ask the right questions 
       and create one, And it'll return a dictionary of the config like items() 
       would """
 
