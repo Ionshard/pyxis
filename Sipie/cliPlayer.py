@@ -102,7 +102,6 @@ def cliPlayer():
               FirstLoop = False
               print "Invalid Stream"
               continue
-        print sipie.asxURL
         sipie.play()
 
         while True:
