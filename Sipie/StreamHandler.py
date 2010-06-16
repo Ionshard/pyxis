@@ -31,12 +31,22 @@ class mplayerHandler:
     #  Initializes this mplayerHandler
     #
     def __init__(self, location):
+        from Config import Config
+        from Player import Player
         self.__url = None
-        #mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao esd,alsa,oss -prefer-ipv4 -cache 32 -playlist '
-        mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao pulse,esd,alsa,oss -prefer-ipv4 -cache 512 -cache-min 90 '
+
         if sys.platform == 'win32':
-            #mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache 32 -playlist '
-            mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache 32 '
+            configdir = '.'
+        else:
+            configdir = '%s/.sipie'%os.environ['HOME']
+
+        config = Config(configdir)
+        sipie = Player(config.items())
+
+        if sys.platform == 'win32':
+            mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min
+        else:
+            mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao pulse,esd,alsa,oss -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min
         self.command = "%s %s "%(location,mplayerOptions)
 
     def setURL(self, url):

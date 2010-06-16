@@ -59,8 +59,7 @@ def cliPlayer():
     if sys.platform == 'win32':
         win = True
         configdir = '.'
-        streamHandler = StreamHandler.wmpHandler(
-                          'c:\Program Files\Windows Media Player\mplayer2.exe')
+        streamHandler = StreamHandler.wmpHandler('c:\Program Files\Windows Media Player\mplayer2.exe')
     else:
         win = False
         configdir = '%s/.sipie'%os.environ['HOME']
