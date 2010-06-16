@@ -90,11 +90,11 @@ def cliPlayer():
             sipie.setStreamByChannel(stream)
         else:
           stream = ask4Stream()
-          if stream == 'list':
+          if stream.lower() == 'list':
             for str in [x['longName'] for x in sipie.getStreams()]:
               print str
             continue
-	  if stream == 'exit':
+	  if stream.lower() == 'exit':
 	    sys.exit(0)
           try:
               sipie.setStreamByLongName(stream)
