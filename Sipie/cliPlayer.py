@@ -40,7 +40,6 @@ def cliPlayer():
         try:
             stream = raw_input("Enter stream: ")
         except (EOFError, KeyboardInterrupt):
-            print "Thanks for playing"
             sys.exit(0)
         #print 'ask4Stream "%s"'%stream #DEBUG
         return stream
@@ -95,6 +94,8 @@ def cliPlayer():
             for str in [x['longName'] for x in sipie.getStreams()]:
               print str
             continue
+	  if stream == 'exit':
+	    sys.exit(0)
           try:
               sipie.setStreamByLongName(stream)
           except : #FIXME
