@@ -38,7 +38,7 @@ def cliPlayer():
 
     def ask4Stream():
         try:
-            stream = raw_input("sipie: ")
+            stream = raw_input("\nsipie: ")
         except (EOFError, KeyboardInterrupt):
             sys.exit(0)
         #print 'ask4Stream "%s"'%stream #DEBUG
@@ -84,7 +84,7 @@ def cliPlayer():
             pass
 
     print "\nWelcome to Sipie."
-    print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program.\n"
+    print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
     FirstLoop = True
     while True:
