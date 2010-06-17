@@ -62,19 +62,12 @@ def cliPlayer():
        except:
            pass
 
-    if sys.platform == 'win32':
-        win = True
-        configdir = '.'
-        streamHandler = StreamHandler.wmpHandler('c:\Program Files\Windows Media Player\mplayer2.exe')
-    else:
-        win = False
-        configdir = '%s/.sipie'%os.environ['HOME']
-        streamHandler = StreamHandler.mplayerHandler('/usr/bin/mplayer')
-    
     try:
         os.remove('debug.log')
     except:
         pass
+    configdir = '%s/.sipie'%os.environ['HOME']
+    streamHandler = StreamHandler.mplayerHandler('/usr/bin/mplayer')
     histfile = os.path.join(configdir,"history")
     config = Config(configdir)
     sipie = Player(config.items())
