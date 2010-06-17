@@ -3,7 +3,7 @@
 # Eli Criffield < pyeli AT zendo DOT net >
 # Licensed under GPLv2 See: http://www.gnu.org/licenses/gpl.txt
 
-def cliPlayer():
+def repl():
     from Config import Config
     from Player import Player
     import StreamHandler

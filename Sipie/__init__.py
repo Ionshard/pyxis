@@ -10,4 +10,4 @@ from Factory import *
 from Config import *
 from StreamHandler import *
 from Player import *
-from cliPlayer import *
+from Interface import *

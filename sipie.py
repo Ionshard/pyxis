@@ -4,7 +4,7 @@
 import os
 import sys
 import getopt
-from Sipie import cliPlayer
+from Sipie import repl
 
 def usage():
    pname = os.path.basename(sys.argv[0])
@@ -24,4 +24,4 @@ for o, a in opts:
       sys.exit()        
 
 
-cliPlayer()
+repl()
