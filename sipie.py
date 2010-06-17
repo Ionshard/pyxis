@@ -4,7 +4,7 @@
 import os
 import sys
 import getopt
-import Sipie
+from Sipie import cliPlayer
 
 def usage():
    pname = os.path.basename(sys.argv[0])
@@ -24,22 +24,4 @@ for o, a in opts:
       sys.exit()        
 
 
-player = Sipie.cliPlayer()
-try:
-    os.environ['DISPLAY']
-except:
-   Sipie.cliPlayer()
-   sys.exit(0)
-
-try:
-    player()
-except:
-   try:	
-      Sipie.gtkPlayer()
-   except: 
-      if player is not Sipie.cliPlayer:
-         Sipie.cliPlayer()
-
-	
-
-
+cliPlayer()
