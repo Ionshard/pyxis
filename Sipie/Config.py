@@ -86,9 +86,8 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
       would """
 
         print ''
-        print 'username and a *unencrypted* password will be stored in %s/config'%self.confpath
-        print 'PLAIN TEXT PASSWORDS ARE STORED ON DISK'
-        print 'if you want to change your password remove %s/config'%self.confpath
+        print 'username and an encrypted password will be stored in %s/config'%self.confpath
+        print 'If you want to change your password remove %s/config'%self.confpath
         print "then run sipie and it'll ask you for username and password again"
         print ''
         if not os.path.isdir(self.confpath):
