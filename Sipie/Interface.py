@@ -9,6 +9,12 @@ import sys
 import os 
 import time
 import atexit
+#Import with conditions
+haveReadline = True
+try:
+    import readline
+except ImportError:
+    haveReadline = False
 display = True
 try:
     os.environ['DISPLAY']
@@ -42,7 +48,7 @@ def ask4Stream():
     return stream
 
 def onExit():
-   #global histfile, readline, sipie
+   global histfile, readline, sipie
    try:
        readline.write_history_file(histfile)
    except:
@@ -55,11 +61,6 @@ def onExit():
 def repl():
     global histfile, readline, sipie
 
-    haveReadline = True
-    try:
-        import readline
-    except ImportError:
-        haveReadline = False
         
     try:
         os.remove('debug.log')
