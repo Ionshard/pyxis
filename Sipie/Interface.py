@@ -23,6 +23,9 @@ except:
 if display:
     import pynotify
 
+def run():
+    repl()
+
 class Completer:
     def __init__(self, words):
         self.words = words
