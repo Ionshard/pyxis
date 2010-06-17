@@ -65,7 +65,11 @@ def cliPlayer():
         win = False
         configdir = '%s/.sipie'%os.environ['HOME']
         streamHandler = StreamHandler.mplayerHandler('/usr/bin/mplayer')
-
+    
+    try:
+        os.remove('debug.log')
+    except:
+        pass
     histfile = os.path.join(configdir,"history")
     config = Config(configdir)
     sipie = Player(config.items())

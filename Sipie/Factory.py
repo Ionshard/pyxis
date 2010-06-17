@@ -133,6 +133,13 @@ class Factory:
         dbfd.write(data)
         dbfd.close()
 
+    def __log(self, data):
+        """ just used for debug log output """
+
+        dbfd = open('debug.log', 'a')
+        dbfd.write(data)
+        dbfd.close()
+
 
     def sanitize(self, data):
         """ Sanitizes Data against specific errors in the Sirus HTML that
@@ -151,7 +158,7 @@ class Factory:
         data = re.sub(r'onclick=["\']?([^\s<>]*)["\']?', r'onclick=""', data)
  
         if self.debug:
-            print data #DEBUG
+            self.__log(data) #DEBUG
 
         return data
 
@@ -188,8 +195,8 @@ class Factory:
             postdata = poststring
 
         if self.debug:
-            print "POST=",postdata #DEBUG
-            print "url=",url #DEBUG
+            self.__log("POST=%s" % postdata)#DEBUG
+            self.__log("url=%s" % url) #DEBUG
 
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
@@ -233,7 +240,7 @@ class Factory:
         digest.update(password)
         secret = digest.hexdigest()
         if self.debug:
-            sys.stdout.write("in cryptPassword, secret: " + secret + "\n")
+            self.__log("in cryptPassword, secret: " + secret + "\n")
         return secret
 
 
@@ -276,7 +283,7 @@ class Factory:
         data = self.__getURL(authurl, poststring=post).read()
         if '<title>SIRIUS Player' in data:
           if self.debug:
-            sys.stdout.write("got valid page at: " + authurl + "\n")
+            self.__log("got valid page at: " + authurl + "\n")
           return True
         else:
           raise LoginError
