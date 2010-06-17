@@ -410,7 +410,7 @@ class Factory:
         if len(self.allstreams) < 5:
             self.getStreams()
         for stream in self.allstreams:
-          if stream['longName'] == longName:
+          if stream['longName'].lower() == longName.lower():
             #print 'setStreamByLongName, stream:',stream #DEBUG
             self.__stream = stream
             self.getAsxURL()
