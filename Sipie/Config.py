@@ -11,6 +11,7 @@ import os
 import sys
 import ConfigParser
 import getpass
+import hashlib
 
 class Config:
 
@@ -42,6 +43,15 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         fd.write(cookiepuss)
         fd.close()
  
+    def cryptPassword(self, password):
+        """ used to convert the password to the type sirius wants
+         and we don't have to store a plain password on disk """
+
+        digest = hashlib.md5()
+        digest.update(password)
+        secret = digest.hexdigest()
+        return secret
+
     def items(self):
         """ return a dictionary of items from the config
          use this to pass to the Sipie class
@@ -86,7 +96,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.__makeMeSomeCookies()
         sys.stdout.write('Enter username: ')
         username = sys.stdin.readline().rstrip()
-        password = getpass.getpass('Enter password: ')
+        password = self.cryptPassword(getpass.getpass('Enter password: '))
         print ''
         print 'Login Type, type guest or subscriber'
         sys.stdout.write('Enter login type: ')

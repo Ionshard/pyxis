@@ -9,7 +9,6 @@
 import cookielib
 import urllib2
 import urllib
-import hashlib
 import os
 import sys
 import re
@@ -231,19 +230,6 @@ class Factory:
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
         return data
 
-
-    def cryptPassword(self, password):
-        """ used to convert the password to the type sirius wants
-         and we don't have to store a plain password on disk """
-
-        digest = hashlib.md5()
-        digest.update(password)
-        secret = digest.hexdigest()
-        if self.debug:
-            self.__log("in cryptPassword, secret: " + secret + "\n")
-        return secret
-
-
     def auth(self):
         """run auth to setup all the cookies you need to get the stream
           self.__captchaCallback should be set to 
@@ -269,11 +255,10 @@ class Factory:
           raise LoginError
 
         authurl = 'http://www.sirius.com/player/login/siriuslogin.action;jsessionid=%s' % session
-        cryptpass = self.cryptPassword(self.password)
 
         postdict = { 'userName': self.username,
                      '__checkbox_remember': 'true',
-                     'password': cryptpass,
+                     'password': self.password,
                      'captchaEnabled': 'true',
                      'timeNow': 'null',
                      'captcha_response': 'rc3k',
