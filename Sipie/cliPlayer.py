@@ -88,9 +88,10 @@ def cliPlayer():
         if len(sys.argv) == 2 and FirstLoop:
             stream = sys.argv[1].lower()
             try:
-	    	sipie.setStreamByChannel(stream)
-	    except:
 		sipie.setStreamByLongName(stream)
+	    except:
+		print "Unable to find station: " + stream
+		sys.exit(0)
         elif sys.argv[0].lower().find("sipie") == -1 and FirstLoop:
             stream = os.path.basename(sys.argv[0])
             sipie.setStreamByChannel(stream)
