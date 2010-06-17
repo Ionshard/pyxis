@@ -39,6 +39,7 @@ def cliPlayer():
     def ask4Stream():
         try:
             stream = raw_input("\nsipie: ")
+            stream = stream.strip()
         except (EOFError, KeyboardInterrupt):
             sys.exit(0)
         #print 'ask4Stream "%s"'%stream #DEBUG

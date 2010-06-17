@@ -100,6 +100,8 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         print 'Login Type, type guest or subscriber'
         sys.stdout.write('Enter login type: ')
         login_type = sys.stdin.readline().rstrip()
+        sys.stdout.write('Enter bitrate (low or high): ')
+        bitrate = sys.stdin.readline().rstrip()
         while login_type not in ['subscriber', 'guest']:
             sys.stdout.write('Invalid: Enter login type: ')
             login_type = sys.stdin.readline().rstrip()
