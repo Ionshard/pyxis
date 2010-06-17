@@ -8,8 +8,8 @@ import Sipie
 
 def usage():
    pname = os.path.basename(sys.argv[0])
-   print "Usage: " + pname + " [STATION]\n"
-   print "\t\te.g " + pname + " 'E Street Radio'\n" 
+   print "Usage: " + pname + " [STATION]"
+   print "e.g " + pname + " 'E Street Radio'\n" 
 
 try:
    opts, args = getopt.getopt(sys.argv[1:], "ho:v", ["help"])
