@@ -3,25 +3,14 @@
 
 import os
 import sys
-import getopt
+from optparse import OptionParser
 from Sipie import run
 
-def usage():
-   pname = os.path.basename(sys.argv[0])
-   print "Usage: " + pname + " [STATION]"
-   print "e.g " + pname + " 'E Street Radio'\n" 
+usage = "Usage: %prog [OPTIONS] [STATION]"
+parser = OptionParser(usage=usage)
+(opts, args) = parser.parse_args()
 
-try:
-   opts, args = getopt.getopt(sys.argv[1:], "ho:v", ["help"])
-except getopt.GetoptError, err:
-   print str(err)
-   print "Use --help for command line information"
-   sys.exit(2)
-
-for o, a in opts:
-   if o in ("-h", "--help"):
-      usage()
-      sys.exit()        
-
-
-run()
+station = None
+if len(args) > 0:
+    station = args[0]
+run(opts, station)

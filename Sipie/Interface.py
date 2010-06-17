@@ -23,7 +23,7 @@ except:
 if display:
     import pynotify
 
-def run():
+def run(opts, station):
     repl()
 
 class Completer:
