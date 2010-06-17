@@ -38,9 +38,8 @@ def cliPlayer():
 
     def ask4Stream():
         try:
-            stream = raw_input("Enter stream: ")
+            stream = raw_input("sipie: ")
         except (EOFError, KeyboardInterrupt):
-            print "Thanks for playing"
             sys.exit(0)
         #print 'ask4Stream "%s"'%stream #DEBUG
         return stream
@@ -59,8 +58,7 @@ def cliPlayer():
     if sys.platform == 'win32':
         win = True
         configdir = '.'
-        streamHandler = StreamHandler.wmpHandler(
-                          'c:\Program Files\Windows Media Player\mplayer2.exe')
+        streamHandler = StreamHandler.wmpHandler('c:\Program Files\Windows Media Player\mplayer2.exe')
     else:
         win = False
         configdir = '%s/.sipie'%os.environ['HOME']
@@ -85,6 +83,8 @@ def cliPlayer():
         except IOError:
             pass
 
+    print "\nWelcome to Sipie."
+    print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program.\n"
 
     FirstLoop = True
     while True:
@@ -96,17 +96,18 @@ def cliPlayer():
             sipie.setStreamByChannel(stream)
         else:
           stream = ask4Stream()
-          if stream == 'list':
+          if stream.lower() == 'list':
             for str in [x['longName'] for x in sipie.getStreams()]:
               print str
             continue
+	  if stream.lower() == 'exit':
+	    sys.exit(0)
           try:
               sipie.setStreamByLongName(stream)
           except : #FIXME
               FirstLoop = False
-              print "Invalid Stream"
+              print "Invalid Station Name"
               continue
-        print sipie.asxURL
         sipie.play()
 
         while True:

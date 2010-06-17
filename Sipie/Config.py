@@ -25,7 +25,7 @@ class Config:
            """
 
         self.execpted = ['username', 'password', 'login_type', 
-                         'bitrate', 'canada', 'debug']
+                         'bitrate', 'canada', 'debug', 'cache', 'cache_min']
         self.confpath = confpath
         self.conffile = os.path.join(confpath, 'config')
         self.config = ConfigParser.SafeConfigParser()
@@ -117,5 +117,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('bitrate', bitrate)
         self.set('canada', canada)
         self.set('debug', 'False')
+        self.set('cache', '32')
+        self.set('cache_min', '4')
         self.write()
         return self.items()
