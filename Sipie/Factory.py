@@ -311,7 +311,7 @@ class Factory:
                     'genreKey':  chunks[1],
                     'categoryKey': chunks[0],
                     'selectedStream': catstrm['value'],
-                    'longName': catstrm.contents[0].split(';')[-1] 
+                    'longName': catstrm.contents[0].split(';')[-1].lower()
                     }
             #print "adding stream",stream #DEBUG
                 allstreams.append(stream)
