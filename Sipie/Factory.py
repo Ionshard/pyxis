@@ -311,7 +311,7 @@ class Factory:
                     'genreKey':  chunks[1],
                     'categoryKey': chunks[0],
                     'selectedStream': catstrm['value'],
-                    'longName': catstrm.contents[0].split(';')[-1] 
+                    'longName': catstrm.contents[0].split(';')[-1].lower()
                     }
             #print "adding stream",stream #DEBUG
                 allstreams.append(stream)
@@ -410,7 +410,7 @@ class Factory:
         if len(self.allstreams) < 5:
             self.getStreams()
         for stream in self.allstreams:
-          if stream['longName'] == longName:
+          if stream['longName'].lower() == longName.lower():
             #print 'setStreamByLongName, stream:',stream #DEBUG
             self.__stream = stream
             self.getAsxURL()
