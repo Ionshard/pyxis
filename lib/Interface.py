@@ -48,7 +48,7 @@ class Interface():
         except:
             pass
         self.configdir = '%s/.config'%os.environ['HOME']
-        self.streamHandler = StreamHandler.mplayerHandler('/usr/bin/mplayer')
+        self.streamHandler = StreamHandler.mplayerHandler()
         self.config = Config(self.configdir)
         self.sipie = Player(self.config.items())
         self.sipie.setPlayer(self.streamHandler)

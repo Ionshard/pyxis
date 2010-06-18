@@ -27,7 +27,7 @@ class mplayerHandler:
     #
     #  Initializes this mplayerHandler
     #
-    def __init__(self, location):
+    def __init__(self):
         from Config import Config
         from Player import Player
         self.__url = None
@@ -36,7 +36,7 @@ class mplayerHandler:
         sipie = Player(config.items())
 
         mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao pulse,esd,alsa,oss -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min
-        self.command = "%s %s "%(location,mplayerOptions)
+        self.command = "%s %s "%(sipie.mplayer, mplayerOptions)
 
     def setURL(self, url):
         self.__url = url
