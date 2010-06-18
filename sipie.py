@@ -4,7 +4,7 @@
 import os
 import sys
 from optparse import OptionParser
-from Sipie import run
+from Sipie import Interface
 
 usage = "Usage: %prog [OPTIONS] [STATION]"
 parser = OptionParser(usage=usage)
@@ -13,4 +13,4 @@ parser = OptionParser(usage=usage)
 station = None
 if len(args) > 0:
     station = args[0]
-run(opts, station)
+Interface(opts, station)
