@@ -53,7 +53,11 @@ class Interface():
         self.sipie = Player(self.config.items())
         self.sipie.setPlayer(self.streamHandler)
         atexit.register(self.onExit)
-        self.repl()
+
+        if station != None:
+            self.play(station)
+        else:
+            self.repl()
 
     def ask4Stream(self):
         try:
