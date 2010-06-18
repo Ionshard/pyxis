@@ -93,8 +93,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         normal = "\033[0;0m"
         print '\n' + bold + 'Welcome to Sipie Setup\n' + normal
         print 'Your username and an encrypted password will be stored in %s/config'%self.confpath
-        print 'If you want to change your password remove %s/config'%self.confpath
-        print "then run sipie and it will ask you for username and password again"
+        print 'You can rerun setup anytime by running: sipie --setup' 
         print ''
         if not os.path.isdir(self.confpath):
             os.mkdir(self.confpath)

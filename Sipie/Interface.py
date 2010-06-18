@@ -59,6 +59,10 @@ class Interface():
             self.list()
             sys.exit(0)
 
+        if opts.setup:
+            self.setup()
+            sys.exit(0)
+
         if station != None:
             self.play(station)
         else:
@@ -94,6 +98,7 @@ class Interface():
         while True: #playing loop
             playing = self.sipie.nowPlaying()
             if playing['new'] :
+                print playing['logfmt']
                 if not self.options.quiet:
                     print playing['logfmt']
                 if display and pynotify.init("Sipie"):
@@ -132,3 +137,8 @@ class Interface():
     def list(self):
         for str in [x['longName'] for x in self.sipie.getStreams()]:
             print str
+
+    def setup(self):
+        configdir = '%s/.sipie'%os.environ['HOME']
+        config = Config(configdir)
+        Config.cliCreate(config)
