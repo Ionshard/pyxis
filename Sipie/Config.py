@@ -19,7 +19,7 @@ class Config:
       a dictionary for use with the Sipie Class
     """
 
-    def __init__(self, confpath):
+    def __init__(self):
         """pass the location of the config directory
            like $HOME/.config/ 
            something like $HOME/.sipierc won't work (if thats a file)

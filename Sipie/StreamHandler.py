@@ -31,8 +31,7 @@ class mplayerHandler:
         from Config import Config
         from Player import Player
         self.__url = None
-        configdir = '%s/.sipie'%os.environ['HOME']
-        config = Config(configdir)
+        config = Config()
         sipie = Player(config.items())
 
         mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao pulse,esd,alsa,oss -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min

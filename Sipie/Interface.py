@@ -47,9 +47,8 @@ class Interface():
             os.remove('debug.log')
         except:
             pass
-        self.configdir = '%s/.config'%os.environ['HOME']
         self.streamHandler = StreamHandler.mplayerHandler()
-        self.config = Config(self.configdir)
+        self.config = Config()
         self.sipie = Player(self.config.items())
         self.sipie.setPlayer(self.streamHandler)
         atexit.register(self.onExit)
@@ -109,7 +108,7 @@ class Interface():
                 break
 
     def repl(self):
-        self.histfile = os.path.join(self.configdir,"history")
+        self.histfile = os.path.join(self.sipie.configpath,"history")
 
         if haveReadline:
             completer = Completer([x['longName'] for x in self.sipie.getStreams()])
@@ -138,6 +137,4 @@ class Interface():
             print str
 
     def setup(self):
-        configdir = '%s/.sipie'%os.environ['HOME']
-        config = Config(configdir)
-        Config.cliCreate(config)
+        Config.cliCreate()
