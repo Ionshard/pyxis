@@ -133,8 +133,13 @@ class Interface():
             self.play(stream)
 
     def list(self):
-        for str in [x['longName'] for x in self.sipie.getStreams()]:
-            print str
+        station_cat = 'none'
+        for x in self.sipie.getStreams():
+            if station_cat != x['categoryKey']:
+                station_cat = x['categoryKey']
+                print '\n' + '\033[1m' + '[' + station_cat.replace('cat','').capitalize() + ']' + '\033[0;0m'
+            print x['longName'].title()
+        print ''
 
     def setup(self):
         Config.cliCreate()
