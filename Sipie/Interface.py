@@ -98,7 +98,6 @@ class Interface():
         while True: #playing loop
             playing = self.sipie.nowPlaying()
             if playing['new'] :
-                print playing['logfmt']
                 if not self.options.quiet:
                     print playing['logfmt']
                 if display and pynotify.init("Sipie"):
