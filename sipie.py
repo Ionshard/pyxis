@@ -4,7 +4,7 @@
 import os
 import sys
 from optparse import OptionParser
-from Sipie import Interface
+from lib import Interface
 
 usage = "Usage: %prog [OPTIONS] [STATION]"
 parser = OptionParser(usage=usage)
