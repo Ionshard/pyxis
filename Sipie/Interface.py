@@ -74,6 +74,26 @@ class Interface():
        except:
            pass
 
+    def play(self, stream):
+        try:
+            self.sipie.setStreamByLongName(stream)
+        except:
+            print "Invalid Station Name"
+            return
+
+        self.sipie.play()
+        while True: #playing loop
+            playing = self.sipie.nowPlaying()
+            if playing['new'] :
+                print playing['logfmt']
+                if display and pynotify.init("Sipie"):
+                    n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/notify.png")
+                    n.show()
+            try:
+                time.sleep(30)
+            except KeyboardInterrupt:
+                break
+
     def repl(self):
         self.histfile = os.path.join(self.configdir,"history")
 
@@ -89,7 +109,6 @@ class Interface():
         print "\nWelcome to Sipie."
         print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
-        FirstLoop = True
         while True: #repl loop
             stream = self.ask4Stream()
             if stream.lower() == 'list':
@@ -98,24 +117,6 @@ class Interface():
                 continue
             if stream.lower() == 'exit':
                 sys.exit(0)
-              try:
-                  self.sipie.setStreamByLongName(stream)
-              except : #FIXME
-                  FirstLoop = False
-                  print "Invalid Station Name"
-                  continue
-            self.sipie.play()
 
-            while True:
-                playing = self.sipie.nowPlaying()
-                if playing['new'] :
-                    print playing['logfmt']
-                    if display and pynotify.init("Sipie"):
-                        n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/notify.png")
-                        n.show()
-                pass
-                try:
-                    time.sleep(30)
-                except KeyboardInterrupt:
-                    break
-            FirstLoop = False
+            self.play(stream)
+
