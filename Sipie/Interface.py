@@ -53,6 +53,7 @@ class Interface():
         self.sipie = Player(self.config.items())
         self.sipie.setPlayer(self.streamHandler)
         atexit.register(self.onExit)
+        self.options = opts
 
         if opts.list:
             self.list()
@@ -93,7 +94,8 @@ class Interface():
         while True: #playing loop
             playing = self.sipie.nowPlaying()
             if playing['new'] :
-                print playing['logfmt']
+                if not self.options.quiet:
+                    print playing['logfmt']
                 if display and pynotify.init("Sipie"):
                     n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/notify.png")
                     n.show()
