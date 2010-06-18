@@ -47,7 +47,7 @@ class Interface():
             os.remove('debug.log')
         except:
             pass
-        self.configdir = '%s/.sipie'%os.environ['HOME']
+        self.configdir = '%s/.config'%os.environ['HOME']
         self.streamHandler = StreamHandler.mplayerHandler('/usr/bin/mplayer')
         self.config = Config(self.configdir)
         self.sipie = Player(self.config.items())

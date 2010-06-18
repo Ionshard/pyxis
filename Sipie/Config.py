@@ -21,14 +21,19 @@ class Config:
 
     def __init__(self, confpath):
         """pass the location of the config directory
-           like $HOME/.sipie/ 
+           like $HOME/.config/ 
            something like $HOME/.sipierc won't work (if thats a file)
            """
 
         self.execpted = ['username', 'password', 'login_type', 
                          'bitrate', 'canada', 'debug', 'cache', 'cache_min']
-        self.confpath = confpath
-        self.conffile = os.path.join(confpath, 'config')
+        try:
+            confdir = os.environ['XDG_CONFIG_HOME']
+        except:
+            confdir = '%s/.config' % os.environ['HOME']
+
+        self.confpath = os.path.join(confdir, 'sipie')
+        self.conffile = os.path.join(self.confpath, 'sipierc')
         self.config = ConfigParser.SafeConfigParser()
 
     def __makeMeSomeCookies(self):
