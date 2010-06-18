@@ -89,11 +89,12 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         """ if you don't have a config file this will ask the right questions 
       and create one, And it'll return a dictionary of the config like items() 
       would """
-
-        print ''
-        print 'username and an encrypted password will be stored in %s/config'%self.confpath
+        bold = "\033[1m"
+        normal = "\033[0;0m"
+        print '\n' + bold + 'Welcome to Sipie Setup\n' + normal
+        print 'Your username and an encrypted password will be stored in %s/config'%self.confpath
         print 'If you want to change your password remove %s/config'%self.confpath
-        print "then run sipie and it'll ask you for username and password again"
+        print "then run sipie and it will ask you for username and password again"
         print ''
         if not os.path.isdir(self.confpath):
             os.mkdir(self.confpath)
@@ -102,24 +103,22 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         username = sys.stdin.readline().rstrip()
         password = self.cryptPassword(getpass.getpass('Enter password: '))
         print ''
-        print 'Login Type, type guest or subscriber'
-        sys.stdout.write('Enter login type: ')
-        login_type = sys.stdin.readline().rstrip()
+        print 'Please answer the following questions, pressing enter will accept the default values shown in bold text.\n'
+        print 'Enter Login Type  (guest or ' + bold + 'subscriber' + normal + ')'
+        sys.stdout.write('Login type: ')
+        login_type = sys.stdin.readline().rstrip().lower()
         while login_type not in ['subscriber', 'guest']:
-            sys.stdout.write('Invalid: Enter login type: ')
-            login_type = sys.stdin.readline().rstrip()
+            login_type = 'subscriber'
         sys.stdout.write('Are you using Sirius Cananda ')
-        sys.stdout.write('(http://siriuscanada.ca)\n True or False: ')
+        sys.stdout.write('(http://siriuscanada.ca)\n (True or ' + bold + 'False' + normal + ')')
         canada = sys.stdin.readline().rstrip().lower().capitalize()
         while canada not in ['True', 'False']:
-            sys.stdout.write('Invalid: Enter True or False for canada: ')
-            canada = sys.stdin.readline().rstrip().lower().capitalize()
+            canada = 'False'
         sys.stdout.write('Select bitrate')
-        sys.stdout.write(' (High or Low): ')
+        sys.stdout.write(' (' + bold + 'High' + normal + ' or Low): ')
         bitrate = sys.stdin.readline().rstrip().lower().capitalize()
         while bitrate not in ['High', 'Low']:
-            sys.stdout.write('Invalid: Enter High or Low for bitrate: ')
-            bitrate = sys.stdin.readline().rstrip().lower().capitalize()
+            bitrate = 'High'
         try:
             self.config.add_section('sipie')
         except ConfigParser.DuplicateSectionError:
