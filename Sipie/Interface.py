@@ -90,20 +90,13 @@ class Interface():
         print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
         FirstLoop = True
-        while True:
-            if len(sys.argv) == 2 and FirstLoop:
-                stream = sys.argv[1].lower()
-                self.sipie.setStreamByChannel(stream)
-            elif sys.argv[0].lower().find("sipie") == -1 and FirstLoop:
-                stream = os.path.basename(sys.argv[0])
-                self.sipie.setStreamByChannel(stream)
-            else:
-              stream = self.ask4Stream()
-              if stream.lower() == 'list':
+        while True: #repl loop
+            stream = self.ask4Stream()
+            if stream.lower() == 'list':
                 for str in [x['longName'] for x in self.sipie.getStreams()]:
-                  print str
+                    print str
                 continue
-              if stream.lower() == 'exit':
+            if stream.lower() == 'exit':
                 sys.exit(0)
               try:
                   self.sipie.setStreamByLongName(stream)
