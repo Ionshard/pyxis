@@ -133,6 +133,6 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('debug', 'False')
         self.set('cache', '32')
         self.set('cache_min', '4')
-	self.set('mplayer', '/usr/bin/mplayer')
+        self.set('mplayer', '/usr/bin/mplayer')
         self.write()
         return self.items()
