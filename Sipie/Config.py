@@ -109,12 +109,12 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         login_type = sys.stdin.readline().rstrip().lower()
         while login_type not in ['subscriber', 'guest']:
             login_type = 'subscriber'
-        sys.stdout.write('Are you using Sirius Cananda ')
-        sys.stdout.write('(http://siriuscanada.ca)\n (True or ' + bold + 'False' + normal + ')')
+        print '\nAre you using Sirius Cananda  (True or ' + bold + 'False' + normal + ')'
+        sys.stdout.write('http://siriuscanada.ca: ')
         canada = sys.stdin.readline().rstrip().lower().capitalize()
         while canada not in ['True', 'False']:
             canada = 'False'
-        sys.stdout.write('Select bitrate')
+        sys.stdout.write('\nSelect bitrate')
         sys.stdout.write(' (' + bold + 'High' + normal + ' or Low): ')
         bitrate = sys.stdin.readline().rstrip().lower().capitalize()
         while bitrate not in ['High', 'Low']:
