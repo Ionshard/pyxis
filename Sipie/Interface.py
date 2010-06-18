@@ -86,21 +86,18 @@ def repl():
         except IOError:
             pass
 
+    print "\nWelcome to Sipie."
+    print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
+
     FirstLoop = True
     while True:
         if len(sys.argv) == 2 and FirstLoop:
             stream = sys.argv[1].lower()
-            try:
-		sipie.setStreamByLongName(stream)
-	    except:
-		print "Unable to find station: " + stream
-		sys.exit(0)
+            sipie.setStreamByChannel(stream)
         elif sys.argv[0].lower().find("sipie") == -1 and FirstLoop:
             stream = os.path.basename(sys.argv[0])
             sipie.setStreamByChannel(stream)
         else:
-	  print "\nWelcome to Sipie."
-	  print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
           stream = ask4Stream()
           if stream.lower() == 'list':
             for str in [x['longName'] for x in sipie.getStreams()]:
