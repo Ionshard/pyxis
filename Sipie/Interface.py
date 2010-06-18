@@ -54,6 +54,10 @@ class Interface():
         self.sipie.setPlayer(self.streamHandler)
         atexit.register(self.onExit)
 
+        if opts.list:
+            self.list()
+            sys.exit(0)
+
         if station != None:
             self.play(station)
         else:
@@ -116,11 +120,13 @@ class Interface():
         while True: #repl loop
             stream = self.ask4Stream()
             if stream.lower() == 'list':
-                for str in [x['longName'] for x in self.sipie.getStreams()]:
-                    print str
+                self.list()
                 continue
             if stream.lower() == 'exit':
                 sys.exit(0)
 
             self.play(stream)
 
+    def list(self):
+        for str in [x['longName'] for x in self.sipie.getStreams()]:
+            print str
