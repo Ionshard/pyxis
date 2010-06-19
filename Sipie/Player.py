@@ -5,13 +5,13 @@
 
 
 from Factory import Factory, LoginError, AuthError, InvalidStream
-
+from StreamHandler import MplayerHandler
 
 class Player(Factory):
-
-    def setPlayer(self,streamHandler):
-        self.streamHandler = streamHandler
-    
+    def __init__(self, options):
+        super(Player, self).__init__(options)
+        self.streamHandler = MplayerHandler(options)
+        
     def play(self):
         try:
             self.close()

@@ -70,12 +70,11 @@ class InvalidStream(Exception):
 def toBool(string):
     return string.startswith('t') or string.startswith('y') or string == '1'
 
-class Factory:
-
+class Factory(object):
     def __init__(self, options):
         """pass a dictionary of options, like whats returned form 
-         SipieConf.items()
-      """
+        SipieConf.items()
+        """
 
         self.host = 'www.sirius.com'
         self.__headers = {'User-agent': 'Mozilla/5.0 (X11; U; %s i686; en-US; rv:1.8.0.7) eli.criffield.net/sipie Firefox/1.5.0.7' % \
@@ -90,10 +89,11 @@ class Factory:
         self.allstreams = []
         self.playing = None
         self.__captchaCallback = None  
+        self.__cookie_jar = None
 
         for (option, value) in options.items():
-            setex = "self.%s = '%s'" % (option, value)
-            exec setex
+            setattr(self, option, value);
+        
         if self.login_type not in ['subscriber', 'guest']:
             print 'invalid login_type in config file'
             sys.exit(420)
@@ -104,8 +104,8 @@ class Factory:
         else:
             self.canada = False
         self.debug = toBool(options['debug'].lower())
-        self.cookiefile = os.path.join(options['configpath'],'cookies.txt')
-        self.playlist = os.path.join(options['configpath'],'playlist')
+        self.cookiefile = os.path.join(options['confpath'],'cookies.txt')
+        self.playlist = os.path.join(options['confpath'],'playlist')
         self.__setupOpener()
 
     def __setupOpener(self):
@@ -149,7 +149,6 @@ class Factory:
          Corey Ling kasuko@gmail.com
          http://kasuko.com 
         """
-        import re
         data = re.sub(r'style=["\']?(\{.*\})["\']?', r'style="\1" ', data)
         data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
         #data = re.sub(r'width=["\']?(\d+i)[^\d]*%["\']?', r'width="\1%"', data)
@@ -217,8 +216,8 @@ class Factory:
             postdata = poststring
 
         if self.debug:
-            print "POST=",postdata #DEBUG
-            print "url=",url #DEBUG
+            print "POST=", postdata #DEBUG
+            print "url=", url #DEBUG
 
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
@@ -425,31 +424,31 @@ class Factory:
     def getStream(self):
         return self.__stream
 
-    def __dCaX(self,caxfile):
+    def __dCaX(self, caxfile):
         ''' unused '''
         key = '''66SiiFCr2VPmh64fGfwRDWeNgCkAqa4716A3Lxbg1XhDgs72ARFUSPAQZ3kRSiNusqC8896y8I1rDkATxch8xaF7cdCgS98NRm3C3iwmkRRPaLI1R7hCW9CgYn3uUL3gA7wGEtUSs3bkxHDWyvKfyRrMYmpH3fntSq3hLBuUtjxuf4xn33VA13rcdJQr32YNYmJ3TVSE3rqimc7y2cCy1iipp9kbvj9Uq5rmcsjyJaUp7Rni5FNMsisdQ3X4c81j6kwnZyD41tGuK7r95VhmvS1ae4SRpRsG1WXPNr7GCaEcDsUIMKGLdYdnx24GCxUZnHN4mPvBah3YW4WCyAhdN5c3eSfaqLrRgiBbQnjyJ4F3gigUPVqLT89gGVSaluKTRA6c83BIY1381TKVVk8KePqvDHEWnxXtn36UFR1ltIc1yjHEe3ru7T5DHYSR1AgXSRkXrPESCtbsNQech2am4N1RPPsgnUw7CuAF1kFpVR2Tm5WkwhU6qsi6fimQlmtReWYsq6EYAHNAQbyXCef11wRUyTUSR7KPgKVw3rxGcahMYfIImNmxv3jvKgjBjsVjR3iwj5tN2R1ARk9f3bvRLCHr'''
-        caxid = int(re.match('.*_(\d\d\d)\.jpg',caxfile).groups()[0])
+        caxid = int(re.match('.*_(\d\d\d)\.jpg', caxfile).groups()[0])
         k1 = -(6*caxid)
         k2 = -((6*caxid)-6)
-        if k2 == 0 : k2=len(key)
-        print "ca=%s cax=%s id=%s %s:%s"%(caxfile, key[k1:k2],caxid,k1,k2) # DEBUG
+        if k2 == 0: k2 = len(key)
+        print "ca=%s cax=%s id=%s %s:%s" % (caxfile, key[k1:k2],caxid,k1,k2) # DEBUG
         return key[k1:k2]
 
-    def terminalCaptcha(self,captchaFile):
-        print "There is a captcha file, Please open the file %s"%captchaFile
+    def terminalCaptcha(self, captchaFile):
+        print "There is a captcha file, Please open the file %s" % captchaFile
         print "And input the leters below"
         return raw_input(": ")
 
 
     def nowPlaying(self):
         ''' return a dictionary of info about whats currently playing
-        NOTE: This is based of screen scraping a _NON_ Sirius site, don't 
+        NOTE: This is based of screen scraping a _NON_ Sirius site, dont
         be supprised if it stops working 
 
         I get the playlist info from dogstarradio.com (Thanks!)
-        then put it on my personal servers, please don't abuse it
+        then put it on my personal servers, please dont abuse it
 
-        I'm always looking for a new source for playlist if anyone knows 
+        Im always looking for a new source for playlist if anyone knows 
         one
         '''
         nullplaying = {}
@@ -460,12 +459,12 @@ class Factory:
         nullplaying['new'] = False
         nowplaying = {}
         
-        url='http://sirius.criffield.net/%s/artistTrack'%self.__stream['channelKey']
+        url = 'http://sirius.criffield.net/%s/artistTrack' % self.__stream['channelKey']
         try:
             fd = self.__getURL(url)
-        except :
-            url='http://sirius.criffield.net/%s/artistTrack' \
-                             %self.__stream['channelKey'].lstrip('sirius')
+        except:
+            url = ('http://sirius.criffield.net/%s/artistTrack' %
+                   (self.__stream['channelKey'].lstrip('sirius')))
             playing = None
             try:
                 fd = self.__getURL(url)

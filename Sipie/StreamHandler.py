@@ -6,10 +6,6 @@
 import sys, os, time, subprocess
 import fcntl
 
-
-class streamPlayerError(Exception):
-    pass
-
 #Wrapper Function to Popen function
 def pipeopen(cmd, bufsize=0):
     p = subprocess.Popen(cmd, shell=True, bufsize=bufsize,
@@ -19,23 +15,30 @@ def pipeopen(cmd, bufsize=0):
 #
 #  Provides simple piped I/O to an mplayer process.
 #
-class mplayerHandler:
-
-    location, mplayerIn, mplayerOut = None, None, None
-    paused = False
-
+class MplayerHandler(object):
     #
     #  Initializes this mplayerHandler
     #
-    def __init__(self):
-        from Config import Config
-        from Player import Player
+    def __init__(self, options):
+        self.location = None
+        self.mplayerIn = None
+        self.mplayerOut = None
+        self.paused = False
         self.__url = None
-        config = Config()
-        sipie = Player(config.items())
-
-        mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min
-        self.command = "%s %s "%(sipie.mplayer, mplayerOptions)
+        
+        mplayerOptions = ' '.join(
+            ('-slave',
+             '-really-quiet',
+             '-nojoystick',
+             '-nolirc',
+             '-user-agent', 'NSPlayer'
+             '-nomouseinput',
+             '-prefer-ipv4',
+             '-cache', options['cache'],
+             '-cache-min', options['cache_min'],
+             ))
+        
+        self.command = "%s %s" % (options['mplayer'], mplayerOptions)
 
     def setURL(self, url):
         self.__url = url
@@ -43,7 +46,8 @@ class mplayerHandler:
     def play(self):
         if self.__url is None:
             return False
-        mpc = "%s '%s'"%(self.command,self.__url)
+        
+        mpc = "%s '%s'" % (self.command, self.__url)
         #print mpc #DEBUG
         #self.mplayerIn, self.mplayerOut = os.popen4(mpc)  #open pipe
         (self.mplayerIn, self.mplayerOut) = pipeopen(mpc)

@@ -13,7 +13,7 @@ import ConfigParser
 import getpass
 import hashlib
 
-class Config:
+class Config(object):
 
     """ SipieConf creates and reads the config file and can return 
       a dictionary for use with the Sipie Class
@@ -71,7 +71,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
             litems = self.config.items('sipie')
         for (x, y) in litems:
             items[x] = y
-        items['configpath'] = self.confpath
+        items['confpath'] = self.confpath
         return items
 
     def write(self):
@@ -85,14 +85,16 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
     def set(self, option, value):
         self.config.set('sipie', option, value)
 
+    def get(self, option, value):
+        self.config.get('sipie', option, value)
+
     def cliCreate(self):
-        """ if you don't have a config file this will ask the right questions 
-      and create one, And it'll return a dictionary of the config like items() 
-      would """
+        """ ask questions and create config file. And it'll return a
+        dictionary of the config like items() would"""
         bold = "\033[1m"
         normal = "\033[0;0m"
         print '\n' + bold + 'Welcome to Sipie Setup\n' + normal
-        print 'Your username and an encrypted password will be stored in %s/config'%self.confpath
+        print 'Your username and an encrypted password will be stored in %s/sipierc' % self.confpath
         print 'You can rerun setup anytime by running: sipie --setup' 
         print ''
         if not os.path.isdir(self.confpath):

@@ -4,7 +4,6 @@
 # Licensed under GPLv2 See: http://www.gnu.org/licenses/gpl.txt
 from Config import Config
 from Player import Player
-import StreamHandler
 import sys 
 import os 
 import time
@@ -27,6 +26,8 @@ class Completer(object):
     def __init__(self, words):
         self.words = words
         self.prefix = None
+        self.matching_words = []
+    
     def complete(self, prefix, index):
         if prefix != self.prefix:
             self.matching_words = [
@@ -38,18 +39,20 @@ class Completer(object):
         except IndexError:
             return None
 
-class Interface():
+class Interface(object):
     def __init__(self, opts, station):
         try:
             os.remove('debug.log')
-        except:
+        except OSError:
             pass
-        self.streamHandler = StreamHandler.mplayerHandler()
+        
+        self.histfile = None
         self.config = Config()
+        
         self.sipie = Player(self.config.items())
-        self.sipie.setPlayer(self.streamHandler)
-        atexit.register(self.onExit)
         self.options = opts
+
+        atexit.register(self.onExit)
 
         if opts.list:
             self.list()
@@ -81,7 +84,7 @@ class Interface():
        except:
            pass
        try:
-           sipie.close()
+           self.sipie.close()
        except:
            pass
 
@@ -107,7 +110,7 @@ class Interface():
                 break
 
     def repl(self):
-        self.histfile = os.path.join(self.sipie.configpath,"history")
+        self.histfile = os.path.join(self.config.confpath,"history")
 
         if haveReadline:
             completer = Completer([x['longName'] for x in self.sipie.getStreams()])
@@ -136,8 +139,8 @@ class Interface():
             self.play(stream)
 
     def list(self):
-        for str in [x['longName'] for x in self.sipie.getStreams()]:
-            print str
+        for stream in [x['longName'] for x in self.sipie.getStreams()]:
+            print stream
 
     def setup(self):
-        Config.cliCreate()
+        self.config.cliCreate()
