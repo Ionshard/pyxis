@@ -34,7 +34,7 @@ class mplayerHandler:
         config = Config()
         sipie = Player(config.items())
 
-        mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -ao pulse,esd,alsa,oss -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min
+        mplayerOptions = '-slave -really-quiet -nojoystick -nolirc -user-agent NSPlayer -nomouseinput -prefer-ipv4 -cache '+ sipie.cache + ' -cache-min ' + sipie.cache_min
         self.command = "%s %s "%(sipie.mplayer, mplayerOptions)
 
     def setURL(self, url):

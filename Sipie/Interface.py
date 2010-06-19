@@ -23,10 +23,7 @@ except:
 if display:
     import pynotify
 
-def run(opts, station):
-    repl()
-
-class Completer:
+class Completer(object):
     def __init__(self, words):
         self.words = words
         self.prefix = None
@@ -70,9 +67,11 @@ class Interface():
     def ask4Stream(self):
         try:
             stream = raw_input("\nsipie: ")
-            stream = stream.strip()
         except (EOFError, KeyboardInterrupt):
             sys.exit(0)
+        else:
+            stream = stream.strip()
+
         #print 'ask4Stream "%s"'%stream #DEBUG
         return stream
 
