@@ -19,7 +19,7 @@ def pipeopen(cmd, bufsize=0):
 #
 #  Provides simple piped I/O to an mplayer process.
 #
-class mplayerHandler:
+class mplayerHandler(object):
 
     location, mplayerIn, mplayerOut = None, None, None
     paused = False

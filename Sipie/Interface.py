@@ -34,7 +34,7 @@ class Completer(object):
         except IndexError:
             return None
 
-class Interface():
+class Interface(object):
     def __init__(self, opts, station):
         try:
             os.remove('debug.log')

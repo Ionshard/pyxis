@@ -13,7 +13,7 @@ import ConfigParser
 import getpass
 import hashlib
 
-class Config:
+class Config(object):
 
     """ SipieConf creates and reads the config file and can return 
       a dictionary for use with the Sipie Class

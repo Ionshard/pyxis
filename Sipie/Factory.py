@@ -70,7 +70,7 @@ class InvalidStream(Exception):
 def toBool(string):
     return string.startswith('t') or string.startswith('y') or string == '1'
 
-class Factory:
+class Factory(object):
 
     def __init__(self, options):
         """pass a dictionary of options, like whats returned form 
