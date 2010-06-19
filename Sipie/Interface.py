@@ -114,6 +114,10 @@ class Interface():
             completer = Completer([x['longName'] for x in self.sipie.getStreams()])
             readline.parse_and_bind("tab: complete")
             readline.set_completer(completer.complete)
+            # Remove space as a valid word delimiter, since stream
+            # names have spaces in them.
+            readline.set_completer_delims(readline.get_completer_delims().strip(' '))
+
             try:
                 readline.read_history_file(self.histfile)
             except IOError:
