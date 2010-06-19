@@ -2,7 +2,6 @@ SIRIUS Radio Python Player - Sipie
 
 This is an implementation of SIRIUS and XM sattelite radio player using Python.
 
-Currently the command line interface is the most stable and the
-default player and running `./sipie` while in the working directory,
-in a terminal and filling in the requested information is all that is
-required to get going.
+Currently the command line interface is the most stable and the default player
+and running `./sipie.py` while in the working directory, in a terminal and
+filling in the requested information is all that is required to get going.
