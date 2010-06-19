@@ -9,12 +9,8 @@ import sys
 import os 
 import time
 import atexit
+import readline
 #Import with conditions
-haveReadline = True
-try:
-    import readline
-except ImportError:
-    haveReadline = False
 display = True
 try:
     os.environ['DISPLAY']
@@ -109,18 +105,17 @@ class Interface():
     def repl(self):
         self.histfile = os.path.join(self.sipie.configpath,"history")
 
-        if haveReadline:
-            completer = Completer([x['longName'] for x in self.sipie.getStreams()])
-            readline.parse_and_bind("tab: complete")
-            readline.set_completer(completer.complete)
-            # Remove space as a valid word delimiter, since stream
-            # names have spaces in them.
-            readline.set_completer_delims(readline.get_completer_delims().strip(' '))
+        completer = Completer([x['longName'] for x in self.sipie.getStreams()])
+        readline.parse_and_bind("tab: complete")
+        readline.set_completer(completer.complete)
+        # Remove space as a valid word delimiter, since stream
+        # names have spaces in them.
+        readline.set_completer_delims(readline.get_completer_delims().strip(' '))
 
-            try:
-                readline.read_history_file(self.histfile)
-            except IOError:
-                pass
+        try:
+            readline.read_history_file(self.histfile)
+        except IOError:
+            pass
 
         print "\nWelcome to Sipie."
         print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
