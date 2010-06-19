@@ -4,7 +4,6 @@
 # Licensed under GPLv2 See: http://www.gnu.org/licenses/gpl.txt
 from Config import Config
 from Player import Player
-import StreamHandler
 import sys 
 import os 
 import time
@@ -23,6 +22,8 @@ class Completer(object):
     def __init__(self, words):
         self.words = words
         self.prefix = None
+        self.matching_words = []
+    
     def complete(self, prefix, index):
         if prefix != self.prefix:
             self.matching_words = [
@@ -38,14 +39,16 @@ class Interface(object):
     def __init__(self, opts, station):
         try:
             os.remove('debug.log')
-        except:
+        except OSError:
             pass
-        self.streamHandler = StreamHandler.mplayerHandler()
+        
+        self.histfile = None
         self.config = Config()
+        
         self.sipie = Player(self.config.items())
-        self.sipie.setPlayer(self.streamHandler)
-        atexit.register(self.onExit)
         self.options = opts
+
+        atexit.register(self.onExit)
 
         if opts.list:
             self.list()
@@ -77,7 +80,7 @@ class Interface(object):
        except:
            pass
        try:
-           sipie.close()
+           self.sipie.close()
        except:
            pass
 
@@ -103,7 +106,7 @@ class Interface(object):
                 break
 
     def repl(self):
-        self.histfile = os.path.join(self.sipie.configpath,"history")
+        self.histfile = os.path.join(self.config.confpath,"history")
 
         completer = Completer([x['longName'] for x in self.sipie.getStreams()])
         readline.parse_and_bind("tab: complete")
@@ -141,4 +144,3 @@ class Interface(object):
 
     def setup(self):
         config = Config()
-        config.cliCreate()
