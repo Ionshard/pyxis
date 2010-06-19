@@ -142,4 +142,5 @@ class Interface():
         print ''
 
     def setup(self):
-        Config.cliCreate()
+        config = Config()
+        config.cliCreate()
