@@ -25,20 +25,7 @@ class MplayerHandler(object):
         self.mplayerOut = None
         self.paused = False
         self.__url = None
-        
-        mplayerOptions = ' '.join(
-            ('-slave',
-             '-really-quiet',
-             '-nojoystick',
-             '-nolirc',
-             '-user-agent', 'NSPlayer'
-             '-nomouseinput',
-             '-prefer-ipv4',
-             '-cache 32',
-             '-cache-min 4',
-             ))
-        
-        self.command = "%s %s" % (options['mplayer'], mplayerOptions)
+        self.command = "%s %s" % (options['player_path'], options['player_options'])
 
     def setURL(self, url):
         self.__url = url

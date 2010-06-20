@@ -25,8 +25,8 @@ class Config(object):
            something like $HOME/.sipierc won't work (if thats a file)
            """
 
-        self.execpted = ['username', 'password', 'login_type', 
-                         'bitrate', 'canada', 'debug', 'mplayer']
+        self.execpted = ['username', 'password', 'login_type', 'bitrate', 
+                         'canada', 'debug', 'player_path', 'player_options']
         try:
             confdir = os.environ['XDG_CONFIG_HOME']
         except:
@@ -125,12 +125,25 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         except ConfigParser.DuplicateSectionError:
             pass
 
+        player_options = ' '.join(
+            ('-slave',
+             '-really-quiet',
+             '-nojoystick',
+             '-nolirc',
+             '-user-agent', 'NSPlayer'
+             '-nomouseinput',
+             '-prefer-ipv4',
+             '-cache 32',
+             '-cache-min 4',
+             ))
+
         self.set('username', username)
         self.set('password', password)
         self.set('login_type', login_type)
         self.set('bitrate', bitrate)
         self.set('canada', canada)
         self.set('debug', 'False')
-        self.set('mplayer', '/usr/bin/mplayer')
+        self.set('player_path', '/usr/bin/mplayer')
+        self.set('player_options', player_options)
         self.write()
         return self.items()
