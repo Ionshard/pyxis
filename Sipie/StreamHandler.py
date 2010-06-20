@@ -34,8 +34,8 @@ class MplayerHandler(object):
              '-user-agent', 'NSPlayer'
              '-nomouseinput',
              '-prefer-ipv4',
-             '-cache', options['cache'],
-             '-cache-min', options['cache_min'],
+             '-cache 32',
+             '-cache-min 4',
              ))
         
         self.command = "%s %s" % (options['mplayer'], mplayerOptions)

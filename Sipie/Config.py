@@ -26,7 +26,7 @@ class Config(object):
            """
 
         self.execpted = ['username', 'password', 'login_type', 
-                         'bitrate', 'canada', 'debug', 'cache', 'cache_min', 'mplayer']
+                         'bitrate', 'canada', 'debug', 'mplayer']
         try:
             confdir = os.environ['XDG_CONFIG_HOME']
         except:
@@ -131,8 +131,6 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         self.set('bitrate', bitrate)
         self.set('canada', canada)
         self.set('debug', 'False')
-        self.set('cache', '32')
-        self.set('cache_min', '4')
         self.set('mplayer', '/usr/bin/mplayer')
         self.write()
         return self.items()
