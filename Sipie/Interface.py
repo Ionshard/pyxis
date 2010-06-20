@@ -45,7 +45,7 @@ class Interface(object):
         self.histfile = None
         self.config = Config()
         
-        self.sipie = Player(self.config.items())
+        self.sipie = Player()
         self.options = opts
 
         atexit.register(self.onExit)

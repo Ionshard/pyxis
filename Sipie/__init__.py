@@ -6,8 +6,8 @@ http://eli.criffield.net/sipie/
 Licensed under GPLv2
 http://www.gnu.org/licenses/gpl.txt'''
 
-from Factory import *
 from Config import *
+from Factory import *
 from StreamHandler import *
 from Player import *
 from Interface import *

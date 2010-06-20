@@ -5,6 +5,7 @@
 
 import sys, os, time, subprocess
 import fcntl
+from Config import Config
 
 #Wrapper Function to Popen function
 def pipeopen(cmd, bufsize=0):
@@ -19,13 +20,15 @@ class MplayerHandler(object):
     #
     #  Initializes this mplayerHandler
     #
-    def __init__(self, options):
+    def __init__(self):
+
+        self.settings = Config().mediaplayer
         self.location = None
         self.mplayerIn = None
         self.mplayerOut = None
         self.paused = False
         self.__url = None
-        self.command = "%s %s" % (options['player_path'], options['player_options'])
+        self.command = "%s %s" % (self.settings.command, self.settings.options)
 
     def setURL(self, url):
         self.__url = url

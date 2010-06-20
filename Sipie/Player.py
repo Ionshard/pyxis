@@ -8,9 +8,9 @@ from Factory import Factory, LoginError, AuthError, InvalidStream
 from StreamHandler import MplayerHandler
 
 class Player(Factory):
-    def __init__(self, options):
-        super(Player, self).__init__(options)
-        self.streamHandler = MplayerHandler(options)
+    def __init__(self,):
+        super(Player, self).__init__()
+        self.streamHandler = MplayerHandler()
         
     def play(self):
         try:

@@ -13,6 +13,7 @@ import os
 import sys
 import re
 import time
+from Config import Config, toBool
 
 
 try:
@@ -66,24 +67,21 @@ class InvalidStream(Exception):
     pass
 
 
-#Function for reading booleans from config
-def toBool(string):
-    return string.startswith('t') or string.startswith('y') or string == '1'
-
 class Factory(object):
-    def __init__(self, options):
+    def __init__(self):
         """pass a dictionary of options, like whats returned form 
         SipieConf.items()
         """
+
+        #Get settings
+        config = Config()
+        self.account = config.account
+        self.settings = config.settings
 
         self.host = 'www.sirius.com'
         self.__headers = {'User-agent': 'Mozilla/5.0 (X11; U; %s i686; en-US; rv:1.8.0.7) eli.criffield.net/sipie Firefox/1.5.0.7' % \
                         sys.platform}
         self.token = ''
-        self.bitrate = 'low'
-        self.login_type = 'subscriber'
-        self.username = 'WhoAmI'
-        self.password = None
         self.__stream = None
         self.asxURL = None
         self.allstreams = []
@@ -91,21 +89,19 @@ class Factory(object):
         self.__captchaCallback = None  
         self.__cookie_jar = None
 
-        for (option, value) in options.items():
-            setattr(self, option, value);
-        
-        if self.login_type not in ['subscriber', 'guest']:
+        if self.account.login_type not in ['subscriber', 'guest']:
             print 'invalid login_type in config file'
             sys.exit(420)
-        txt = options['canada'].lower()
-        if toBool(txt):
+
+        if toBool(self.account.canada):
             self.host = 'mp.siriuscanada.ca'
             self.canada = True
         else:
             self.canada = False
-        self.debug = toBool(options['debug'].lower())
-        self.cookiefile = os.path.join(options['confpath'],'cookies.txt')
-        self.playlist = os.path.join(options['confpath'],'playlist')
+
+        self.debug = toBool(self.settings.debug)
+        self.cookiefile = os.path.join(config.confpath, 'cookies.txt')
+        self.playlist = os.path.join(config.confpath, 'playlist')
         self.__setupOpener()
 
     def __setupOpener(self):
@@ -255,9 +251,9 @@ class Factory(object):
 
         authurl = 'http://www.sirius.com/player/login/siriuslogin.action;jsessionid=%s' % session
 
-        postdict = { 'userName': self.username,
+        postdict = { 'userName': self.account.username,
                      '__checkbox_remember': 'true',
-                     'password': self.password,
+                     'password': self.account.password,
                      'captchaEnabled': 'true',
                      'timeNow': 'null',
                      'captcha_response': 'rc3k',
