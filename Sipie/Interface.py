@@ -143,4 +143,4 @@ class Interface(object):
         print ''
 
     def setup(self):
-        self.config.cliCreate()
+        self.config.create()

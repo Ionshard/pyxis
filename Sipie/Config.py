@@ -67,7 +67,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         try:
             litems = self.config.items('sipie')
         except ConfigParser.NoSectionError:
-            self.cliCreate() 
+            self.create() 
             litems = self.config.items('sipie')
         for (x, y) in litems:
             items[x] = y
@@ -88,7 +88,7 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
     def get(self, option, value):
         self.config.get('sipie', option, value)
 
-    def cliCreate(self):
+    def create(self):
         """ ask questions and create config file. And it'll return a
         dictionary of the config like items() would"""
         bold = "\033[1m"
