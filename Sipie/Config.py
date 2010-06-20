@@ -25,8 +25,6 @@ class Config(object):
            something like $HOME/.sipierc won't work (if thats a file)
            """
 
-        self.execpted = ['username', 'password', 'login_type', 'bitrate', 
-                         'canada', 'debug', 'player_path', 'player_options']
         try:
             confdir = os.environ['XDG_CONFIG_HOME']
         except:
