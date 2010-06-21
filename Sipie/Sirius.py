@@ -422,9 +422,6 @@ class Sirius(object):
     def getStream(self):
         return self.__stream
 
-    def getAsxURL(self):
-        return self.asxURL
-
     def __dCaX(self, caxfile):
         ''' unused '''
         key = '''66SiiFCr2VPmh64fGfwRDWeNgCkAqa4716A3Lxbg1XhDgs72ARFUSPAQZ3kRSiNusqC8896y8I1rDkATxch8xaF7cdCgS98NRm3C3iwmkRRPaLI1R7hCW9CgYn3uUL3gA7wGEtUSs3bkxHDWyvKfyRrMYmpH3fntSq3hLBuUtjxuf4xn33VA13rcdJQr32YNYmJ3TVSE3rqimc7y2cCy1iipp9kbvj9Uq5rmcsjyJaUp7Rni5FNMsisdQ3X4c81j6kwnZyD41tGuK7r95VhmvS1ae4SRpRsG1WXPNr7GCaEcDsUIMKGLdYdnx24GCxUZnHN4mPvBah3YW4WCyAhdN5c3eSfaqLrRgiBbQnjyJ4F3gigUPVqLT89gGVSaluKTRA6c83BIY1381TKVVk8KePqvDHEWnxXtn36UFR1ltIc1yjHEe3ru7T5DHYSR1AgXSRkXrPESCtbsNQech2am4N1RPPsgnUw7CuAF1kFpVR2Tm5WkwhU6qsi6fimQlmtReWYsq6EYAHNAQbyXCef11wRUyTUSR7KPgKVw3rxGcahMYfIImNmxv3jvKgjBjsVjR3iwj5tN2R1ARk9f3bvRLCHr'''
