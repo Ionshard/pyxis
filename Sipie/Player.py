@@ -5,12 +5,12 @@
 
 
 from Factory import Factory, LoginError, AuthError, InvalidStream
-from StreamHandler import MplayerHandler
+from StreamHandler import StreamHandler
 
 class Player(Factory):
     def __init__(self,):
         super(Player, self).__init__()
-        self.streamHandler = MplayerHandler()
+        self.streamHandler = StreamHandler()
         
     def play(self):
         try:

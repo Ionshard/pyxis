@@ -14,18 +14,15 @@ def pipeopen(cmd, bufsize=0):
     return (p.stdin, p.stdout)
 
 #
-#  Provides simple piped I/O to an mplayer process.
+#  Provides simple piped I/O to a process.
 #
-class MplayerHandler(object):
-    #
-    #  Initializes this mplayerHandler
-    #
+class StreamHandler(object):
     def __init__(self):
 
         self.settings = Config().mediaplayer
         self.location = None
-        self.mplayerIn = None
-        self.mplayerOut = None
+        self.processIn = None
+        self.processOut = None
         self.paused = False
         self.__url = None
         self.command = "%s %s" % (self.settings.command, self.settings.options)
@@ -38,55 +35,35 @@ class MplayerHandler(object):
             return False
         
         mpc = "%s '%s'" % (self.command, self.__url)
-        #print mpc #DEBUG
-        #self.mplayerIn, self.mplayerOut = os.popen4(mpc)  #open pipe
-        (self.mplayerIn, self.mplayerOut) = pipeopen(mpc)
-        fcntl.fcntl(self.mplayerOut, fcntl.F_SETFL, os.O_NONBLOCK)
+        (self.processIn, self.processOut) = pipeopen(mpc)
+        fcntl.fcntl(self.processOut, fcntl.F_SETFL, os.O_NONBLOCK)
 
     #
-    #  Issues command to mplayer.
+    #  Issues command to process.
     #
     def cmd(self, command):
-        if not self.mplayerIn:
+        if not self.processIn:
             return
         try:
-            self.mplayerIn.write(command + "\n")
-            self.mplayerIn.flush()  #flush pipe
+            self.processIn.write(command + "\n")
+            self.processIn.flush()  #flush pipe
         except StandardError:
            return
 
     #
-    #  Toggles pausing of the current mplayer job and status query.
-    #
-    def pause(self):
-        if not self.mplayerIn:
-            return
-
-        if self.paused:  #unpause
-            self.paused = False
-
-        else:  #pause
-            self.paused = True
-
-        self.cmd("pause")
-
-    #
-    #  Cleanly closes any IPC resources to mplayer.
+    #  Cleanly closes any IPC resources to process.
     #
     def close(self):
 
-        if self.paused:  #untoggle pause to cleanly quit
-            self.pause()
-
-        self.cmd("quit")  #ask mplayer to quit
+        self.cmd("quit")  #ask process to quit
 
         try:
-            self.mplayerIn.close()   #close pipes
-            self.mplayerOut.close()
+            self.processIn.close()   #close pipes
+            self.processOut.close()
         except StandardError:
             pass
 
-        self.mplayerIn, self.mplayerOut = None, None
+        self.processIn, self.processOut = None, None
 
 #End of file
 
