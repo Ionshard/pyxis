@@ -37,6 +37,12 @@ class Config(object):
 
         self.confpath = os.path.join(confdir, 'sipie')
         self.conffile = os.path.join(self.confpath, 'sipierc')
+
+        # Config Sections
+        self.account = None
+        self.settings = None
+        self.mediaplayer = None
+
         self.config = ConfigParser.SafeConfigParser()
 
         self.config.read(self.conffile)
