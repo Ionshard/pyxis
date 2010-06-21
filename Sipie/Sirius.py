@@ -67,7 +67,7 @@ class InvalidStream(Exception):
     pass
 
 
-class Factory(object):
+class Sirius(object):
     def __init__(self):
         """pass a dictionary of options, like whats returned form 
         SipieConf.items()
@@ -419,6 +419,9 @@ class Factory(object):
 
     def getStream(self):
         return self.__stream
+
+    def getAsxURL(self):
+        return self.asxURL
 
     def __dCaX(self, caxfile):
         ''' unused '''

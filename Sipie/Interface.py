@@ -4,6 +4,7 @@
 # Licensed under GPLv2 See: http://www.gnu.org/licenses/gpl.txt
 from Config import Config
 from Player import Player
+from Sirius import Sirius
 import sys 
 import os 
 import time
@@ -45,6 +46,7 @@ class Interface(object):
         self.histfile = None
         self.config = Config()
         
+        self.sirius = Sirius()
         self.sipie = Player()
         self.options = opts
 
@@ -86,14 +88,16 @@ class Interface(object):
 
     def play(self, stream):
         try:
-            self.sipie.setStreamByLongName(stream)
+            self.sirius.setStreamByLongName(stream)
         except:
             print "Invalid Station Name"
             return
 
-        self.sipie.play()
+        url = self.sirius.getAsxURL()
+
+        self.sipie.play(url)
         while True: #playing loop
-            playing = self.sipie.nowPlaying()
+            playing = self.sirius.nowPlaying()
             if playing['new'] :
                 if not self.options.quiet:
                     print playing['logfmt']
@@ -108,7 +112,7 @@ class Interface(object):
     def repl(self):
         self.histfile = os.path.join(self.config.confpath,"history")
 
-        completer = Completer([x['longName'] for x in self.sipie.getStreams()])
+        completer = Completer([x['longName'] for x in self.sirius.getStreams()])
         readline.parse_and_bind("tab: complete")
         readline.set_completer(completer.complete)
         # Remove space as a valid word delimiter, since stream
@@ -135,7 +139,7 @@ class Interface(object):
 
     def list(self):
         station_cat = 'none'
-        for x in self.sipie.getStreams():
+        for x in self.sirius.getStreams():
             if station_cat != x['categoryKey']:
                 station_cat = x['categoryKey']
                 print '\n' + '\033[1m' + '[' + station_cat.replace('cat','').capitalize() + ']' + '\033[0;0m'
