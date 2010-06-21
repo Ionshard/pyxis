@@ -5,7 +5,7 @@
 
 import sys, os, time, subprocess
 import fcntl
-from Config import Config
+from Config import Config, toBool
 
 #Wrapper Function to Popen function
 def pipeopen(cmd, bufsize=0):
@@ -19,7 +19,9 @@ def pipeopen(cmd, bufsize=0):
 class StreamHandler(object):
     def __init__(self):
 
-        self.settings = Config().mediaplayer
+        config = Config()
+        self.settings = config.mediaplayer
+        self.debug = toBool(config.settings.debug)
         self.location = None
         self.processIn = None
         self.processOut = None
@@ -35,6 +37,8 @@ class StreamHandler(object):
             return False
         
         mpc = "%s '%s'" % (self.command, self.__url)
+        if self.debug:
+            print mpc
         (self.processIn, self.processOut) = pipeopen(mpc)
         fcntl.fcntl(self.processOut, fcntl.F_SETFL, os.O_NONBLOCK)
 

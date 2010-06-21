@@ -351,6 +351,8 @@ class Sirius(object):
             firstURL = 'http://%s%s' % (self.host, firstURL)
         asxURL = self.__getURL(firstURL).read()
         self.asxURL = asxURL
+        if self.debug:
+            print asxURL
         return asxURL
 
     def getAsxURL(self):
