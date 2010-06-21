@@ -25,18 +25,10 @@ class StreamHandler(object):
         self.location = None
         self.processIn = None
         self.processOut = None
-        self.paused = False
-        self.__url = None
         self.command = "%s %s" % (self.settings.command, self.settings.options)
 
-    def setURL(self, url):
-        self.__url = url
-
-    def play(self):
-        if self.__url is None:
-            return False
-        
-        mpc = "%s '%s'" % (self.command, self.__url)
+    def play(self, url):
+        mpc = "%s '%s'" % (self.command, url)
         if self.debug:
             print mpc
         (self.processIn, self.processOut) = pipeopen(mpc)

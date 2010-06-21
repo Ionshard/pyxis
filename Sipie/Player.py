@@ -14,8 +14,7 @@ class Player(object):
             self.close()
         except:
             pass
-        self.streamHandler.setURL(url)
-        self.streamHandler.play()
+        self.streamHandler.play(url)
 
     def close(self):
         self.streamHandler.close()
