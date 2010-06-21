@@ -102,6 +102,7 @@ class Sirius(object):
         self.debug = toBool(self.settings.debug)
         self.cookiefile = os.path.join(config.confpath, 'cookies.txt')
         self.playlist = os.path.join(config.confpath, 'playlist')
+        self.fixfile = os.path.join('data', 'htmlfixes.txt')
         self.__setupOpener()
 
     def __setupOpener(self):
@@ -145,11 +146,11 @@ class Sirius(object):
          Corey Ling kasuko@gmail.com
          http://kasuko.com 
         """
-        data = re.sub(r'style=["\']?(\{.*\})["\']?', r'style="\1" ', data)
-        data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
-        #data = re.sub(r'width=["\']?(\d+i)[^\d]*%["\']?', r'width="\1%"', data)
-        data = re.sub(r'width="100"%"', r'width="100%"', data)
-        data = re.sub(r'onclick=["\']?([^\s<>]*)["\']?', r'onclick=""', data)
+        fixes = open(self.fixfile)
+        for line in fixes.readlines():
+            exp = line.split('|')
+            data = re.sub(exp[0], exp[1], data)
+        fixes.close()
  
         if self.debug:
             self.__log(data) #DEBUG
