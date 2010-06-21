@@ -102,7 +102,7 @@ class Sirius(object):
         self.debug = toBool(self.settings.debug)
         self.cookiefile = os.path.join(config.confpath, 'cookies.txt')
         self.playlist = os.path.join(config.confpath, 'playlist')
-        self.fixfile = os.path.join('data', 'htmlfixes.txt')
+        self.fixfile = os.path.join(sys.path[0], 'Sipie', 'data', 'htmlfixes.txt')
         self.__setupOpener()
 
     def __setupOpener(self):
