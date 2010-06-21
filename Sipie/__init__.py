@@ -7,7 +7,7 @@ Licensed under GPLv2
 http://www.gnu.org/licenses/gpl.txt'''
 
 from Config import *
-from Factory import *
+from Sirius import *
 from StreamHandler import *
 from Player import *
 from Interface import *
