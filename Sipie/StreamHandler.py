@@ -43,19 +43,6 @@ class MplayerHandler(object):
         (self.mplayerIn, self.mplayerOut) = pipeopen(mpc)
         fcntl.fcntl(self.mplayerOut, fcntl.F_SETFL, os.O_NONBLOCK)
 
-    #   Plays the specified filename
-    def playX(self, filename):
-        if not self.mplayerIn:
-            return
-        cmd = "loadlist %s" % filename
-        self.cmd(cmd)
-
-    # mutes
-    def mute(self):
-        if not self.mplayerIn:
-            return
-        self.cmd('mute')
-
     #
     #  Issues command to mplayer.
     #

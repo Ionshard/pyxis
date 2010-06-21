@@ -20,12 +20,6 @@ class Player(Factory):
         self.streamHandler.setURL(self.asxURL)
         self.streamHandler.play()
 
-    def mute(self):
-        self.streamHandler.mute()
-
-    def pause(self):
-        self.streamHandler.pause()
-
     def close(self):
         self.streamHandler.close()
 
