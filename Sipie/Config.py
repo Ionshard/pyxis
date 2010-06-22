@@ -103,8 +103,8 @@ class Config(object):
              '-user-agent', 'NSPlayer'
              '-nomouseinput',
              '-prefer-ipv4',
-             '-cache 32',
-             '-cache-min 4',
+             '-cache', '32',
+             '-cache-min', '4',
              ))
 
         self.config.set('account', 'username', username)
