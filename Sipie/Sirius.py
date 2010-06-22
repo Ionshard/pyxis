@@ -14,7 +14,7 @@ import sys
 import re
 import time
 from Config import Config, toBool
-
+import htmlfixes
 
 try:
     from IPython.Shell import IPShellEmbed
@@ -102,7 +102,6 @@ class Sirius(object):
         self.debug = toBool(self.settings.debug)
         self.cookiefile = os.path.join(config.confpath, 'cookies.txt')
         self.playlist = os.path.join(config.confpath, 'playlist')
-        self.fixfile = os.path.join(sys.path[0], 'Sipie', 'data', 'htmlfixes.txt')
         self.__setupOpener()
 
     def __setupOpener(self):
@@ -146,11 +145,8 @@ class Sirius(object):
          Corey Ling kasuko@gmail.com
          http://kasuko.com 
         """
-        fixes = open(self.fixfile)
-        for line in fixes.readlines():
-            exp = line.split('|')
-            data = re.sub(exp[0], exp[1], data)
-        fixes.close()
+        for sub in htmlfixes.subs:
+            data = re.sub(sub[0], sub[1], data)
  
         if self.debug:
             self.__log(data) #DEBUG
