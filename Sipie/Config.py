@@ -73,12 +73,12 @@ class Config(object):
         password = self.cryptPassword(getpass.getpass('Enter password: '))
         print ''
         print 'Please answer the following questions, pressing enter will accept the default values shown in bold text.\n'
-        print 'Enter Login Type  (guest or ' + bold + 'subscriber' + normal + ')'
+        print 'Enter Login Type (guest or ' + bold + 'subscriber' + normal + ')'
         sys.stdout.write('Login type: ')
         login_type = sys.stdin.readline().rstrip().lower()
         while login_type not in ['subscriber', 'guest']:
             login_type = 'subscriber'
-        print '\nAre you using Sirius Cananda  (True or ' + bold + 'False' + normal + ')'
+        print '\nAre you using Sirius Cananda (True or ' + bold + 'False' + normal + ')'
         sys.stdout.write('http://siriuscanada.ca: ')
         canada = sys.stdin.readline().rstrip().lower().capitalize()
         while canada not in ['True', 'False']:
