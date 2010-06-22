@@ -37,17 +37,28 @@ class Config(object):
 
         self.confpath = os.path.join(confdir, 'sipie')
         self.conffile = os.path.join(self.confpath, 'sipierc')
-        self.config = ConfigParser.SafeConfigParser()
 
+        # Config Sections
+        self.account = None
+        self.settings = None
+        self.mediaplayer = None
+
+        self.config = ConfigParser.SafeConfigParser()
         self.config.read(self.conffile)
 
         sections = self.config.sections()
-        if len(sections) == 0:
-            self.create()
-
         for section in sections:
             items = self.config.items(section)
             setattr(self, section, Section(items))
+
+        if not self.validate():
+            self.create()
+
+    def validate(self):
+        """ validate that the current config file works with this version.
+        Returns True if the config is valid, else False.
+        """
+        return (self.account and self.settings and self.mediaplayer)
 
     def write(self):
         """ writes the config contents out  """
