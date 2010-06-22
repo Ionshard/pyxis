@@ -14,7 +14,7 @@ import sys
 import re
 import time
 from Config import Config, toBool
-
+import htmlfixes
 
 try:
     from IPython.Shell import IPShellEmbed
@@ -145,11 +145,8 @@ class Sirius(object):
          Corey Ling kasuko@gmail.com
          http://kasuko.com 
         """
-        data = re.sub(r'style=["\']?(\{.*\})["\']?', r'style="\1" ', data)
-        data = re.sub(r'width=["\']?(\d+)["\']?', r'width="\1"', data)
-        #data = re.sub(r'width=["\']?(\d+i)[^\d]*%["\']?', r'width="\1%"', data)
-        data = re.sub(r'width="100"%"', r'width="100%"', data)
-        data = re.sub(r'onclick=["\']?([^\s<>]*)["\']?', r'onclick=""', data)
+        for sub in htmlfixes.subs:
+            data = re.sub(sub[0], sub[1], data)
  
         if self.debug:
             self.__log(data) #DEBUG
