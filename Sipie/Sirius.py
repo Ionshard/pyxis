@@ -429,7 +429,8 @@ class Sirius(object):
         caxid = int(re.match('.*_(\d\d\d)\.jpg', caxfile).groups()[0])
         k1 = -(6*caxid)
         k2 = -((6*caxid)-6)
-        if k2 == 0: k2 = len(key)
+        if k2 == 0:
+            k2 = len(key)
         print "ca=%s cax=%s id=%s %s:%s" % (caxfile, key[k1:k2],caxid,k1,k2) # DEBUG
         return key[k1:k2]
 
