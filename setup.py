@@ -9,5 +9,15 @@ setup(name='Pyxis',
       packages=['pyxis'],
       package_data={'pyxis' : ['data/*']},
       scripts=['pyxis/pyxis'],
+      classifiers=[
+          'Development Status :: 4 - Beta',
+          'Environment :: Console',
+          'Intended Audience :: End Users/Desktop',
+          'License :: OSI Approved :: GNU General Public License (GPL)',
+          'Natural Language :: English',
+          'Operating System :: POSIX :: Linux',
+          'Programming Language :: Python :: 2.5',
+          'Topic :: Multimedia :: Sound/Audio :: Players'
+          ]
      )
 
