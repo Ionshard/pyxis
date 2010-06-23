@@ -1,7 +1,14 @@
-SIRIUS Radio Python Player - Sipie
+Command Line XM and SIRIUS Radio Player - Pyxis
 
-This is an implementation of SIRIUS and XM sattelite radio player using Python.
-
+USAGE:
 Currently the command line interface is the most stable and the default player
 and running `./sipie` while in the working directory, in a terminal and
 filling in the requested information is all that is required to get going.
+
+
+ABOUT:
+Pyxis is a wrapper that provides access to SIRIUS' internet radio streams through the command line. Pyxis is written entirely in python.
+
+Pyxis is a large rewrite of the original project Sipie written and maintained by Eli Criffield at http://sipie.sourceforge.net/ and none of Pyxis would have been possible without Sipie's authentication code. Big thank you to Eli Criffield.
+
+The reason for Pyxis's existence is because in recent years development on Sipie has slowed and as such when SIRIUS changes something the time required to bring it back to a working version can sometimes be a long time. So a couple of us decided to rip out all the largely unused portions of Sipie, refactor a lot of it and bring it into a more stable and adaptable package. Thus Pyxis was born when we realized we could no longer pretend it was still Sipie.
