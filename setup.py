@@ -8,6 +8,6 @@ setup(name='Pyxis',
       url='http://kasuko.github.com/pyxis',
       packages=['pyxis'],
       package_data={'pyxis' : ['data/*']},
-      scripts=['bin/pyxis'],
+      scripts=['pyxis/pyxis'],
      )
 
