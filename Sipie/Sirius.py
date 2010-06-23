@@ -58,11 +58,6 @@ if 'find' not in dir(BeautifulSoup):
     sys.exit(421)
 
 
-def CopyRights():
-    print '(c)Eli Criffield <pyeliATzendoDOTnet> http://eli.criffield.net/sipie/\nLicensed under GPLv2 http://www.gnu.org/licenses/gpl.txt'
-    print ''
-
-
 # Define a login error class
 class LoginError(Exception):
     pass
@@ -79,10 +74,6 @@ class InvalidStream(Exception):
 
 class Sirius(object):
     def __init__(self):
-        """pass a dictionary of options, like whats returned form 
-        SipieConf.items()
-        """
-
         #Get settings
         config = Config()
         self.account = config.account
@@ -184,7 +175,7 @@ class Sirius(object):
          options for a post 
          If there is no second option use get
          This will use the cookies and tokens for this instance 
-         of Sipie
+         of Sirius
          returns a file handle
       """
 
@@ -278,7 +269,7 @@ class Sirius(object):
     def tryGetStreams(self):
         """ Returns a list of streams avalible, if it 
          failes with AuthError, try
-          Sipie.auth() first, then try again
+          Sirius.auth() first, then try again
           Or use getStreams()
       """
 
@@ -330,7 +321,7 @@ class Sirius(object):
         """ give this the stream you want to play and this 
          will give you the
          url for the asx, play that url
-         if it failes with an AuthError try Sipie.auth() and try again
+         if it failes with an AuthError try Sirius.auth() and try again
          or use getAsxUrl
       """
 

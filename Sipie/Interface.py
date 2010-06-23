@@ -61,7 +61,7 @@ class Interface(object):
         self.config = Config()
         
         self.sirius = Sirius()
-        self.sipie = Player()
+        self.player = Player()
         self.options = opts
 
         atexit.register(self.onExit)
@@ -81,7 +81,7 @@ class Interface(object):
 
     def ask4Stream(self):
         try:
-            stream = raw_input("\nsipie: ")
+            stream = raw_input("\npyxis: ")
         except (EOFError, KeyboardInterrupt):
             sys.exit(0)
         else:
@@ -96,7 +96,7 @@ class Interface(object):
        except:
            pass
        try:
-           self.sipie.close()
+           self.player.close()
        except:
            pass
 
@@ -109,13 +109,13 @@ class Interface(object):
 
         url = self.sirius.getAsxURL()
 
-        self.sipie.play(url)
+        self.player.play(url)
         while True: #playing loop
             playing = self.sirius.nowPlaying()
             if playing['new'] :
                 if not self.options.quiet:
                     print playing['logfmt']
-                if display and pynotify.init("Sipie"):
+                if display and pynotify.init("Pyxis"):
                     n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/dog_white_outline.svg")
                     n.show()
             try:
@@ -138,7 +138,7 @@ class Interface(object):
         except IOError:
             pass
 
-        print "\nWelcome to Sipie."
+        print "\nWelcome to Pyxis."
         print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
         while True: #repl loop

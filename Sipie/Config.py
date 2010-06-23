@@ -29,9 +29,8 @@ class Section(object):
  
 class Config(object):
 
-    """ SipieConf creates and reads the config file and can return 
-      a dictionary for use with the Sipie Class
-    """
+    """ Config creates and reads the config file and will set member variables
+    to each of the sections and options of that section"""
 
 
     def __init__(self):
@@ -44,8 +43,8 @@ class Config(object):
         except:
             confdir = '%s/.config' % os.environ['HOME']
 
-        self.confpath = os.path.join(confdir, 'sipie')
-        self.conffile = os.path.join(self.confpath, 'sipierc')
+        self.confpath = os.path.join(confdir, 'pyxis')
+        self.conffile = os.path.join(self.confpath, 'pyxisrc')
 
         # Config Sections
         self.account = None
@@ -81,9 +80,9 @@ class Config(object):
         """ ask questions and create config file."""
         bold = "\033[1m"
         normal = "\033[0;0m"
-        print '\n' + bold + 'Welcome to Sipie Setup\n' + normal
-        print 'Your username and an encrypted password will be stored in %s/sipierc' % self.confpath
-        print 'You can rerun setup anytime by running: sipie --setup' 
+        print '\n' + bold + 'Welcome to Pyxis Setup\n' + normal
+        print 'Your username and an encrypted password will be stored in %s' % self.conffile
+        print 'You can rerun setup anytime by running: pyxis --setup' 
         print ''
         if not os.path.isdir(self.confpath):
             os.mkdir(self.confpath)
