@@ -8,7 +8,7 @@ setup(name='Pyxis',
       url='http://kasuko.github.com/pyxis',
       packages=['pyxis'],
       package_data={'pyxis' : ['data/*']},
-      scripts=['pyxis/pyxis'],
+      scripts=['bin/pyxis'],
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',
