@@ -1,10 +1,8 @@
 Command Line XM and SIRIUS Radio Player - Pyxis
 
 USAGE:
-Currently the command line interface is the most stable and the default player
-and running `./sipie` while in the working directory, in a terminal and
-filling in the requested information is all that is required to get going.
-
+Run `python setup.py install` as a super user. Then the command pyxis will bring up an interactive prompt.
+See `pyxis --help` for more options.
 
 ABOUT:
 Pyxis is a wrapper that provides access to SIRIUS' internet radio streams through the command line. Pyxis is written entirely in python.
