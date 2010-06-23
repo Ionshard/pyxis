@@ -116,7 +116,8 @@ class Interface(object):
                 if not self.options.quiet:
                     print playing['logfmt']
                 if display and pynotify.init("Pyxis"):
-                    n = pynotify.Notification("Sirius", playing['logfmt'][15:], sys.path[0] + "/Sipie/data/dog_white_outline.svg")
+                    n = pynotify.Notification("Sirius", playing['logfmt'][15:],
+                            sys.path[0] + "/Pyxis/data/dog_white_outline.svg")
                     n.show()
             try:
                 time.sleep(30)
