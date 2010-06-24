@@ -150,15 +150,6 @@ class Sirius(object):
             return cookie.value
         return False
 
-    def printCookies(self):
-        """ print the current cookies for this instance  """
-
-        print 'cookies :'
-        for (index, cookie) in enumerate(self.__cookie_jar):
-            print index, '  :  ', cookie
-        print 'Enter to continue:', 
-        sys.stdin.readline()
-
     def __getURL(self, url, postdict=None, poststring=None):
         """ get a url, the second arg could be dictionary of 
          options for a post 
