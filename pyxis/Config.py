@@ -85,7 +85,7 @@ class Config(object):
         print 'You can rerun setup anytime by running: pyxis --setup' 
         print ''
         if not os.path.isdir(self.confpath):
-            os.mkdir(self.confpath)
+            os.makedirs(self.confpath)
         self.__makeMeSomeCookies()
         sys.stdout.write('Enter username: ')
         username = sys.stdin.readline().rstrip()
