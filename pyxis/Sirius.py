@@ -378,17 +378,6 @@ class Sirius(object):
         if stream not in self.allstreams:
             raise InvalidStream
 
-    def setStreamByChannel(self, channel):
-        if len(self.allstreams) < 5:
-            self.getStreams()
-        for stream in self.allstreams:
-          if stream['channelKey'] == channel:
-            self.__stream = stream
-            #print 'setStreamByChannel, stream:',stream #DEBUG
-            self.getAsxURL()
-            return
-        raise InvalidStream
-
     def setStreamByLongName(self, longName):
         #print 'setStreamByLongName:',longName #DEBUG
         if len(self.allstreams) < 5:
