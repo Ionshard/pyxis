@@ -69,7 +69,7 @@ class Sirius(object):
         self.settings = config.settings
 
         self.host = 'www.sirius.com'
-        self.__headers = {'User-agent': 'Mozilla/5.0 (X11; U; %s i686; en-US; rv:1.8.0.7) eli.criffield.net/sipie Firefox/1.5.0.7' % \
+        self.__headers = {'User-agent': 'Mozilla/5.0 (X11; U; %s i686; en-US; rv:1.8.0.7) github.com/kasuko/pyxis Firefox/1.5.0.7' % \
                         sys.platform}
         self.token = ''
         self.__stream = None
