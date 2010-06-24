@@ -37,7 +37,7 @@ except ImportError:
     print 'or even put just get '
     print 'http://www.crummy.com/software/BeautifulSoup/download/BeautifulSoup.py'
     print ' and put it in the current directory'
-    sys.exit(420)
+    sys.exit(0)
 
 if 'find' not in dir(BeautifulSoup):
     stalesoup = True
@@ -81,7 +81,7 @@ class Sirius(object):
 
         if self.account.login_type not in ['subscriber', 'guest']:
             print 'invalid login_type in config file'
-            sys.exit(420)
+            sys.exit(0)
 
         if toBool(self.account.canada):
             self.host = 'mp.siriuscanada.ca'
