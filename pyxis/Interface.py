@@ -79,16 +79,20 @@ class Interface(object):
         else:
             self.repl()
 
-    def ask4Stream(self):
-        try:
-            stream = raw_input("\npyxis: ")
-        except (EOFError, KeyboardInterrupt):
-            sys.exit(0)
-        else:
-            stream = stream.strip()
+    def userPrompt(self):
+        while True:
+            try:
+                userinput = raw_input("\npyxis: ").strip()
+            except (EOFError, KeyboardInterrupt):
+                sys.exit(0)
 
-        #print 'ask4Stream "%s"'%stream #DEBUG
-        return stream
+            if userinput.lower() == 'list':
+                self.list()
+                continue
+            if userinput.lower() == 'exit':
+                sys.exit(0)
+
+            self.play(userinput)
 
     def onExit(self):
        try:
@@ -104,7 +108,7 @@ class Interface(object):
         try:
             self.sirius.setStreamByLongName(stream)
         except:
-            print "Invalid Station Name"
+            print "Invalid station name. Type 'list' to see available station names"
             return
 
         url = self.sirius.getAsxURL()
@@ -142,15 +146,7 @@ class Interface(object):
         print "\nWelcome to Pyxis."
         print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
-        while True: #repl loop
-            stream = self.ask4Stream()
-            if stream.lower() == 'list':
-                self.list()
-                continue
-            if stream.lower() == 'exit':
-                sys.exit(0)
-
-            self.play(stream)
+        self.userPrompt()
 
     def list(self):
         station_cat = 'none'
