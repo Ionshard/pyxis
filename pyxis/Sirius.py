@@ -361,11 +361,6 @@ class Sirius(object):
     def getStream(self):
         return self.__stream
 
-    def terminalCaptcha(self, captchaFile):
-        print "There is a captcha file, Please open the file %s" % captchaFile
-        print "And input the leters below"
-        return raw_input(": ")
-
     def nowPlaying(self):
         ''' return a dictionary of info about whats currently playing
         NOTE: This is based of screen scraping a _NON_ Sirius site, dont
