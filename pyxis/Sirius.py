@@ -184,34 +184,6 @@ class Sirius(object):
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
         return handle
 
-    def __grabURL(self, url, file, postdict=None, poststring=None):
-        """ same as __getURL, but the second arg is a file to write 
-         the contents 
-         to and the optional 3rd arg is a dictionary of values 
-         for a post
-      """
-
-        if postdict:
-            postdata = urllib.urlencode(postdict)
-        else:
-            postdata = None
-        if poststring:
-            postdata = poststring
-
-        if self.debug:
-            print "POST=", postdata #DEBUG
-            print "url=", url #DEBUG
-
-        req = urllib2.Request(url, postdata, self.__headers)
-        handle = urllib2.urlopen(req)
-        outfd = open(file, 'w')
-        data = handle.read()
-        outfd.write(data)
-        outfd.close()
-        handle.close()
-        self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
-        return data
-
     def auth(self):
         """run auth to setup all the cookies you need to get the stream
           self.__captchaCallback should be set to 
