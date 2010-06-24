@@ -43,7 +43,7 @@ class StreamHandler(object):
         if os.path.isfile(self.settings.command) == False:
             print "Cannot find media player: " + self.settings.command
             print "Please check your Pyxis media player settings in " + config.conffile
-            sys.exit(0)
+            sys.exit(200)
 
     def play(self, url):
         mpc = "%s '%s'" % (self.command, url)

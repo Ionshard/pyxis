@@ -84,7 +84,7 @@ class Interface(object):
             try:
                 userinput = raw_input("\npyxis: ").strip()
             except (EOFError, KeyboardInterrupt):
-                sys.exit(0)
+                sys.exit(100)
 
             if userinput.lower() == 'list':
                 self.list()
