@@ -470,6 +470,7 @@ class Sirius(object):
             return nowplaying
 
         nowplaying['stream'] = self.__stream['channelKey']
+        nowplaying['longName'] = self.__stream['longName'].title()
         nowplaying['playing'] = playing
         nowplaying['logfmt'] = '%s %s: %s'%(time.strftime('%y %m|%d %H:%M'),
                                           self.__stream['channelKey'],playing)
