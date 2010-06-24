@@ -471,8 +471,7 @@ class Sirius(object):
 
         nowplaying['stream'] = self.__stream['channelKey']
         nowplaying['playing'] = playing
-        nowplaying['time'] = time.strftime('%y %m|%d %H:%M')
-        nowplaying['logfmt'] = '%s %s: %s'%(nowplaying['time'],
+        nowplaying['logfmt'] = '%s %s: %s'%(time.strftime('%y %m|%d %H:%M'),
                                           self.__stream['channelKey'],playing)
         if playing != self.playing:
             nowplaying['new'] = True

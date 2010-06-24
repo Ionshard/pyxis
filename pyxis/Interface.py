@@ -118,10 +118,10 @@ class Interface(object):
             playing = self.sirius.nowPlaying()
             if playing['new'] :
                 if not self.options.quiet:
-                    print playing['logfmt']
+                    print time.strftime('%H:%M' ) + ' - ' + playing['stream'] + ": " + playing['playing']
                 if display and pynotify.init("Pyxis"):
                     icon = os.path.normpath(os.path.join(sys.path[0], '..')) + "/pyxis/data/dog_white_outline.svg"
-                    n = pynotify.Notification("Sirius", playing['logfmt'][15:], icon)
+                    n = pynotify.Notification("Sirius", playing['stream'] + ": " + playing['playing'], icon)
                     n.show()
             try:
                 time.sleep(30)
