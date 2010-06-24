@@ -27,17 +27,6 @@ from Config import Config, toBool
 import htmlfixes
 
 try:
-    from IPython.Shell import IPShellEmbed
-    ipshell = IPShellEmbed()
-except:
-    pass
-
-#time.time()
-
-# Thanks! for the Pretty Gumbo
-# Elixir and Tonic
-# http://www.crummy.com/software/BeautifulSoup/
-try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
     print 'see http://www.crummy.com/software/BeautifulSoup/'
