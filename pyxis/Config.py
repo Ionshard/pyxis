@@ -28,15 +28,19 @@ class Section(object):
             setattr(self, option, value);
  
 class Config(object):
+    """Config is responsible for reading the config file
 
-    """ Config creates and reads the config file and will set member variables
-    to each of the sections and options of that section"""
+    It does so by reading sipierc from the users XDG_CONFIG_HOME/sipie
+    folder or ~/.config/sipe. It then reads each section to a member variable
+    equivalent which then maps all options to more local members.
 
+    Config can be read by accessing config.section.option"""
 
     def __init__(self):
-        """Reads and sets member variables to all config options
-        Pass a section to read just that section
-        """
+        """Initializes the Config object
+
+        Takes no parameters and is essentiall read only thus multiple
+        copies of Config can be taken as identical."""
 
         try:
             confdir = os.environ['XDG_CONFIG_HOME']
@@ -63,13 +67,13 @@ class Config(object):
             self.create()
 
     def validate(self):
-        """ validate that the current config file works with this version.
+        """Validate that the current config file works with this version.
         Returns True if the config is valid, else False.
         """
         return (self.account and self.settings and self.mediaplayer)
 
     def write(self):
-        """ writes the config contents out  """
+        """Writes the contents of the ConfigParser to the config file"""
 
         fd = open(self.conffile, 'w')
         self.config.write(fd)
@@ -77,7 +81,7 @@ class Config(object):
         os.chmod(self.conffile, 448)
 
     def create(self):
-        """ ask questions and create config file."""
+        """Gather required information from user and create config file"""
         bold = "\033[1m"
         normal = "\033[0;0m"
         print '\n' + bold + 'Welcome to Pyxis Setup\n' + normal
@@ -137,8 +141,11 @@ class Config(object):
         self.write()
 
     def cryptPassword(self, password):
-        """ used to convert the password to the type sirius wants
-         and we don't have to store a plain password on disk """
+        """Convert the plaintext password to its md5 equivalent
+
+        This allows us to not have to store plaintext passwords in the config
+        file as Sirius only requires the md5 of the password for authentication
+        """
 
         digest = hashlib.md5()
         digest.update(password)
@@ -158,8 +165,11 @@ www.sirius.com	FALSE	/	FALSE		sirius_login_type	subscriber
         fd.write(cookiepuss)
         fd.close()
 
-#Static function for reading booleans from config
 def toBool(string):
+    """Function that converts a string representation of a bool to a bool
+
+    This can read 0/1 yes/no or true/false
+    """
     string = string.lower()
     return string.startswith('t') or string.startswith('y') or string == '1'
 
