@@ -384,16 +384,9 @@ class Sirius(object):
         try:
             fd = self.__getURL(url)
         except:
-            url = ('http://sirius.criffield.net/%s/artistTrack' %
-                   (self.__stream['channelKey'].lstrip('sirius')))
-            playing = None
-            try:
-                fd = self.__getURL(url)
-            except :
-                playing = None
-            else:
-                playing = fd.read()
-                fd.close()
+            print "Error: Unable to retrieve now playing information."
+            nowplaying['new'] = False
+            return nowplaying
         else:
             playing = fd.read()
             fd.close()
