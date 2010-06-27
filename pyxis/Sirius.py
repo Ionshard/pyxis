@@ -379,26 +379,34 @@ class Sirius(object):
         nullplaying['logfmt'] = ''
         nullplaying['new'] = False
         nowplaying = {}
+
+        DOGSTAR_URL = 'http://www.dogstarradio.com/now_playing.php'
+        urls = (
+            'http://mano.jvic.net/~jvc/%s/artistTrack' % self.__stream['channelKey'],
+            'http://sirius.criffield.net/%s/artistTrack' % self.__stream['channelKey'],
+            DOGSTAR_URL,
+            )
+
+        playing = None
         
-        url = 'http://www.dogstarradio.com/now_playing.php'
-        
-        try:
-            fd = self.__getURL(url)
-        except:
-            print "Error: Unable to retrieve now playing information."
-            nowplaying['new'] = False
-            return nowplaying
-        else:
-            dogstar = fd.read()
-            dogstar = re.compile(self.__stream['channelKey'] + '(.*?)</td>', re.DOTALL |  re.IGNORECASE).findall(dogstar)
+        for url in urls:
+            try:
+                fd = self.__getURL(url)
+            except:
+                pass
+            else:
+                playing = fd.read()
+                fd.close()
+                break
+            
+        if playing and url == DOGSTAR_URL:
+            dogstar = re.compile(self.__stream['channelKey'] + '(.*?)</td>', re.DOTALL |  re.IGNORECASE).findall(playing)
             dogstar = re.compile('>(.*?)</div>', re.DOTALL | re.IGNORECASE).findall(str(dogstar))
             if len(dogstar) == 0:
                 playing = "Can't find 'Now Playing' information for this channel"
             else:
                 playing = str(dogstar[0])
-            fd.close()
-
-        #print playing,url #DEBUG
+            
         if playing == None:
             nowplaying = nullplaying
             self.playing = ''
