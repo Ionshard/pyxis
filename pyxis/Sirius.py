@@ -380,7 +380,8 @@ class Sirius(object):
         nullplaying['new'] = False
         nowplaying = {}
         
-        url = 'http://sirius.criffield.net/%s/artistTrack' % self.__stream['channelKey']
+        url = 'http://www.dogstarradio.com/now_playing.php'
+        
         try:
             fd = self.__getURL(url)
         except:
@@ -388,7 +389,13 @@ class Sirius(object):
             nowplaying['new'] = False
             return nowplaying
         else:
-            playing = fd.read()
+            dogstar = fd.read()
+            dogstar = re.compile(self.__stream['channelKey'] + '(.*?)</td>', re.DOTALL |  re.IGNORECASE).findall(dogstar)
+            dogstar = re.compile('>(.*?)</div>', re.DOTALL | re.IGNORECASE).findall(str(dogstar))
+            if len(dogstar) == 0:
+                playing = "Can't find 'Now Playing' information for this channel"
+            else:
+                playing = str(dogstar[0])
             fd.close()
 
         #print playing,url #DEBUG
