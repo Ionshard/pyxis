@@ -382,7 +382,7 @@ class Sirius(object):
 
         DOGSTAR_URL = 'http://www.dogstarradio.com/now_playing.php'
         urls = (
-            'http://mano.jvic.net/~jvc/%s/artistTrack' % self.__stream['channelKey'],
+            'http://mano.jvic.net/~jvc/pyxis/%s/artistTrack' % self.__stream['channelKey'],
             'http://sirius.criffield.net/%s/artistTrack' % self.__stream['channelKey'],
             DOGSTAR_URL,
             )
