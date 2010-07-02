@@ -87,30 +87,24 @@ class Interface(object):
 
     def userPrompt(self):
         """Prompt user for station"""
-        while True:
-            try:
-                userinput = raw_input("\npyxis: ").strip()
-            except (EOFError, KeyboardInterrupt):
-                sys.exit(100)
+        try:
+            userinput = raw_input("\npyxis: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            sys.exit(100)
 
-            if userinput.lower() == 'list':
-                self.list()
-                continue
-            if userinput.lower() == 'exit':
-                sys.exit(0)
+        return userinput
 
-            self.play(userinput)
 
     def onExit(self):
         """Allows cleaning up of dangling resources on exit"""
-       try:
-           readline.write_history_file(self.histfile)
-       except:
-           pass
-       try:
-           self.player.close()
-       except:
-           pass
+        try:
+            readline.write_history_file(self.histfile)
+        except:
+            pass
+        try:
+            self.player.close()
+        except:
+            pass
 
     def play(self, stream):
         """Plays the given stream
@@ -161,7 +155,15 @@ class Interface(object):
         print "\nWelcome to Pyxis."
         print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
-        self.userPrompt()
+        while True:
+            userinput = self.userPrompt()
+            if userinput.lower() == 'list':
+                self.list()
+                continue
+            if userinput.lower() == 'exit':
+                sys.exit(0)
+
+            self.play(userinput)
 
     def list(self):
         """List all available stations"""
