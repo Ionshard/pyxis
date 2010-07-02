@@ -20,16 +20,18 @@ import sys, os, subprocess
 import fcntl
 from Config import Config, toBool
 
-#Wrapper Function to Popen function
 def pipeopen(cmd, bufsize=0):
+    """Wrapper function to subprocess.Popen
+
+    cmd: command to be exectuted
+
+    returns: tuple containing pipes stdin and stdout"""
     p = subprocess.Popen(cmd, shell=True, bufsize=bufsize,
                       stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
     return (p.stdin, p.stdout)
 
-#
-#  Provides simple piped I/O to a process.
-#
 class StreamHandler(object):
+    """Handles playing a stream via an external process."""
     def __init__(self):
 
         config = Config()
@@ -46,38 +48,37 @@ class StreamHandler(object):
             sys.exit(200)
 
     def play(self, url):
+        """Plays the given url
+
+        url: url to play using external command"""
         mpc = "%s '%s'" % (self.command, url)
         if self.debug:
             print mpc
         (self.processIn, self.processOut) = pipeopen(mpc)
         fcntl.fcntl(self.processOut, fcntl.F_SETFL, os.O_NONBLOCK)
 
-    #
-    #  Issues command to process.
-    #
     def cmd(self, command):
+        """Issue a command to the external programs stdin
+        
+        command: command to be sent to the external program"""
         if not self.processIn:
             return
         try:
             self.processIn.write(command + "\n")
-            self.processIn.flush()  #flush pipe
+            self.processIn.flush()
         except StandardError:
            return
 
-    #
-    #  Cleanly closes any IPC resources to process.
-    #
     def close(self):
+        """Cleanly closes any IPC resources to process"""
 
-        self.cmd("quit")  #ask process to quit
+        self.cmd("quit")
 
         try:
-            self.processIn.close()   #close pipes
+            self.processIn.close()
             self.processOut.close()
         except StandardError:
             pass
 
         self.processIn, self.processOut = None, None
-
-#End of file
 
