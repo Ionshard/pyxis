@@ -270,7 +270,7 @@ class Sirius(object):
         except TypeError:
              logfile("getasuxurl-ERROR.html",data) #DEBUG
              log("\nAuth Error:, see getasuxurl-ERROR.html\n") #DEBUG
-            raise AuthError
+             raise AuthError
         if not firstURL.startswith('http://'):
             firstURL = 'http://%s%s' % (self.host, firstURL)
         asxURL = self.__getURL(firstURL).read()
