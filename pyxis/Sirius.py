@@ -62,6 +62,7 @@ class InvalidStream(Exception):
 
 
 class Sirius(object):
+    """Handles all access to the SIRIUS website"""
     def __init__(self):
         #Get settings
         config = Config()
@@ -95,6 +96,7 @@ class Sirius(object):
         self.__setupOpener()
 
     def __setupOpener(self):
+        """Initialize proper cookies and parameters for website retrival"""
         self.__cookie_jar = cookielib.MozillaCookieJar(self.cookiefile)
         cookie_handler = urllib2.HTTPCookieProcessor(self.__cookie_jar)
         if os.path.isfile(self.cookiefile):
@@ -129,11 +131,6 @@ class Sirius(object):
     def sanitize(self, data):
         """ Sanitizes Data against specific errors in the Sirus HTML that
         Beautiful soup can not handle.
-        ( There is also some fix about reverting some python library that 
-         python 2.6 upgraded downgraded?? )
-        Thanks to:
-         Corey Ling kasuko@gmail.com
-         http://kasuko.com 
         """
         for sub in htmlfixes.subs:
             data = re.sub(sub[0], sub[1], data)
@@ -330,10 +327,8 @@ class Sirius(object):
         return streams
 
     def validateStream(self, stream=None):
-        ''' arg
-                stream
-                checks if its valid
-           if theres no agument then it checks self.__stream'''
+        '''checks if stream is valid if theres no agument then it checks 
+        self.__stream'''
         if stream is None: 
             stream = self.__stream
         if len(self.allstreams) < 5:
@@ -342,6 +337,8 @@ class Sirius(object):
             raise InvalidStream
 
     def setStreamByLongName(self, longName):
+        '''Sets the currently playing stream to the stream refered to by
+        longname'''
         #print 'setStreamByLongName:',longName #DEBUG
         if len(self.allstreams) < 5:
             self.getStreams()
@@ -354,11 +351,13 @@ class Sirius(object):
         raise InvalidStream
 
     def setStream(self, stream):
+        '''Sets the stream while testing validity'''
         self.validateStream(stream)
         self.__stream = stream
         self.getAsxURL()
 
     def getStream(self):
+        '''Return currently playing stream'''
         return self.__stream
 
     def nowPlaying(self):
@@ -366,11 +365,8 @@ class Sirius(object):
         NOTE: This is based of screen scraping a _NON_ Sirius site, dont
         be supprised if it stops working 
 
-        I get the playlist info from dogstarradio.com (Thanks!)
-        then put it on my personal servers, please dont abuse it
-
-        Im always looking for a new source for playlist if anyone knows 
-        one
+        Several sources for redundancy
+        NOTE: ALL urls depend on scraping of dogstarradio.com
         '''
         nullplaying = {}
         nullplaying['stream'] = ''
