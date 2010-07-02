@@ -24,7 +24,7 @@ import os
 import time
 import atexit
 import readline
-#Import with conditions
+#Imports with conditions
 display = True
 try:
     os.environ['DISPLAY']
@@ -34,6 +34,7 @@ if display:
     import pynotify
 
 class Completer(object):
+    """Allow tab completion of stream names"""
     def __init__(self, words):
         self.words = words
         self.prefix = None
@@ -51,7 +52,12 @@ class Completer(object):
             return None
 
 class Interface(object):
+    """CLI Interface handler"""
     def __init__(self, opts, station):
+        """Initilize the interface
+
+        opts: a dictionary of command line options
+        station: station requested as an argument"""
         try:
             os.remove('debug.log')
         except OSError:
@@ -80,6 +86,7 @@ class Interface(object):
             self.repl()
 
     def userPrompt(self):
+        """Prompt user for station"""
         while True:
             try:
                 userinput = raw_input("\npyxis: ").strip()
@@ -95,6 +102,7 @@ class Interface(object):
             self.play(userinput)
 
     def onExit(self):
+        """Allows cleaning up of dangling resources on exit"""
        try:
            readline.write_history_file(self.histfile)
        except:
@@ -105,6 +113,9 @@ class Interface(object):
            pass
 
     def play(self, stream):
+        """Plays the given stream
+
+        stream: the station name"""
         try:
             self.sirius.setStreamByLongName(stream)
         except:
@@ -129,6 +140,10 @@ class Interface(object):
                 break
 
     def repl(self):
+        """Read Eval Print Loop - Interactive mode
+        
+        Allows the user to list, select and change channels without ever leaving
+        the program"""
         self.histfile = os.path.join(self.config.confpath,"history")
 
         completer = Completer([x['longName'] for x in self.sirius.getStreams()])
@@ -149,6 +164,7 @@ class Interface(object):
         self.userPrompt()
 
     def list(self):
+        """List all available stations"""
         station_cat = 'none'
         for x in self.sirius.getStreams():
             if station_cat != x['categoryKey']:
@@ -158,4 +174,5 @@ class Interface(object):
         print ''
 
     def setup(self):
+        """Configuration"""
         self.config.create()
