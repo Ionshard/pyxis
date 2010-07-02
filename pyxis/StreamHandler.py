@@ -18,7 +18,8 @@
 
 import sys, os, subprocess
 import fcntl
-from Config import Config, toBool
+from Config import Config
+from Debug import log, logfile
 
 def pipeopen(cmd, bufsize=0):
     """Wrapper function to subprocess.Popen
@@ -36,7 +37,6 @@ class StreamHandler(object):
 
         config = Config()
         self.settings = config.mediaplayer
-        self.debug = toBool(config.settings.debug)
         self.location = None
         self.processIn = None
         self.processOut = None
@@ -52,8 +52,7 @@ class StreamHandler(object):
 
         url: url to play using external command"""
         mpc = "%s '%s'" % (self.command, url)
-        if self.debug:
-            print mpc
+        log('mpc = %s' % mpc)
         (self.processIn, self.processOut) = pipeopen(mpc)
         fcntl.fcntl(self.processOut, fcntl.F_SETFL, os.O_NONBLOCK)
 

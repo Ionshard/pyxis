@@ -19,6 +19,7 @@
 from Config import Config
 from Player import Player
 from Sirius import Sirius
+from Debug import cleanDebug
 import sys 
 import os 
 import time
@@ -58,11 +59,7 @@ class Interface(object):
 
         opts: a dictionary of command line options
         station: station requested as an argument"""
-        try:
-            os.remove('debug.log')
-        except OSError:
-            pass
-        
+        cleanDebug() 
         self.histfile = None
         self.config = Config()
         

@@ -112,7 +112,7 @@ class Config(object):
         while bitrate not in ['High', 'Low']:
             bitrate = 'High'
 
-        for s in ['account', 'settings', 'mediaplayer']:
+        for s in ['account', 'settings', 'mediaplayer', 'debug']:
             try:
                 self.config.add_section(s)
             except ConfigParser.DuplicateSectionError:
@@ -135,9 +135,10 @@ class Config(object):
         self.config.set('account', 'login_type', login_type)
         self.config.set('account', 'canada', canada)
         self.config.set('settings', 'bitrate', bitrate)
-        self.config.set('settings', 'debug', 'False')
         self.config.set('mediaplayer', 'command', '/usr/bin/mplayer')
         self.config.set('mediaplayer', 'options', player_options)
+        self.config.set('debug', 'debug', 'False')
+        self.config.set('debug', 'directory', '~/pyxisdebug')
         self.write()
 
     def cryptPassword(self, password):

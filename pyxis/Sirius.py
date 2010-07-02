@@ -23,6 +23,7 @@ import os
 import sys
 import re
 import time
+from Debug import log, logfile
 from Config import Config, toBool
 import htmlfixes
 
@@ -90,7 +91,6 @@ class Sirius(object):
         else:
             self.canada = False
 
-        self.debug = toBool(self.settings.debug)
         self.cookiefile = os.path.join(config.confpath, 'cookies.txt')
         self.playlist = os.path.join(config.confpath, 'playlist')
         self.__setupOpener()
@@ -113,21 +113,6 @@ class Sirius(object):
             opener = urllib2.build_opener(cookie_handler)
         urllib2.install_opener(opener)
 
-    def __dbfd(self, file, data):
-        """ just used for debug file output """
-
-        dbfd = open(file, 'w')
-        dbfd.write(data)
-        dbfd.close()
-
-    def __log(self, data):
-        """ just used for debug log output """
-
-        dbfd = open('debug.log', 'a')
-        dbfd.write(data)
-        dbfd.close()
-
-
     def sanitize(self, data):
         """ Sanitizes Data against specific errors in the Sirus HTML that
         Beautiful soup can not handle.
@@ -135,8 +120,7 @@ class Sirius(object):
         for sub in htmlfixes.subs:
             data = re.sub(sub[0], sub[1], data)
  
-        if self.debug:
-            self.__log(data) #DEBUG
+        logfile('sanitize.html', data) #DEBUG
 
         return data
 
@@ -163,9 +147,8 @@ class Sirius(object):
         if poststring:
             postdata = poststring
 
-        if self.debug:
-            self.__log("POST=%s" % postdata)#DEBUG
-            self.__log("url=%s" % url) #DEBUG
+        log("POST=%s" % postdata)#DEBUG
+        log("url=%s" % url) #DEBUG
 
         req = urllib2.Request(url, postdata, self.__headers)
         handle = urllib2.urlopen(req)
@@ -209,8 +192,7 @@ class Sirius(object):
         post = urllib.urlencode(postdict) + '&captchaID=%3E%3A0%08g%60n'
         data = self.__getURL(authurl, poststring=post).read()
         if '<title>SIRIUS Player' in data:
-          if self.debug:
-            self.__log("got valid page at: " + authurl + "\n")
+          log("got valid page at: " + authurl + "\n")
           return True
         else:
           raise LoginError
@@ -233,16 +215,13 @@ class Sirius(object):
             data = hd.read()
             hd.close()
         if data.find('unable to log you in') <> -1:  #IF FOUND
-            self.__dbfd('login-error.html', data)  #DEBUG 0
-            print 'LoginError, expired account??, see login-error.html' #DEBUG 0
+            logfile('login-error.html', data)  #DEBUG 0
+            print 'LoginError, expired account?' #DEBUG 0
             raise LoginError
         if data.find('Sorry_Pg3.gif') <> -1:  #IF FOUND
-            #DEBUG 0
-            print '\nLoginError: to many logins today? see login-error.html'
-            self.__dbfd('login-error.html', data)  #DEBUG 0
+            print '\nLoginError: to many logins today?'
+            logfile('login-error.html', data)  #DEBUG 0
             raise LoginError
-        #self.__dbfd("miniplayer.html",data) #DEBUG XXX
-      #data = open('small_playing_100.html').read() # DEBUG
         data = self.sanitize(data)
         soup = BeautifulSoup(data)
         for catstrm in soup.findAll('option'):
@@ -255,12 +234,10 @@ class Sirius(object):
                     'selectedStream': catstrm['value'],
                     'longName': catstrm.contents[0].split(';')[-1].lower()
                     }
-            #print "adding stream",stream #DEBUG
                 allstreams.append(stream)
         if len(allstreams) < 5:
-            #print "ERROR getting streams, see streams-DEBUG.html" # DEBUG
-            #self.__dbfd('streams-DEBUG.html',data)  # DEBUG
-            #return defaultstreams #TESTING
+            log("ERROR getting streams, see streams-DEBUG.html") # DEBUG
+            logfile('streams-DEBUG.html',data)  # DEBUG
             raise AuthError
         else:
             self.allstreams = allstreams
@@ -291,15 +268,14 @@ class Sirius(object):
         try:
             firstURL = soup.find('param', {'name': 'FileName'})['value']
         except TypeError:
-         #self.__dbfd("getasuxurl-ERROR.html",data) #DEBUG
-         #print "\nAuth Error:, see getasuxurl-ERROR.html\n" #DEBUG
+             logfile("getasuxurl-ERROR.html",data) #DEBUG
+             log("\nAuth Error:, see getasuxurl-ERROR.html\n") #DEBUG
             raise AuthError
         if not firstURL.startswith('http://'):
             firstURL = 'http://%s%s' % (self.host, firstURL)
         asxURL = self.__getURL(firstURL).read()
         self.asxURL = asxURL
-        if self.debug:
-            print asxURL
+        log('asxURL = %s' % asxURL)
         return asxURL
 
     def getAsxURL(self):
