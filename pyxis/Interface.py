@@ -115,6 +115,8 @@ class Interface(object):
         except:
             print "Invalid station name. Type 'list' to see available station names"
             return
+        else:
+            print "Now playing %s. Please use Ctrl+C to stop." % stream
 
         url = self.sirius.getAsxURL()
 
