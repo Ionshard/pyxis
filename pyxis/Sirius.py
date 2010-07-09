@@ -25,6 +25,7 @@ import re
 import time
 from Debug import log, logfile
 from Config import Config, toBool
+from xml.dom.minidom import parse  
 import htmlfixes
 
 try:
@@ -337,13 +338,7 @@ class Sirius(object):
         return self.__stream
 
     def nowPlaying(self):
-        ''' return a dictionary of info about whats currently playing
-        NOTE: This is based of screen scraping a _NON_ Sirius site, dont
-        be supprised if it stops working 
-
-        Several sources for redundancy
-        NOTE: ALL urls depend on scraping of dogstarradio.com
-        '''
+        '''return a dictionary of info about whats currently playing'''
         nullplaying = {}
         nullplaying['stream'] = ''
         nullplaying['playing'] = ''
@@ -352,33 +347,18 @@ class Sirius(object):
         nullplaying['new'] = False
         nowplaying = {}
 
-        DOGSTAR_URL = 'http://www.dogstarradio.com/now_playing.php'
-        urls = (
-            'http://mano.jvic.net/~jvc/pyxis/%s/artistTrack' % self.__stream['channelKey'],
-            'http://sirius.criffield.net/%s/artistTrack' % self.__stream['channelKey'],
-            DOGSTAR_URL,
-            )
-
         playing = None
         
-        for url in urls:
-            try:
-                fd = self.__getURL(url)
-            except:
-                pass
-            else:
-                playing = fd.read()
-                fd.close()
-                break
-            
-        if playing and url == DOGSTAR_URL:
-            dogstar = re.compile(self.__stream['channelKey'] + '(.*?)</td>', re.DOTALL |  re.IGNORECASE).findall(playing)
-            dogstar = re.compile('>(.*?)</div>', re.DOTALL | re.IGNORECASE).findall(str(dogstar))
-            if len(dogstar) == 0:
-                playing = "Can't find 'Now Playing' information for this channel"
-            else:
-                playing = str(dogstar[0])
-            
+        url = 'http://www.siriusxm.com/padData/pad_provider.jsp?all_channels=y'
+        sirius_xml = parse(urllib.urlopen(url))
+        for channels in sirius_xml.getElementsByTagName('event'):
+            channel = channels.getElementsByTagName('channelname')[0]
+            if channel.firstChild.data.strip().lower() == self.__stream['longName'].lower():
+			    song = channels.getElementsByTagName('songtitle')[0].firstChild.data
+			    artist = channels.getElementsByTagName('artist')[0].firstChild.data						
+			    playing = song + ', ' + artist			
+        sirius_xml.unlink()
+                   
         if playing == None:
             nowplaying = nullplaying
             self.playing = ''
