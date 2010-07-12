@@ -19,6 +19,12 @@
 import os
 import sys
 from optparse import OptionParser
+
+# Add pyxis to module search path when running locally
+pyxis_dir = os.path.dirname(sys.path[0])
+if os.path.exists(os.path.join(pyxis_dir, 'pyxis')):
+    sys.path.append(pyxis_dir)
+
 from pyxis import Interface
 
 usage = "Usage: %prog [OPTIONS] [STATION]"
