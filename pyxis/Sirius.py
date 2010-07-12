@@ -25,7 +25,7 @@ import re
 import time
 from Debug import log, logfile
 from Config import Config, toBool
-from xml.dom.minidom import parse  
+from xml.dom.minidom import parse
 import htmlfixes
 
 try:
@@ -348,17 +348,17 @@ class Sirius(object):
         nowplaying = {}
 
         playing = None
-        
+
         url = 'http://www.siriusxm.com/padData/pad_provider.jsp?all_channels=y'
         sirius_xml = parse(urllib.urlopen(url))
         for channels in sirius_xml.getElementsByTagName('event'):
             channel = channels.getElementsByTagName('channelname')[0]
             if channel.firstChild.data.strip().lower() == self.__stream['longName'].lower():
-			    song = channels.getElementsByTagName('songtitle')[0].firstChild.data
-			    artist = channels.getElementsByTagName('artist')[0].firstChild.data						
-			    playing = song + ', ' + artist			
+                song = channels.getElementsByTagName('songtitle')[0].firstChild.data
+                artist = channels.getElementsByTagName('artist')[0].firstChild.data
+                playing = song + ', ' + artist
         sirius_xml.unlink()
-                   
+
         if playing == None:
             nowplaying = nullplaying
             self.playing = ''
