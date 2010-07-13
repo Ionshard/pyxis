@@ -124,7 +124,7 @@ class Interface(object):
                 if not self.options.quiet:
                     print time.strftime('%H:%M' ) + ' - ' + playing['longName'] + ": " + playing['playing']
                 if display and pynotify.init("Pyxis"):
-                    icon = os.path.normpath(os.path.join(sys.path[0], '..')) + "/pyxis/data/dog_white_outline.svg"
+                    icon = os.path.dirname(__file__) + '/data/dog_white_outline.svg'
                     n = pynotify.Notification("Sirius", playing['longName'] + ": " + playing['playing'], icon)
                     n.show()
             try:
