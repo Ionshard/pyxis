@@ -337,6 +337,20 @@ class Sirius(object):
         '''Return currently playing stream'''
         return self.__stream
 
+    def getNowPlaying(self):
+        '''return a dictionary for current song/artist per channel'''
+        nowplaying = {}
+        url = 'http://www.siriusxm.com/padData/pad_provider.jsp?all_channels=y'
+        sirius_xml = parse(urllib.urlopen(url))
+        for channels in sirius_xml.getElementsByTagName('event'):
+            channel = channels.getElementsByTagName('channelname')[0].firstChild.data
+            song = channels.getElementsByTagName('songtitle')[0].firstChild.data
+            artist = channels.getElementsByTagName('artist')[0].firstChild.data
+            nowplaying[str(channel).strip().lower()] = {'artist': artist, 'song': song}
+        sirius_xml.unlink()
+
+        return nowplaying
+
     def nowPlaying(self):
         '''return a dictionary of info about whats currently playing'''
         nullplaying = {}
@@ -349,15 +363,14 @@ class Sirius(object):
 
         playing = None
 
-        url = 'http://www.siriusxm.com/padData/pad_provider.jsp?all_channels=y'
-        sirius_xml = parse(urllib.urlopen(url))
-        for channels in sirius_xml.getElementsByTagName('event'):
-            channel = channels.getElementsByTagName('channelname')[0]
-            if channel.firstChild.data.strip().lower() == self.__stream['longName'].lower():
-                song = channels.getElementsByTagName('songtitle')[0].firstChild.data
-                artist = channels.getElementsByTagName('artist')[0].firstChild.data
-                playing = song + ', ' + artist
-        sirius_xml.unlink()
+        channel = self.__stream['longName'].lower() 
+        xml = self.getNowPlaying()
+        if channel in xml:
+            song = xml[channel]['song']
+            artist = xml[channel]['artist']
+            playing = song + ', ' + artist
+        else:
+            playing = 'No song/artist info for ' + channel
 
         if playing == None:
             nowplaying = nullplaying
@@ -365,7 +378,7 @@ class Sirius(object):
             return nowplaying
 
         nowplaying['stream'] = self.__stream['channelKey']
-        nowplaying['longName'] = self.__stream['longName'].title()
+        nowplaying['longName'] = channel.title()
         nowplaying['playing'] = playing
         nowplaying['logfmt'] = '%s %s: %s'%(time.strftime('%y %m|%d %H:%M'),
                                           self.__stream['channelKey'],playing)

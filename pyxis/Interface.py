@@ -166,12 +166,19 @@ class Interface(object):
 
     def list(self):
         """List all available stations"""
-        station_cat = 'none'
+        station_cat = None
+        nowplaying = self.sirius.getNowPlaying()
         for x in self.sirius.getStreams():
             if station_cat != x['categoryKey']:
                 station_cat = x['categoryKey']
-                print '\n' + '\033[1m' + '[' + station_cat.replace('cat','').capitalize() + ']' + '\033[0;0m'
-            print x['longName'].title()
+                print '\n\n' + '\033[1m' + '[' + station_cat.replace('cat','').capitalize() + ']\n' + '\033[0;0m'
+            channel = x['longName']
+            if channel in nowplaying:
+                artist = nowplaying[channel]['artist']
+                song = nowplaying[channel]['song']
+                print ' * ' + channel.title() + ' (' + song + ', ' + artist + ')'
+            else:
+                print ' * ' + channel.title()
         print ''
 
     def setup(self):
