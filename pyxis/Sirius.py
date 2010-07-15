@@ -41,10 +41,8 @@ except ImportError:
     sys.exit(300)
 
 if 'find' not in dir(BeautifulSoup):
-    stalesoup = True
-    print 'you soup is stale, and not so Beautiful anymore'
-    print 'please get fresher soup'
-    print 'from http://www.crummy.com/software/BeautifulSoup/'
+    print 'Pyxis requires a newer version of Beautiful soup:'
+    print 'Get the latest version from: http://www.crummy.com/software/BeautifulSoup/'
     sys.exit(301)
 
 
