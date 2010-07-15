@@ -353,38 +353,22 @@ class Sirius(object):
 
     def nowPlaying(self):
         '''return a dictionary of info about whats currently playing'''
-        nullplaying = {}
-        nullplaying['stream'] = ''
-        nullplaying['playing'] = ''
-        nullplaying['time'] = ''
-        nullplaying['logfmt'] = ''
-        nullplaying['new'] = False
         nowplaying = {}
-
-        playing = None
-
         channel = self.__stream['longName'].lower() 
         xml = self.getNowPlaying()
         if channel in xml:
             song = xml[channel]['song']
             artist = xml[channel]['artist']
-            playing = song + ', ' + artist
+            nowplaying['playing'] = song + ', ' + artist
         else:
-            playing = 'No song/artist info for ' + channel
+            nowplaying['playing'] = 'No song/artist info for ' + channel
 
-        if playing == None:
-            nowplaying = nullplaying
-            self.playing = ''
-            return nowplaying
-
-        nowplaying['stream'] = self.__stream['channelKey']
         nowplaying['longName'] = channel.title()
-        nowplaying['playing'] = playing
         nowplaying['logfmt'] = '%s %s: %s'%(time.strftime('%y %m|%d %H:%M'),
-                                          self.__stream['channelKey'],playing)
-        if playing != self.playing:
+                                          channel.title(),nowplaying['playing'])
+        if nowplaying['playing'] != self.playing:
             nowplaying['new'] = True
-            self.playing = playing
+            self.playing = nowplaying['playing']
             logfd = open(self.playlist,'a')
             logfd.write("%s\n"%nowplaying['logfmt'])
             logfd.close()
