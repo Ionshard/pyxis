@@ -31,14 +31,13 @@ import htmlfixes
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
-    print 'see http://www.crummy.com/software/BeautifulSoup/'
+    print 'Missing dependency: BeautifulSoup'
     print ' to install run `easy_install BeautifulSoup`'
     print ' or if you have apt try '
     print ' apt-get install python-beautifulsoup'
     print ''
-    print 'or even put just get '
-    print 'http://www.crummy.com/software/BeautifulSoup/download/BeautifulSoup.py'
-    print ' and put it in the current directory'
+    print 'or download the beautifulsoup.py module and put it in the current directory.'
+    print 'http://www.crummy.com/software/BeautifulSoup/'
     sys.exit(300)
 
 if 'find' not in dir(BeautifulSoup):
