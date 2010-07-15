@@ -333,10 +333,6 @@ class Sirius(object):
         self.__stream = stream
         self.getAsxURL()
 
-    def getStream(self):
-        '''Return currently playing stream'''
-        return self.__stream
-
     def getNowPlaying(self):
         '''return a dictionary for current song/artist per channel'''
         nowplaying = {}
