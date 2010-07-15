@@ -327,12 +327,6 @@ class Sirius(object):
             return
         raise InvalidStream
 
-    def setStream(self, stream):
-        '''Sets the stream while testing validity'''
-        self.validateStream(stream)
-        self.__stream = stream
-        self.getAsxURL()
-
     def getNowPlaying(self):
         '''return a dictionary for current song/artist per channel'''
         nowplaying = {}
