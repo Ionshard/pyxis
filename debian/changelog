@@ -1,0 +1,11 @@
+pyxis (0.1-0ppa2) unstable; urgency=low
+
+  * Setup for debian and use -sa for moves. 
+
+ -- Corey Ling <kasuko@gmail.com>  Tue, 20 Jul 2010 15:36:40 -0400
+
+pyxis (0.1-0ppa1) unstable; urgency=low
+
+  * Initial release (Closes: #11) 
+
+ -- Corey Ling <kasuko@gmail.com>  Tue, 20 Jul 2010 15:36:22 -0400

@@ -1,0 +1,14 @@
+Source: pyxis
+Section: misc
+Priority: optional
+Maintainer: Corey Ling <kasuko@gmail.com>
+Build-Depends: cdbs, debhelper (>= 7), python (>= 2.5), python-support
+XS-Python-Version: all 
+Standards-Version: 3.8.3
+Homepage: kasuko.github.com/pyxis
+
+Package: pyxis
+Architecture: any
+Depends: ${python:Depends}, ${misc:Depends}, mplayer, python-beautifulsoup, readline-common
+Description: SIRIUS/XM Internet Radio Command Line Player
+ Pyxis is a command line application that effectivly handles the Internet streams for SIRIUS/XM Sattelite radio.
