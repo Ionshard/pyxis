@@ -13,9 +13,9 @@ conflicts=()
 replaces=()
 backup=()
 options=(!emptydirs)
-install=()
+install=
 source=(http://github.com/Kasuko/pyxis/tarball/v$pkgver)
-md5sum=('1f5674428583ad7580e3177b1f064e63')
+md5sums=('1f5674428583ad7580e3177b1f064e63')
 
 build() {
 	cd $srcdir/Kasuko-pyxis*
