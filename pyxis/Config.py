@@ -139,6 +139,13 @@ class Config(object):
         self.config.set('mediaplayer', 'options', player_options)
         self.config.set('debug', 'debug', 'False')
         self.config.set('debug', 'directory', '~/pyxisdebug')
+        try:
+            import pynotify
+        except:
+            self.config.set('settings', 'notifications', 'No')
+        else:
+            self.config.set('settings', 'notifications', 'Yes')
+
         self.write()
 
     def cryptPassword(self, password):

@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from Config import Config
+from Config import Config, toBool
 from Player import Player
 from Sirius import Sirius
 from Debug import cleanDebug
@@ -25,14 +25,6 @@ import os
 import time
 import atexit
 import readline
-#Imports with conditions
-display = True
-try:
-    os.environ['DISPLAY']
-except:
-    display = False
-if display:
-    import pynotify
 
 class Completer(object):
     """Allow tab completion of stream names"""
@@ -76,6 +68,8 @@ class Interface(object):
         if opts.setup:
             self.setup()
             sys.exit(0)
+
+        self.notification = toBool(self.config.settings.notifications)
 
         if station != None:
             self.play(station)
@@ -123,7 +117,9 @@ class Interface(object):
             if playing['new'] :
                 if not self.options.quiet:
                     print time.strftime('%H:%M' ) + ' - ' + playing['longName'] + ": " + playing['playing']
-                if display and pynotify.init("Pyxis"):
+                if self.notification:
+                    import pynotify
+                    pynotify.init("Pyxis")
                     icon = os.path.dirname(__file__) + '/data/dog_white_outline.svg'
                     n = pynotify.Notification("Sirius", playing['longName'] + ": " + playing['playing'], icon)
                     n.show()
