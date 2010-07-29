@@ -22,11 +22,22 @@ import ConfigParser
 import getpass
 import hashlib
 
+class ConfigError(Exception):
+    def __init__(self, attr):
+        self.attr = attr
+    def __str__(self):
+        return 'Unable to reference %s from the configuration.\nThis is usually\
+ due to a broken config file or a new update.\nPlease run pyxis --setup\
+ again to repair the config file.' % self.attr
+
 class Section(object):
     def __init__(self, options):
         for (option, value) in options:
             setattr(self, option, value);
- 
+
+    def __getattr__(self, attr):
+        raise ConfigError(attr)
+
 class Config(object):
     """Config is responsible for reading the config file
 
