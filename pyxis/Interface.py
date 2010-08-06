@@ -56,7 +56,7 @@ class Interface(object):
         self.config = Config()
         
         self.sirius = Sirius()
-        self.player = Player()
+        self.player = Player(opts)
         self.options = opts
 
         atexit.register(self.onExit)
@@ -107,11 +107,14 @@ class Interface(object):
             print "Invalid station name. Type 'list' to see available station names"
             return
         else:
-            print "Now playing %s. Please use Ctrl+C to stop." % stream
+            if self.options.record:
+                print "Recording %s. Please use Ctrl+C to stop." % stream
+            else:
+                print "Now playing %s. Please use Ctrl+C to stop." % stream
 
         url = self.sirius.getAsxURL()
 
-        self.player.play(url)
+        self.player.play(url, stream)
         while True: #playing loop
             playing = self.sirius.nowPlaying()
             if playing['new'] :
@@ -148,7 +151,12 @@ class Interface(object):
             pass
 
         print "\nWelcome to Pyxis."
-        print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
+
+        if self.options.record:
+            print "Recording"
+            print "Enter the name of the station you want to record, type 'list' to see available stations or 'exit' to close the program."
+        else:
+            print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."            
 
         while True:
             userinput = self.userPrompt()

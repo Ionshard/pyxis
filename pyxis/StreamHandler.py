@@ -18,7 +18,9 @@
 
 import sys, os, subprocess
 import fcntl
+import datetime
 from Config import Config
+from Sirius import Sirius
 from Debug import log, logfile
 
 def pipeopen(cmd, bufsize=0):
@@ -33,13 +35,21 @@ def pipeopen(cmd, bufsize=0):
 
 class StreamHandler(object):
     """Handles playing a stream via an external process."""
-    def __init__(self):
+    def __init__(self, opts):
 
         config = Config()
         self.settings = config.mediaplayer
         self.location = None
         self.processIn = None
         self.processOut = None
+        self.options = opts
+        
+        if self.options.record:
+            if not os.path.isdir(config.recordings.directory):
+                os.makedirs(config.recordings.directory)
+            self.settings.options = self.settings.options + ' ' + self.settings.record
+            self.settings.options = self.settings.options + config.recordings.directory
+        
         self.command = "%s %s" % (self.settings.command, self.settings.options)
                 
         if os.path.isfile(self.settings.command) == False:
@@ -47,11 +57,18 @@ class StreamHandler(object):
             print "Please check your Pyxis media player settings in " + config.conffile
             sys.exit(200)
 
-    def play(self, url):
+    def play(self, url, stream):
         """Plays the given url
 
         url: url to play using external command"""
-        mpc = "%s '%s'" % (self.command, url)
+        
+        if self.options.record:
+            stream = stream.replace(' ','') + '_'
+            now = datetime.datetime.now()
+            filename = stream + now.strftime("%Y-%m-%d_%H-%M-%S") + '.wav'
+            mpc = "%s '%s'" % (self.command + filename, url)
+        else:
+            mpc = "%s '%s'" % (self.command, url)
         log('mpc = %s' % mpc)
         (self.processIn, self.processOut) = pipeopen(mpc)
         fcntl.fcntl(self.processOut, fcntl.F_SETFL, os.O_NONBLOCK)

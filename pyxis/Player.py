@@ -19,15 +19,15 @@
 from StreamHandler import StreamHandler
 
 class Player(object):
-    def __init__(self,):
-        self.streamHandler = StreamHandler()
+    def __init__(self, opts):
+        self.streamHandler = StreamHandler(opts)
         
-    def play(self, url):
+    def play(self, url, stream):
         try:
             self.close()
         except:
             pass
-        self.streamHandler.play(url)
+        self.streamHandler.play(url, stream)
 
     def close(self):
         self.streamHandler.close()
