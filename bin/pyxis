@@ -38,6 +38,9 @@ parser.add_option("-s", "--setup", dest="setup",
 parser.add_option("-q", "--quiet", dest="quiet",
     action='store_true', default=False,
     help="quiet the output to command line")
+parser.add_option("-r", "--record", dest="record",
+    action='store_true', default=False,
+    help="record to a file")
 
 (opts, args) = parser.parse_args()
 
