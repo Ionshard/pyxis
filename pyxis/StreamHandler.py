@@ -20,7 +20,6 @@ import sys, os, subprocess
 import fcntl
 import datetime
 from Config import Config
-from Sirius import Sirius
 from Debug import log, logfile
 
 def pipeopen(cmd, bufsize=0):
