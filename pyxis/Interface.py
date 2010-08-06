@@ -119,10 +119,10 @@ class Interface(object):
                     print time.strftime('%H:%M' ) + ' - ' + playing['longName'] + ": " + playing['playing']
                 if self.notification:
                     import pynotify
-                    pynotify.init("Pyxis")
-                    icon = os.path.dirname(__file__) + '/data/dog_white_outline.svg'
-                    n = pynotify.Notification("Sirius", playing['longName'] + ": " + playing['playing'], icon)
-                    n.show()
+                    if pynotify.init("Pyxis"):
+                        icon = os.path.dirname(__file__) + '/data/dog_white_outline.svg'
+                        n = pynotify.Notification("Sirius", playing['longName'] + ": " + playing['playing'], icon)
+                        n.show()
             try:
                 time.sleep(30)
             except KeyboardInterrupt:
