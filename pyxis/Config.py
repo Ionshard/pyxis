@@ -123,7 +123,7 @@ class Config(object):
         while bitrate not in ['High', 'Low']:
             bitrate = 'High'
 
-        for s in ['account', 'settings', 'mediaplayer', 'debug']:
+        for s in ['account', 'settings', 'mediaplayer', 'debug', 'recordings']:
             try:
                 self.config.add_section(s)
             except ConfigParser.DuplicateSectionError:
@@ -148,6 +148,8 @@ class Config(object):
         self.config.set('settings', 'bitrate', bitrate)
         self.config.set('mediaplayer', 'command', '/usr/bin/mplayer')
         self.config.set('mediaplayer', 'options', player_options)
+        self.config.set('mediaplayer', 'record', '-ao pcm:file=')
+        self.config.set('recordings', 'directory', '~/pyxis')
         self.config.set('debug', 'debug', 'False')
         self.config.set('debug', 'directory', '~/pyxisdebug')
         try:
