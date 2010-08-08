@@ -21,7 +21,7 @@ from StreamHandler import StreamHandler
 class Player(object):
     def __init__(self, opts):
         self.streamHandler = StreamHandler(opts)
-        
+
     def play(self, url, stream):
         try:
             self.close()

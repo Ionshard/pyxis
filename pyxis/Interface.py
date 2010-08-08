@@ -20,8 +20,8 @@ from Config import Config, toBool
 from Player import Player
 from Sirius import Sirius
 from Debug import cleanDebug
-import sys 
-import os 
+import sys
+import os
 import time
 import atexit
 import readline
@@ -32,7 +32,7 @@ class Completer(object):
         self.words = words
         self.prefix = None
         self.matching_words = []
-    
+
     def complete(self, prefix, index):
         if prefix != self.prefix:
             self.matching_words = [
@@ -51,10 +51,10 @@ class Interface(object):
 
         opts: a dictionary of command line options
         station: station requested as an argument"""
-        cleanDebug() 
+        cleanDebug()
         self.histfile = None
         self.config = Config()
-        
+
         self.sirius = Sirius()
         self.player = Player(opts)
         self.options = opts
@@ -156,7 +156,7 @@ class Interface(object):
             print "Recording"
             print "Enter the name of the station you want to record, type 'list' to see available stations or 'exit' to close the program."
         else:
-            print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."            
+            print "Enter the name of the station you want to listen to, type 'list' to see available stations or 'exit' to close the program."
 
         while True:
             userinput = self.userPrompt()

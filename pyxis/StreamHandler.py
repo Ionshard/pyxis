@@ -42,15 +42,15 @@ class StreamHandler(object):
         self.processIn = None
         self.processOut = None
         self.options = opts
-        
+
         if self.options.record:
             if not os.path.isdir(config.recordings.directory):
                 os.makedirs(config.recordings.directory)
             self.settings.options = self.settings.options + ' ' + self.settings.record
             self.settings.options = self.settings.options + config.recordings.directory
-        
+
         self.command = "%s %s" % (self.settings.command, self.settings.options)
-                
+
         if os.path.isfile(self.settings.command) == False:
             print "Cannot find media player: " + self.settings.command
             print "Please check your Pyxis media player settings in " + config.conffile
@@ -60,7 +60,7 @@ class StreamHandler(object):
         """Plays the given url
 
         url: url to play using external command"""
-        
+
         if self.options.record:
             stream = stream.replace(' ','') + '_'
             now = datetime.datetime.now()
