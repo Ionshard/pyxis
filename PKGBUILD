@@ -2,12 +2,12 @@
 
 pkgname=pyxis
 pkgver=0.1.1
-pkgrel=0
+pkgrel=1
 pkgdesc="SIRIUS/XM Internet Radio Player for Command Line"
 url="http://kasuko.github.com/pyxis"
 arch=(i686 x86_64)
 license=('GPL')
-depends=('beautiful-soup' 'mplayer' 'python' 'setuptools')
+depends=('mplayer' 'python' 'setuptools')
 makedepends=()
 optdepends=('python-notify: for OSD notifications')
 conflicts=() 
@@ -15,11 +15,11 @@ replaces=()
 backup=()
 options=(!emptydirs)
 install=
-source=(http://github.com/Kasuko/pyxis/tarball/v$pkgver)
+source=(http://github.com/Kasuko/pyxis/tarball/python3)
 
 build() {
 	cd $srcdir/Kasuko-pyxis*
 	python setup.py install --root=$pkgdir
 }
-md5sums=('3f84a475f2a55e48f21f58769ba42733')
 
+md5sums=('902bc28d1c2831f3ace23c42dbb818df')
