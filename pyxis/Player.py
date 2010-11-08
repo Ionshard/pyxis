@@ -23,11 +23,10 @@ class Player(object):
         self.streamHandler = StreamHandler(opts)
 
     def play(self, url, stream):
-        try:
-            self.close()
-        except:
-            pass
         self.streamHandler.play(url, stream)
+
+    def playing(self):
+        return self.streamHandler.playing();
 
     def close(self):
         self.streamHandler.close()

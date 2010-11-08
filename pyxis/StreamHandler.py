@@ -22,16 +22,6 @@ import datetime
 from Config import Config
 from Debug import log, logfile
 
-def pipeopen(cmd, bufsize=0):
-    """Wrapper function to subprocess.Popen
-
-    cmd: command to be exectuted
-
-    returns: tuple containing pipes stdin and stdout"""
-    p = subprocess.Popen(cmd, shell=True, bufsize=bufsize,
-                      stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    return (p.stdin, p.stdout)
-
 class StreamHandler(object):
     """Handles playing a stream via an external process."""
     def __init__(self, opts):
@@ -39,8 +29,7 @@ class StreamHandler(object):
         config = Config()
         self.settings = config.mediaplayer
         self.location = None
-        self.processIn = None
-        self.processOut = None
+        self.proc = None
         self.options = opts
 
         if self.options.record:
@@ -56,11 +45,34 @@ class StreamHandler(object):
             print "Please check your Pyxis media player settings in " + config.conffile
             sys.exit(200)
 
+    def pipeopen(self, cmd, bufsize=0):
+        """Wrapper function to subprocess.Popen
+
+        cmd: command to be exectuted
+
+        returns: tuple containing pipes stdin and stdout"""
+        self.proc = subprocess.Popen(cmd, shell=True, bufsize=bufsize,
+                        stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT, close_fds=True)
+        fcntl.fcntl(self.proc.stdout, fcntl.F_SETFL, os.O_NONBLOCK)
+        return (self.proc.stdin, self.proc.stdout)
+
+    def playing(self):
+        if self.proc:
+            self.proc.poll()
+            return self.proc.returncode is None
+        return False
+
     def play(self, url, stream):
         """Plays the given url
 
         url: url to play using external command"""
 
+        if self.playing():
+            print "Already playing!"
+            return
+
+        print "Starting mplayer..."
         if self.options.record:
             stream = stream.replace(' ','') + '_'
             now = datetime.datetime.now()
@@ -69,18 +81,17 @@ class StreamHandler(object):
         else:
             mpc = "%s '%s'" % (self.command, url)
         log('mpc = %s' % mpc)
-        (self.processIn, self.processOut) = pipeopen(mpc)
-        fcntl.fcntl(self.processOut, fcntl.F_SETFL, os.O_NONBLOCK)
+        self.pipeopen(mpc)
 
     def cmd(self, command):
         """Issue a command to the external programs stdin
         
         command: command to be sent to the external program"""
-        if not self.processIn:
+        if not self.proc:
             return
         try:
-            self.processIn.write(command + "\n")
-            self.processIn.flush()
+            self.proc.stdin.write(command + "\n")
+            self.proc.stdin.flush()
         except StandardError:
            return
 
@@ -90,10 +101,9 @@ class StreamHandler(object):
         self.cmd("quit")
 
         try:
-            self.processIn.close()
-            self.processOut.close()
+            self.proc.terminate()
         except StandardError:
             pass
 
-        self.processIn, self.processOut = None, None
+        self.proc = None
 

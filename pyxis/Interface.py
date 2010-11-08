@@ -112,10 +112,11 @@ class Interface(object):
             else:
                 print "Now playing %s. Please use Ctrl+C to stop." % stream
 
-        url = self.sirius.getAsxURL()
-
-        self.player.play(url, stream)
         while True: #playing loop
+            if not self.player.playing():
+                url = self.sirius.getAsxURL()
+                self.player.play(url, stream)
+
             playing = self.sirius.nowPlaying()
             if playing['new'] :
                 if not self.options.quiet:

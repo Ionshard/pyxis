@@ -328,7 +328,12 @@ class Sirius(object):
         '''return a dictionary for current song/artist per channel'''
         nowplaying = {}
         url = 'http://www.siriusxm.com/padData/pad_provider.jsp?all_channels=y'
-        sirius_xml = parse(urllib.urlopen(url))
+        try:
+            sirius_xml = parse(urllib.urlopen(url))
+        except Exception:
+            print "Couldn't load URL: ", url
+            return "FAILURE"
+
         for channels in sirius_xml.getElementsByTagName('event'):
             channel = channels.getElementsByTagName('channelname')[0].firstChild.data
             song = channels.getElementsByTagName('songtitle')[0].firstChild.data
