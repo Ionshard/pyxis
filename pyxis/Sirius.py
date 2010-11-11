@@ -331,7 +331,7 @@ class Sirius(object):
         try:
             sirius_xml = parse(urllib.urlopen(url))
         except Exception:
-            print "Couldn't load URL: ", url
+            log("ERROR getting now-playing list: %s" % url)
             return "FAILURE"
 
         for channels in sirius_xml.getElementsByTagName('event'):

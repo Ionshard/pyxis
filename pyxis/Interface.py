@@ -167,6 +167,7 @@ class Interface(object):
             if userinput.lower() == 'exit':
                 sys.exit(0)
 
+            self.player.close()
             self.play(userinput)
 
     def list(self):
