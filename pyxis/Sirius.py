@@ -149,7 +149,14 @@ class Sirius(object):
         log("url=%s" % url) #DEBUG
 
         req = urllib2.Request(url, postdata, self.__headers)
-        handle = urllib2.urlopen(req)
+        handle = None
+        while handle is None:
+            try:
+                handle = urllib2.urlopen(req)
+            except urllib2.URLError:
+                print("Error while fetching %s\nTrying again in 30 seconds..." % url);
+                time.sleep(30);
+                handle = None
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
         return handle
 
