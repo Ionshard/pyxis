@@ -168,6 +168,7 @@ class Config(object):
         file as Sirius only requires the md5 of the password for authentication
         """
 
+        password = password.encode("utf-8")
         digest = hashlib.md5()
         digest.update(password)
         secret = digest.hexdigest()

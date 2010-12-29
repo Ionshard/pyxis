@@ -369,7 +369,8 @@ class Sirius(object):
             nowplaying['new'] = True
             self.playing = nowplaying['playing']
             logfd = open(self.playlist,'a')
-            logfd.write("%s\n"%nowplaying['logfmt'])
+            nowplayinglog = nowplaying['logfmt'].encode("utf-8")
+            logfd.write("%s\n" % nowplayinglog)
             logfd.close()
         else:
             nowplaying['new'] = False
