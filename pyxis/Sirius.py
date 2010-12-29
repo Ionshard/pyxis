@@ -23,8 +23,10 @@ import os
 import sys
 import re
 import time
-from Debug import log, logfile
 from Config import Config, toBool
+from ProviderUSA import ProviderUSA
+from Exceptions import AuthError, LoginError, InvalidStream
+from Debug import log, logfile
 from xml.dom.minidom import parse
 import htmlfixes
 
@@ -44,21 +46,6 @@ if 'find' not in dir(BeautifulSoup):
     print 'Pyxis requires a newer version of Beautiful soup:'
     print 'Get the latest version from: http://www.crummy.com/software/BeautifulSoup/'
     sys.exit(301)
-
-
-# Define a login error class
-class LoginError(Exception):
-    pass
-
-
-# for Authenitcation errors to sirius
-class AuthError(Exception):
-    pass
-
-# for Authenitcation errors to sirius
-class InvalidStream(Exception):
-    pass
-
 
 class Sirius(object):
     """Handles all access to the SIRIUS website"""
@@ -84,10 +71,9 @@ class Sirius(object):
             sys.exit(101)
 
         if toBool(self.account.canada):
-            self.host = 'mp.siriuscanada.ca'
             self.canada = True
         else:
-            self.canada = False
+            self.provider = ProviderUSA(self)
 
         self.cookiefile = os.path.join(config.confpath, 'cookies.txt')
         self.playlist = os.path.join(config.confpath, 'playlist')
@@ -129,7 +115,7 @@ class Sirius(object):
             return cookie.value
         return False
 
-    def __getURL(self, url, postdict=None, poststring=None):
+    def getURL(self, url, postdict=None, poststring=None):
         """ get a url, the second arg could be dictionary of 
          options for a post 
          If there is no second option use get
@@ -160,139 +146,16 @@ class Sirius(object):
         self.__cookie_jar.save(ignore_discard=True, ignore_expires=True)
         return handle
 
-    def auth(self):
-        """run auth to setup all the cookies you need to get the stream
-          self.__captchaCallback should be set to 
-          a fuction that accepts a file name as an
-          its only argument and returns text found in that image
-          (as read by a huMan)
-
-          if no function is passed it will Guess (and fail?)
-
-        """
-        #Am i authed, should be its own function really
-        data = self.__getURL(
-          'http://www.sirius.com/player/listen/play.action').read()
-        if 'NOW PLAYING TITLE:START' in data:
-          return True
-
-        session = self.findSessionID()
-        if not session:
-          self.__getURL(
-            'http://www.sirius.com/player/home/siriushome.action').read()
-          session = self.findSessionID()
-        if not session:
-          raise LoginError
-
-        authurl = 'http://www.sirius.com/player/login/siriuslogin.action;jsessionid=%s' % session
-
-        postdict = { 'userName': self.account.username,
-                     '__checkbox_remember': 'true',
-                     'password': self.account.password,
-                     'captchaEnabled': 'true',
-                     'timeNow': 'null',
-                     'captcha_response': 'rc3k',
-                   }
-
-        post = urllib.urlencode(postdict) + '&captchaID=%3E%3A0%08g%60n'
-        data = self.__getURL(authurl, poststring=post).read()
-        if '<title>SIRIUS Player' in data:
-          log("got valid page at: " + authurl + "\n")
-          return True
-        else:
-          raise LoginError
-
-    def tryGetStreams(self):
-        """ Returns a list of streams avalible, if it 
-         failes with AuthError, try
-          Sirius.auth() first, then try again
-          Or use getStreams()
-      """
-
-        allstreams = []
-        url = 'http://www.sirius.com/player/listen/play.action?resizeActivity=minimize'
-        hd = self.__getURL(url)
-        data = hd.read()
-        hd.close()
-        if data.find('name="selectedStream"') == -1:  #IF NOT FOUND
-            post = {'activity': 'minimize', 'token': self.token}
-            hd = self.__getURL(url, post)
-            data = hd.read()
-            hd.close()
-        if data.find('unable to log you in') <> -1:  #IF FOUND
-            logfile('login-error.html', data)  #DEBUG 0
-            print 'LoginError, expired account?' #DEBUG 0
-            raise LoginError
-        if data.find('Sorry_Pg3.gif') <> -1:  #IF FOUND
-            print '\nLoginError: to many logins today?'
-            logfile('login-error.html', data)  #DEBUG 0
-            raise LoginError
-        data = self.sanitize(data)
-        soup = BeautifulSoup(data)
-        for catstrm in soup.findAll('option'):
-            if catstrm['value'].find('|') <> -1:  # IF FOUND
-                chunks = catstrm['value'].split('|')
-                stream = {
-                    'channelKey': chunks[2],
-                    'genreKey':  chunks[1],
-                    'categoryKey': chunks[0],
-                    'selectedStream': catstrm['value'],
-                    'longName': catstrm.contents[0].split(';')[-1].lower()
-                    }
-                allstreams.append(stream)
-        if len(allstreams) < 5:
-            log("ERROR getting streams, see streams-DEBUG.html") # DEBUG
-            logfile('streams-DEBUG.html',data)  # DEBUG
-            raise AuthError
-        else:
-            self.allstreams = allstreams
-            return allstreams
-
-    def tryGetAsxURL(self):
-        """ give this the stream you want to play and this 
-         will give you the
-         url for the asx, play that url
-         if it failes with an AuthError try Sirius.auth() and try again
-         or use getAsxUrl
-      """
-
-        self.validateStream()
-
-        postdict = { 'channelKey': self.__stream['channelKey'],
-                     'genreKey': self.__stream['genreKey'],
-                     'categoryKey': self.__stream['categoryKey'],
-                     'selectedStream': self.__stream['selectedStream'],
-                     'stopped': 'no',
-                   }
-        data = self.__getURL(
-            'http://www.sirius.com/player/listen/play.action',
-            postdict).read()
-
-        data = self.sanitize(data)
-        soup = BeautifulSoup(data)
-        try:
-            firstURL = soup.find('param', {'name': 'FileName'})['value']
-        except TypeError:
-             logfile("getasuxurl-ERROR.html",data) #DEBUG
-             log("\nAuth Error:, see getasuxurl-ERROR.html\n") #DEBUG
-             raise AuthError
-        if not firstURL.startswith('http://'):
-            firstURL = 'http://%s%s' % (self.host, firstURL)
-        asxURL = self.__getURL(firstURL).read()
-        self.asxURL = asxURL
-        log('asxURL = %s' % asxURL)
-        return asxURL
-
     def getAsxURL(self):
         ''' Returns an the url of the asx for the self.__stream,
         Diffrent from tryGetAsxURL it will try to authticate insted of
         fail if its needs to
         '''
         try:
-            url = self.tryGetAsxURL()
+            url = self.provider.tryGetAsxURL(self.__stream)
         except AuthError:
-            self.auth()
-            url = self.tryGetAsxURL()
+            self.provider.auth()
+            url = self.provider.tryGetAsxURL(self.__stream)
         return url
 
     def getStreams(self):
@@ -301,10 +164,10 @@ class Sirius(object):
         fail if its needs to
         '''
         try:
-            streams = self.tryGetStreams()
+            streams = self.provider.tryGetStreams()
         except AuthError:
-            self.auth()
-            streams = self.tryGetStreams()
+            self.provider.auth()
+            streams = self.provider.tryGetStreams()
         return streams
 
     def validateStream(self, stream=None):
@@ -312,22 +175,28 @@ class Sirius(object):
         self.__stream'''
         if stream is None: 
             stream = self.__stream
+
+	log('Validationg stream %s' % stream)
         if len(self.allstreams) < 5:
             self.getStreams()
         if stream not in self.allstreams:
+            log('stream %s invalid' % stream)
             raise InvalidStream
 
     def setStreamByLongName(self, longName):
         '''Sets the currently playing stream to the stream refered to by
         longname'''
+
+	log('Set Stream to %s' % longName)
         #print 'setStreamByLongName:',longName #DEBUG
         if len(self.allstreams) < 5:
-            self.getStreams()
+            self.allstreams = self.getStreams()
+            
         for stream in self.allstreams:
           if stream['longName'].lower() == longName.lower():
             #print 'setStreamByLongName, stream:',stream #DEBUG
             self.__stream = stream
-            self.getAsxURL()
+            log('Stream set to %s' % stream)
             return
         raise InvalidStream
 

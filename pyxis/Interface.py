@@ -19,7 +19,7 @@
 from Config import Config, toBool
 from Player import Player
 from Sirius import Sirius
-from Debug import cleanDebug
+from Debug import cleanDebug, log, logfile
 import sys
 import os
 import time
@@ -102,6 +102,7 @@ class Interface(object):
 
         stream: the station name"""
         try:
+            log('Play %s' % stream)
             self.sirius.setStreamByLongName(stream)
         except:
             print "Invalid station name. Type 'list' to see available station names"
