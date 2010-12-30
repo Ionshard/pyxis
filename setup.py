@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='Pyxis',
-      version='0.1',
+      version='0.2',
       description='Command Line XM and SIRIUS Radio Player',
       author='Corey Ling',
       author_email='kasuko@gmail.com',
