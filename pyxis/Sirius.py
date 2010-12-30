@@ -25,6 +25,7 @@ import re
 import time
 from Config import Config, toBool
 from ProviderUSA import ProviderUSA
+from ProviderCanada import ProviderCanada
 from Exceptions import AuthError, LoginError, InvalidStream
 from Debug import log, logfile
 from xml.dom.minidom import parse
@@ -63,7 +64,6 @@ class Sirius(object):
         self.asxURL = None
         self.allstreams = []
         self.playing = None
-        self.__captchaCallback = None  
         self.__cookie_jar = None
 
         if self.account.login_type not in ['subscriber', 'guest']:
@@ -71,7 +71,7 @@ class Sirius(object):
             sys.exit(101)
 
         if toBool(self.account.canada):
-            self.canada = True
+            self.provider = ProviderCanada(self)
         else:
             self.provider = ProviderUSA(self)
 
@@ -178,7 +178,7 @@ class Sirius(object):
 
 	log('Validationg stream %s' % stream)
         if len(self.allstreams) < 5:
-            self.getStreams()
+            self.allstreams = self.getStreams()
         if stream not in self.allstreams:
             log('stream %s invalid' % stream)
             raise InvalidStream

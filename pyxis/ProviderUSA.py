@@ -26,18 +26,7 @@ import time
 from Debug import log, logfile
 from Config import Config, toBool
 from Exceptions import AuthError, LoginError, InvalidStream
-
-try:
-    from BeautifulSoup import BeautifulSoup
-except ImportError:
-    print 'Missing dependency: BeautifulSoup'
-    print ' to install run `easy_install BeautifulSoup`'
-    print ' or if you have apt try '
-    print ' apt-get install python-beautifulsoup'
-    print ''
-    print 'or download the beautifulsoup.py module and put it in the current directory.'
-    print 'http://www.crummy.com/software/BeautifulSoup/'
-    sys.exit(300)
+from BeautifulSoup import BeautifulSoup
 
 class ProviderUSA(object):
     """Handles all access to the SIRIUS USA website"""
