@@ -77,6 +77,12 @@ $ makepkg
 $ sudo pacman -U pyxis-0.1-0.pkg.tar.gz
 </pre>
 </p>
+<h2>Support</h2>
+<p>To send us debug information please do the following.<br/>Edit ~/.config/pyxis/pyxisrc and change the line &#x201c;debug = False&#x201d; to &#x201c;debug = True&#x201d;<br/>
+[Optionally you can change the default debug directory but you will have to change all references to ~/pyxisdebug in this document to what you changed it to.]<br/>and run pyxis again as normal, this will create the debug information.<br/><br/>
+Then run the command: 
+<pre>tar -cvf pyxisdebug.tar.gz ~/pyxisdebug</pre>
+and email the resulting pyxisdebug.tar.gz to pyxis@ionshard.com along with the terminal output from running pyxis.<br/></p>
 <h2>License</h2>
 <p><a rel="license" href="http://creativecommons.org/licenses/GPL/2.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/GPL/2.0/88x62.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/GPL/2.0/">Creative Commons GNU General Public License License</a>.</p>
 <h2>Authors</h2>
