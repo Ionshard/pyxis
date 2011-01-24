@@ -2,12 +2,12 @@
 
 pkgname=pyxis
 pkgver=0.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="SIRIUS/XM Internet Radio Player for Command Line"
 url="http://www.ionshard.com/pyxis"
 arch=(i686 x86_64)
 license=('GPL')
-depends=('mplayer' 'python2')
+depends=('python-beautifulsoup' 'mplayer' 'python2')
 makedepends=('python2' 'setuptools')
 optdepends=('python-notify: for OSD notifications')
 conflicts=()
