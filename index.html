@@ -29,6 +29,28 @@
 		pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
+    /* Navigation Bar CSS */
+    ul#list-nav {
+        list-style:none;
+        margin:00px;
+        padding:0;
+        width:525px
+    }
+    ul#list-nav li { display:inline }
+    ul#list-nav li a {
+        text-decoration:none;
+        padding:5px 0;
+        width:100px;
+        background:#00426B;
+        color:#eee;
+        float:left;
+        text-align:center;
+        border-right:5px solid #00628B;
+    }
+    ul#list-nav li a:hover {
+        background:#0082AB;
+        color:#000
+    }
 	</style>
 	
 </head>
@@ -44,7 +66,11 @@
       <a href="http://github.com/Kasuko/pyxis/tarball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
-
+    <ul id="list-nav">
+    <li><a href="#install">Installation</a></li>
+    <li><a href="#support">Support</a></li>
+    <li><a href="#contact">Contact</a></li>
+    </ul><br />
     <h1><a href="http://github.com/Kasuko/pyxis">Pyxis</a></h1>
 
     <div class="description">
@@ -61,7 +87,7 @@
 <li> Mplayer </li>
 <li> Beautiful Soup </li>
 </ul></p>
-<h2>Install</h2>
+<a id="install"><h2>Install</h2></a>
 <p>
 <h3>Ubuntu:</h3>
 <pre>
@@ -79,24 +105,24 @@ $ sudo pacman -U pyxis-0.1-0.pkg.tar.gz
 <h3>Mac OSX:</h3>
 While not officially supported it is possible to run pyxis on a Mac by following the instructions <a href="https://github.com/Kasuko/pyxis/wiki/Mac-Install">here</a>
 </p>
-<h2>Support</h2>
+<a id="support"><h2>Support</h2></a>
 <p>To send us debug information please do the following.<br/>Edit ~/.config/pyxis/pyxisrc and change the line &#x201c;debug = False&#x201d; to &#x201c;debug = True&#x201d;<br/>
 [Optionally you can change the default debug directory but you will have to change all references to ~/pyxisdebug in this document to what you changed it to.]<br/>and run pyxis again as normal, this will create the debug information.<br/><br/>
 Then run the command: 
 <pre>tar -cvf pyxisdebug.tar.gz ~/pyxisdebug</pre>
 and email the resulting pyxisdebug.tar.gz to pyxis@ionshard.com along with the terminal output from running pyxis.<br/></p>
-<h2>License</h2>
-<p><a rel="license" href="http://creativecommons.org/licenses/GPL/2.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/GPL/2.0/88x62.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/GPL/2.0/">Creative Commons GNU General Public License License</a>.</p>
+<a id="contact"><h2>Contact</h2></a>
+<p><a href="mailto:pyxis@ionshard.com">Pyxis Team (pyxis@ionshard.com)</a>
+<br/><a href="mailto:kasuko@ionshard.com">Corey Ling (kasuko@ionshard.com)</a>
+<br/>      </p>
+
 <h2>Authors</h2>
 <p>John Rabotnik (john.rabotnik@googlemail.com)
 <br/>Justin Chouinard (jvc@jvic.net)
+<br/>Brian Crowder (https://github.com/crowder)
 <br/>Corey Ling (kasuko@gmail.com)
 <br/>
 <br/>      </p>
-<h2>Contact</h2>
-<p>Corey Ling (kasuko@gmail.com)
-<br/>      </p>
-
 
     <h2>Download</h2>
     <p>
@@ -109,6 +135,8 @@ and email the resulting pyxisdebug.tar.gz to pyxis@ionshard.com along with the t
       <pre>$ git clone git://github.com/Kasuko/pyxis</pre>
     </p>
 
+<h2>License</h2>
+<p><a rel="license" href="http://creativecommons.org/licenses/GPL/2.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/GPL/2.0/88x62.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/GPL/2.0/">Creative Commons GNU General Public License License</a>.</p>
     <div class="footer">
       get the source code on GitHub : <a href="http://github.com/Kasuko/pyxis">Kasuko/pyxis</a>
     </div>
