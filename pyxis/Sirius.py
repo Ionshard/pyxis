@@ -187,13 +187,13 @@ class Sirius(object):
         '''Sets the currently playing stream to the stream refered to by
         longname'''
 
-	log('Set Stream to %s' % longName)
+        log('Setting Stream to %s' % longName)
         #print 'setStreamByLongName:',longName #DEBUG
         if len(self.allstreams) < 5:
             self.allstreams = self.getStreams()
             
         for stream in self.allstreams:
-          if stream['longName'].lower() == longName.lower():
+          if stream['longName'].lower().strip() == longName.lower():
             #print 'setStreamByLongName, stream:',stream #DEBUG
             self.__stream = stream
             log('Stream set to %s' % stream)
