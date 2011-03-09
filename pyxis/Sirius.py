@@ -131,8 +131,8 @@ class Sirius(object):
         if poststring:
             postdata = poststring
 
-        log("POST=%s" % postdata)#DEBUG
         log("url=%s" % url) #DEBUG
+        log("POST=%s" % postdata)#DEBUG
 
         req = urllib2.Request(url, postdata, self.__headers)
         handle = None

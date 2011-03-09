@@ -20,6 +20,7 @@ from Config import Config, toBool
 from Player import Player
 from Sirius import Sirius
 from Debug import cleanDebug, log, logfile
+from Exceptions import AuthError, LoginError, InvalidStream
 import sys
 import os
 import time
@@ -104,7 +105,7 @@ class Interface(object):
         try:
             log('Play %s' % stream)
             self.sirius.setStreamByLongName(stream)
-        except:
+        except InvalidStream:
             print "Invalid station name. Type 'list' to see available station names"
             return
         else:
