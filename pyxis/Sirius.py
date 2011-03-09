@@ -222,11 +222,20 @@ class Sirius(object):
     def nowPlaying(self):
         '''return a dictionary of info about whats currently playing'''
         nowplaying = {}
-        channel = self.__stream['longName'].lower() 
-        xml = self.getNowPlaying()
-        if channel in xml:
-            song = xml[channel]['song']
-            artist = xml[channel]['artist']
+        stream = self.__stream['longName'].lower() 
+        nowPlayingInfo = self.getNowPlaying()
+        if stream in nowPlayingInfo:
+            channel = stream
+        else:
+            for info in nowPlayingInfo:
+                if stream in info:
+                    channel = info
+                    break
+
+        channel = channel.strip()
+        if channel:
+            song = nowPlayingInfo[channel]['song']
+            artist = nowPlayingInfo[channel]['artist']
             nowplaying['playing'] = song + ', ' + artist
         else:
             nowplaying['playing'] = 'No song/artist info for ' + channel
