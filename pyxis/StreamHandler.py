@@ -72,7 +72,7 @@ class StreamHandler(object):
             print "Already playing!"
             return
 
-        print "Starting mplayer..."
+        log("Starting mplayer...")
         if self.options.record:
             stream = stream.replace(' ','') + '_'
             now = datetime.datetime.now()
