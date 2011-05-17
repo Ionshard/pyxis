@@ -41,6 +41,8 @@ parser.add_option("-q", "--quiet", dest="quiet",
 parser.add_option("-r", "--record", dest="record",
     action='store_true', default=False,
     help="record to a file")
+parser.add_option("-o", "--output", dest="output",
+    help="select file recording")
 
 (opts, args) = parser.parse_args()
 
