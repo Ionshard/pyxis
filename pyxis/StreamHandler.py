@@ -74,10 +74,13 @@ class StreamHandler(object):
 
         log("Starting mplayer...")
         if self.options.record:
-	    if self.options.output:
-		filename = self.options.output
-	    else:
-            	filename ="999990.wav"
+            if self.options.output:
+                filename = self.options.output
+            else:
+                stream = stream.replace(' ','') + '_'
+                now = datetime.datetime.now()
+                filename = stream + now.strftime("%Y-%m-%d_%H-%M-%S") + '.wav'
+            
             mpc = "%s '%s'" % (self.command + filename, url)
         else:
             mpc = "%s '%s'" % (self.command, url)
