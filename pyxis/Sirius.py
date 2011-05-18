@@ -228,14 +228,13 @@ class Sirius(object):
         if stream in nowPlayingInfo:
             channel = stream
         else:
-            while channel is None:
-                for info in nowPlayingInfo:
-                    #Remove all non letter characters then compare
-                    cleanInfo = re.sub("[\W]", "", info)
-                    cleanStream = re.sub("[\W]", "", stream)
-                    if cleanStream == cleanInfo or cleanStream in cleanInfo:
-                        channel = info
-                        break
+            for info in nowPlayingInfo:
+                #Remove all non letter characters then compare
+                cleanInfo = re.sub("[\W]", "", info)
+                cleanStream = re.sub("[\W]", "", stream)
+                if cleanStream == cleanInfo or cleanStream in cleanInfo:
+                    channel = info
+                    break
 
         if channel:
             channel = channel.strip()
