@@ -1,3 +1,10 @@
+pyxis (0.2.2-0ppa1) unstable; urgency=low
+
+  * Handle spaces in stream names
+  * Update debug information
+
+ -- Corey Ling <kasuko@gmail.com>  Wed, 09 Mar 2011 18:52:46 -0500
+
 pyxis (0.2-0ppa1) unstable; urgency=low
 
   * Canada support
