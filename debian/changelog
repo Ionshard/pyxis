@@ -1,3 +1,9 @@
+pyxis (0.2.3-0ppa1) unstable; urgency=low
+
+  * Handle new channel line up 
+
+ -- Corey Ling <kasuko@gmail.com>  Thu, 19 May 2011 10:28:04 -0400
+
 pyxis (0.2.2-0ppa1) unstable; urgency=low
 
   * Handle spaces in stream names
