@@ -134,7 +134,7 @@ class Config(object):
              '-really-quiet',
              '-nojoystick',
              '-nolirc',
-             '-user-agent', 'NSPlayer'
+             '-user-agent', 'NSPlayer',
              '-nomouseinput',
              '-prefer-ipv4',
              '-cache', '32',
